@@ -1,0 +1,6 @@
+[
+  { "zoneCode": "WH-A-REC", "zoneName": "Receiving Zone A", "warehouseCode": "WH-A", "type": "RECEIVING" },
+  { "zoneCode": "WH-A-STG", "zoneName": "Storage Zone A", "warehouseCode": "WH-A", "type": "STORAGE" },
+  { "zoneCode": "WH-A-PCK", "zoneName": "Picking Zone A", "warehouseCode": "WH-A", "type": "PICKING" },
+  { "zoneCode": "WH-A-QUA", "zoneName": "Quarantine Zone A", "warehouseCode": "WH-A", "type": "QUARANTINE" }
+]

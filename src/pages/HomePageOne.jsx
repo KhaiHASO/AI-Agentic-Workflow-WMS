@@ -1,20 +1,14 @@
 import React from "react";
 import MasterLayout from "../masterLayout/MasterLayout";
 import Breadcrumb from "../components/Breadcrumb";
-import DashBoardLayerOne from "../components/DashBoardLayerOne";
+import WMSDashboardLayer from "../components/WMSDashboardLayer";
 
 const HomePageOne = () => {
   return (
     <>
-      {/* MasterLayout */}
       <MasterLayout>
-        {/* Breadcrumb */}
-        <Breadcrumb title="AI" />
-
-
-        {/* DashBoardLayerOne */}
-        <DashBoardLayerOne />
-
+        <Breadcrumb title="Bảng Điều Khiển Tổng Quan (WMS)" />
+        <WMSDashboardLayer />
       </MasterLayout>
     </>
   );

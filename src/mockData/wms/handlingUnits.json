@@ -1,0 +1,26 @@
+[
+  {
+    "huCode": "LP-000981",
+    "type": "PALLET",
+    "status": "In Staging",
+    "location": "INB-STAGE-01",
+    "items": [
+      { "itemCode": "RM-001", "qty": 55, "uom": "ROLL", "lotNo": "LOT-20260412-02" }
+    ],
+    "weight": 275,
+    "volume": 1.2,
+    "createdAt": "2026-04-12T08:30:00Z"
+  },
+  {
+    "huCode": "LP-000982",
+    "type": "PALLET",
+    "status": "In Storage",
+    "location": "WH-A-STG-01-01",
+    "items": [
+      { "itemCode": "RM-001", "qty": 50, "uom": "ROLL", "lotNo": "LOT-20260412-01" }
+    ],
+    "weight": 250,
+    "volume": 1.1,
+    "createdAt": "2026-04-12T07:15:00Z"
+  }
+]

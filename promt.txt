@@ -1,0 +1,1 @@
+hãy cho tôi một số câu hỏi trắc nghiệm sql server liên quan đến nội dung như tài liệu sau khoảng 20 câu (không đánh thứ tự câu và thứ tự đáp án) chỉ chú thích câu chứ mấy là câu trả lời đúng, xuất dưới dạng excel 

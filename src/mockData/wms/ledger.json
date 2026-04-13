@@ -1,0 +1,38 @@
+[
+  {
+    "transactionId": "TXN-00001",
+    "transactionType": "INBOUND_RECEIPT",
+    "itemCode": "RM-001",
+    "qty": 50,
+    "fromLocation": "EXTERNAL",
+    "toLocation": "WH-A-REC-01",
+    "lotNo": "LOT-20260412-01",
+    "user": "user.wh01",
+    "timestamp": "2026-04-12T09:30:00Z",
+    "referenceNo": "GRN-2026-00150"
+  },
+  {
+    "transactionId": "TXN-00002",
+    "transactionType": "INTERNAL_TRANSFER",
+    "itemCode": "RM-001",
+    "qty": 50,
+    "fromLocation": "WH-A-REC-01",
+    "toLocation": "WH-A-STG-01-01-L1",
+    "lotNo": "LOT-20260412-01",
+    "user": "user.wh01",
+    "timestamp": "2026-04-12T10:15:00Z",
+    "referenceNo": "PT-001"
+  },
+  {
+    "transactionId": "TXN-00003",
+    "transactionType": "ADJUSTMENT",
+    "itemCode": "RM-002",
+    "qty": -2,
+    "fromLocation": "WH-A-PCK-01-01-L1",
+    "toLocation": "EXTERNAL",
+    "lotNo": null,
+    "user": "supervisor.01",
+    "timestamp": "2026-04-13T08:00:00Z",
+    "referenceNo": "CC-00021"
+  }
+]

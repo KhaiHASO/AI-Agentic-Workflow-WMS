@@ -96,10 +96,29 @@ import ComingSoonPage from "./pages/ComingSoonPage";
 import AccessDeniedPage from "./pages/AccessDeniedPage";
 import MaintenancePage from "./pages/MaintenancePage";
 import BlankPagePage from "./pages/BlankPagePage";
+import InboundDraftPage from "./pages/InboundDraftPage";
+import MasterDataPage from "./pages/MasterDataPage";
+import SyncLogsPage from "./pages/SyncLogsPage";
+import PutawayTaskPage from "./pages/PutawayTaskPage";
+import SalesOrdersPage from "./pages/SalesOrdersPage";
+import PickTaskPage from "./pages/PickTaskPage";
+import ShipmentPage from "./pages/ShipmentPage";
+import InventoryPage from "./pages/InventoryPage";
+import LedgerPage from "./pages/LedgerPage";
+import CycleCountPage from "./pages/CycleCountPage";
+import HandlingUnitPage from "./pages/HandlingUnitPage";
+import QualityControlPage from "./pages/QualityControlPage";
+import RelocationPage from "./pages/RelocationPage";
+import WarehouseLayoutPage from "./pages/WarehouseLayoutPage";
+import ReturnsPage from "./pages/ReturnsPage";
+import ReportsPage from "./pages/ReportsPage";
+import DevicesPage from "./pages/DevicesPage";
+import { WMSProvider } from "./context/WMSContext";
 
 function App() {
   return (
-    <BrowserRouter>
+    <WMSProvider>
+      <BrowserRouter>
       <RouteScrollToTop />
       <Routes>
         <Route exact path='/' element={<HomePageOne />} />
@@ -160,6 +179,23 @@ function App() {
         <Route exact path='/access-denied' element={<AccessDeniedPage />} />
         <Route exact path='/maintenance' element={<MaintenancePage />} />
         <Route exact path='/blank-page' element={<BlankPagePage />} />
+        <Route exact path='/inbound-draft' element={<InboundDraftPage />} />
+        <Route exact path='/master-data' element={<MasterDataPage />} />
+        <Route exact path='/sync-logs' element={<SyncLogsPage />} />
+        <Route exact path='/putaway' element={<PutawayTaskPage />} />
+        <Route exact path='/sales-orders' element={<SalesOrdersPage />} />
+        <Route exact path='/pick-task' element={<PickTaskPage />} />
+        <Route exact path='/shipment' element={<ShipmentPage />} />
+        <Route exact path='/inventory' element={<InventoryPage />} />
+        <Route exact path='/ledger' element={<LedgerPage />} />
+        <Route exact path='/cycle-count' element={<CycleCountPage />} />
+        <Route exact path='/pallet-hu' element={<HandlingUnitPage />} />
+        <Route exact path='/quality-control' element={<QualityControlPage />} />
+        <Route exact path='/relocation' element={<RelocationPage />} />
+        <Route exact path='/warehouse-layout' element={<WarehouseLayoutPage />} />
+        <Route exact path='/returns' element={<ReturnsPage />} />
+        <Route exact path='/reports' element={<ReportsPage />} />
+        <Route exact path='/devices' element={<DevicesPage />} />
 
         <Route exact path='/image-generator' element={<ImageGeneratorPage />} />
         <Route exact path='/image-upload' element={<ImageUploadPage />} />
@@ -224,6 +260,7 @@ function App() {
         <Route exact path='*' element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
+    </WMSProvider>
   );
 }
 

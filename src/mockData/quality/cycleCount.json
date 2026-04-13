@@ -1,0 +1,19 @@
+[
+  {
+    "sessionId": "CC-00021",
+    "status": "Pending Review",
+    "warehouseCode": "WH-A",
+    "zoneCode": "WH-A-STG",
+    "lines": [
+      {
+        "locationCode": "WH-A-STG-01-01",
+        "itemCode": "RM-001",
+        "lotNo": "LOT-20260412-01",
+        "systemQty": 50,
+        "countedQty": 48,
+        "variance": -2
+      }
+    ],
+    "createdAt": "2026-04-13T08:00:00Z"
+  }
+]

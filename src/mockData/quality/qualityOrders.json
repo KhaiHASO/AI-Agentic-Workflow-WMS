@@ -1,0 +1,20 @@
+[
+  {
+    "qualityOrderId": "QO-001",
+    "itemCode": "RM-003",
+    "lotNo": "LOT-PP-998",
+    "qty": 115,
+    "status": "Pending",
+    "createdAt": "2026-04-13T10:00:00Z",
+    "disposition": null
+  },
+  {
+    "qualityOrderId": "QO-002",
+    "itemCode": "FG-001",
+    "lotNo": "LOT-X-100",
+    "qty": 50,
+    "status": "Hold",
+    "createdAt": "2026-04-13T11:30:00Z",
+    "disposition": "Quarantine"
+  }
+]

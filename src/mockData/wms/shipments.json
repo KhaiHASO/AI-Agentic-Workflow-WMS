@@ -1,0 +1,12 @@
+[
+  {
+    "shipmentId": "SHP-00045",
+    "soNumber": "SO-000781",
+    "status": "Ready for Dispatch",
+    "carrierCode": "VN-POST",
+    "vehicleNo": "60H-98765",
+    "dockDoor": "DOOR-02",
+    "confirmedBy": null,
+    "confirmedAt": null
+  }
+]

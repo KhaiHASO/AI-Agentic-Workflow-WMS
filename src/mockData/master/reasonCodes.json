@@ -1,0 +1,7 @@
+[
+  { "reasonCode": "PACK_DAMAGED", "description": "Bao bì hư hỏng", "type": "INBOUND" },
+  { "reasonCode": "WRONG_ITEM", "description": "Sai mã hàng", "type": "INBOUND" },
+  { "reasonCode": "OVER_RECEIPT", "description": "Giao dư", "type": "INBOUND" },
+  { "reasonCode": "SHORT_PICK", "description": "Hết hàng tại vị trí", "type": "OUTBOUND" },
+  { "reasonCode": "COUNT_VARIANCE", "description": "Chênh lệch kiểm kê", "type": "INVENTORY" }
+]

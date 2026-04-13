@@ -1,0 +1,8 @@
+[
+  { "erpItemCode": "RM-001", "itemName": "Màng PE 5kg (Loại A)", "baseUom": "ROLL", "isLotControlled": true, "shelfLifeDays": 180, "pickStrategy": "FEFO", "barcodes": ["8931234567890", "PE-A-001"], "status": "Active" },
+  { "erpItemCode": "RM-002", "itemName": "Băng keo đóng gói 48mm", "baseUom": "BOX", "isLotControlled": false, "shelfLifeDays": null, "pickStrategy": "FIFO", "barcodes": ["8931234567891"], "status": "Active" },
+  { "erpItemCode": "RM-003", "itemName": "Hạt nhựa nguyên sinh PP", "baseUom": "KG", "isLotControlled": true, "shelfLifeDays": 365, "pickStrategy": "FEFO", "barcodes": ["8931234567892"], "status": "Active" },
+  { "erpItemCode": "PKG-001", "itemName": "Thùng Carton 5 lớp Size L", "baseUom": "PCS", "isLotControlled": false, "shelfLifeDays": null, "pickStrategy": "FIFO", "barcodes": ["8931234567893"], "status": "Active" },
+  { "erpItemCode": "FG-001", "itemName": "Sản phẩm hoàn thiện Model-X", "baseUom": "UNIT", "isLotControlled": true, "shelfLifeDays": 720, "pickStrategy": "FEFO", "barcodes": ["8931234567894"], "status": "Active" },
+  { "erpItemCode": "FG-002", "itemName": "Sản phẩm hoàn thiện Model-Y", "baseUom": "UNIT", "isLotControlled": true, "shelfLifeDays": 720, "pickStrategy": "FEFO", "barcodes": ["8931234567895"], "status": "Active" }
+]

@@ -1,0 +1,4 @@
+[
+  { "customerCode": "CUS-01", "customerName": "Khách hàng 01", "status": "Active" },
+  { "customerCode": "CUS-02", "customerName": "Khách hàng 02", "status": "Active" }
+]

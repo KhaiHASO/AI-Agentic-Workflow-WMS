@@ -1,0 +1,12 @@
+[
+  {
+    "taskId": "PT-000221",
+    "status": "Open",
+    "itemCode": "RM-001",
+    "qty": 55,
+    "fromLocation": "INB-STAGE-01",
+    "toLocation": "WH-A-STG-01-01",
+    "handlingUnitBarcode": "LP-000981",
+    "createdAt": "2026-04-12T09:00:00Z"
+  }
+]

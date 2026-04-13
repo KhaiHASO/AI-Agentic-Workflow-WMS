@@ -1,0 +1,20 @@
+[
+  {
+    "soNumber": "SO-000781",
+    "customerCode": "CUS-01",
+    "status": "Approved",
+    "expectedShipDate": "2026-04-14",
+    "lines": [
+      { "lineNo": 1, "itemCode": "FG-001", "uom": "UNIT", "qty": 50 }
+    ]
+  },
+  {
+    "soNumber": "SO-000782",
+    "customerCode": "CUS-02",
+    "status": "Approved",
+    "expectedShipDate": "2026-04-15",
+    "lines": [
+      { "lineNo": 1, "itemCode": "RM-001", "uom": "ROLL", "qty": 10 }
+    ]
+  }
+]
