@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
-import pickTasksData from "../mockData/wms/pickTasks.json";
+import { useWMS } from "../context/WMSContext";
 
 const PickTaskLayer = () => {
-  const [tasks, setTasks] = useState([]);
+  const { pickTasks, confirmPickTask } = useWMS();
   const [scanInput, setScanInput] = useState("");
-  const [activeTaskId, setActiveTaskId] = useState(null);
-
-  useEffect(() => {
-    setTasks(JSON.parse(JSON.stringify(pickTasksData)));
-  }, []);
 
   const handleScan = (taskId, targetItem, targetLocation) => {
     if (!scanInput) {
@@ -19,31 +14,21 @@ const PickTaskLayer = () => {
     }
 
     const input = scanInput.trim();
+    const task = pickTasks.find(t => t.pickTaskId === taskId);
     
-    setTasks(prevTasks => {
-        return prevTasks.map(task => {
-            if (task.pickTaskId === taskId) {
-                if (input === targetItem || input === targetLocation || input === "123") {
-                    const newPicked = Math.min(task.pickedQty + 10, task.reservedQty);
-                    
-                    if (task.pickedQty >= task.reservedQty) {
-                        toast.info(`Nhiệm vụ ${taskId} đã lấy đủ hàng.`);
-                        return task;
-                    }
+    if (input === targetItem || input === targetLocation || input === "123") {
+        if (task.pickedQty >= task.reservedQty) {
+            toast.info(`Nhiệm vụ ${taskId} đã lấy đủ hàng.`);
+            setScanInput("");
+            return;
+        }
 
-                    toast.success(`Đã lấy thêm 10 đơn vị cho ${task.itemCode}`);
-                    return {
-                        ...task,
-                        pickedQty: newPicked,
-                        status: newPicked >= task.reservedQty ? "Completed" : "In Progress"
-                    };
-                } else {
-                    toast.error(`Mã quét "${input}" không khớp với yêu cầu (Item: ${targetItem} / Loc: ${targetLocation})`);
-                }
-            }
-            return task;
-        });
-    });
+        const qtyToPick = 10; // Simulation: pick 10 at a time
+        confirmPickTask(taskId, qtyToPick);
+        toast.success(`Đã lấy thêm ${qtyToPick} đơn vị cho ${task.itemCode}`);
+    } else {
+        toast.error(`Mã quét "${input}" không khớp với yêu cầu (Item: ${targetItem} / Loc: ${targetLocation})`);
+    }
     
     setScanInput("");
   };
@@ -64,7 +49,7 @@ const PickTaskLayer = () => {
                   <div className="card p-24 border-0 shadow-sm bg-info-focus h-100 scale-on-hover overflow-hidden">
                       <p className="fw-medium text-primary-600 mb-1 text-nowrap text-xs text-uppercase">Nhiệm vụ đã phát</p>
                       <div className="d-flex align-items-center justify-content-between">
-                          <h4 className="mb-0 fw-bold text-dark">{tasks.length}</h4>
+                          <h4 className="mb-0 fw-bold text-dark">{pickTasks.length}</h4>
                           <Icon icon="solar:clipboard-list-bold" className="position-absolute end-0 bottom-0 mb-n3 me-n3 text-primary-600 opacity-25" style={{fontSize: '80px'}} />
                       </div>
                   </div>
@@ -128,7 +113,7 @@ const PickTaskLayer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tasks.map((task) => (
+                  {pickTasks.map((task) => (
                     <tr key={task.pickTaskId} className="hover-bg-primary-50">
                       <td className="ps-24">
                         <div className="d-flex align-items-center gap-2">

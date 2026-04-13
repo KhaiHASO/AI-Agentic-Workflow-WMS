@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
+import { useWMS } from "../context/WMSContext";
 
 const RelocationLayer = () => {
+  const { relocationHistory, relocateItem } = useWMS();
   const [source, setSource] = useState("");
   const [item, setItem] = useState("");
   const [qty, setQty] = useState("");
@@ -19,6 +21,7 @@ const RelocationLayer = () => {
       toast.info(`Đang thực hiện lệnh chuyển ${qty} hàng từ ${source} sang ${dest}...`);
 
       setTimeout(() => {
+          relocateItem(source, item, qty, dest);
           setIsProcessing(false);
           toast.success(`Điều chuyển thành công! Hệ thống đã cập nhật tồn kho và ghi sổ ledger.`);
           setSource(""); setItem(""); setQty(""); setDest("");
@@ -160,15 +163,19 @@ const RelocationLayer = () => {
                               </tr>
                           </thead>
                           <tbody>
-                              <tr>
-                                  <td className="ps-24 text-sm">13/04/2026 15:20</td>
-                                  <td><span className="fw-bold">RM-001</span></td>
-                                  <td><span className="fw-bold">10 ROLL</span></td>
-                                  <td><span className="badge bg-primary-focus text-primary-600 px-12 py-4">WH-A-STG-01-01</span></td>
-                                  <td><span className="badge bg-success-focus text-success-main px-12 py-4">WH-A-PCK-01-01</span></td>
-                                  <td>user.wh01</td>
-                                  <td className="pe-24"><span className="text-success-main fw-bold"><Icon icon="lucide:check-circle" /> Hoàn Thành</span></td>
-                              </tr>
+                              {relocationHistory.length === 0 ? (
+                                  <tr><td colSpan="7" className="text-center py-20 text-secondary">Chưa có lịch sử điều chuyển trong phiên này.</td></tr>
+                              ) : relocationHistory.map((h, i) => (
+                                <tr key={i}>
+                                    <td className="ps-24 text-sm">{new Date(h.time).toLocaleString()}</td>
+                                    <td><span className="fw-bold">{h.itemCode}</span></td>
+                                    <td><span className="fw-bold">{h.qty} UNIT</span></td>
+                                    <td><span className="badge bg-primary-focus text-primary-600 px-12 py-4">{h.fromLoc}</span></td>
+                                    <td><span className="badge bg-success-focus text-success-main px-12 py-4">{h.toLoc}</span></td>
+                                    <td>{h.user}</td>
+                                    <td className="pe-24"><span className="text-success-main fw-bold"><Icon icon="lucide:check-circle" /> Hoàn Thành</span></td>
+                                </tr>
+                              ))}
                           </tbody>
                       </table>
                   </div>

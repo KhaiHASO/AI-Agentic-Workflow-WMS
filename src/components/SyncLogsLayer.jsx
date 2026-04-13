@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
-import syncLogsData from "../mockData/integration/syncLogs.json";
+import React from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useWMS } from "../context/WMSContext";
 
 const SyncLogsLayer = () => {
-  const [logs, setLogs] = useState([]);
-
-  useEffect(() => {
-    setLogs(syncLogsData);
-  }, []);
+  const { syncLogs } = useWMS();
 
   return (
     <div className='row gy-4'>
@@ -92,7 +88,7 @@ const SyncLogsLayer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {logs.map((log, idx) => (
+                  {syncLogs.map((log, idx) => (
                     <tr key={idx} className="hover-bg-primary-50">
                       <td className="ps-24">
                         <div className="d-flex align-items-center gap-2">

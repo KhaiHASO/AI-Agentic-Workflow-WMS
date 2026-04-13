@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
-import putawayTasksData from "../mockData/wms/putawayTasks.json";
+import { useWMS } from "../context/WMSContext";
 
 const PutawayTaskLayer = () => {
-  const [tasks, setTasks] = useState([]);
+  const { putawayTasks, confirmPutaway } = useWMS();
   const [scanLocation, setScanLocation] = useState("");
   const [processingId, setProcessingId] = useState(null);
-
-  useEffect(() => {
-    setTasks(JSON.parse(JSON.stringify(putawayTasksData)));
-  }, []);
 
   const handleScanLocation = (taskId, targetLocation) => {
     if (!scanLocation) {
@@ -27,7 +23,7 @@ const PutawayTaskLayer = () => {
     toast.info(`Đang xác nhận cất hàng cho nhiệm vụ ${taskId}...`);
 
     setTimeout(() => {
-      setTasks(tasks.filter(t => t.taskId !== taskId));
+      confirmPutaway(taskId);
       setProcessingId(null);
       setScanLocation("");
       toast.success(`Nhiệm vụ ${taskId} hoàn thành! Hàng đã được ghi nhận tại vị trí ${targetLocation}`);
@@ -43,7 +39,7 @@ const PutawayTaskLayer = () => {
                   <div className="card p-20 border-0 shadow-sm bg-gradient-start-1 h-100 scale-on-hover overflow-hidden">
                       <div className="card-body p-0">
                           <p className="fw-medium text-primary-600 mb-1 text-nowrap text-xs text-uppercase">Nhiệm Vụ Đang Mở</p>
-                          <h4 className="mb-0 fw-bold text-dark">{tasks.length}</h4>
+                          <h4 className="mb-0 fw-bold text-dark">{putawayTasks.length}</h4>
                           <Icon icon="solar:transfer-vertical-bold" className="position-absolute end-0 bottom-0 mb-n3 me-n3 text-primary-600 opacity-25" style={{fontSize: '80px'}} />
                       </div>
                   </div>
@@ -103,14 +99,14 @@ const PutawayTaskLayer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tasks.length === 0 ? (
+                  {putawayTasks.length === 0 ? (
                     <tr>
                         <td colSpan="7" className="text-center py-40">
                             <Icon icon="solar:check-circle-bold" className="text-success-main h1 mb-16" />
                             <h6 className="text-secondary">Tuyệt vời! Không còn nhiệm vụ cất hàng nào đang chờ.</h6>
                         </td>
                     </tr>
-                  ) : tasks.map((task) => (
+                  ) : putawayTasks.map((task) => (
                     <tr key={task.taskId} className="hover-bg-primary-50">
                       <td className="ps-24">
                         <div className="d-flex align-items-center gap-2">

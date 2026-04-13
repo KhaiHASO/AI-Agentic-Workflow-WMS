@@ -8,13 +8,23 @@ const OnHandLayer = () => {
   const { onHand } = useWMS();
   const [isLoading, setIsLoading] = useState(true);
 
+  const filledBins = new Set(onHand.map(oh => oh.locationCode)).size;
+  const totalBins = 150;
+  
+  const availableCount = onHand.filter(s => s.status === 'Available').length;
+  const qcCount = onHand.filter(s => s.status === 'QC' || s.status === 'Hold').length;
+  const totalSkuCount = onHand.length;
+
+  const donutChartSeries = [
+    totalSkuCount > 0 ? Math.round((availableCount / totalSkuCount) * 100) : 0, 
+    totalSkuCount > 0 ? Math.round((qcCount / totalSkuCount) * 100) : 0, 
+    0
+  ];
+
   useEffect(() => {
-    // Simulate initial loading
     const timer = setTimeout(() => setIsLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
-
-  const donutChartSeries = [75, 20, 5];
   const donutChartOptions = {
     colors: ['#487FFF', '#FF9F43', '#EF4444'],
     labels: ['Sẵn Sàng', 'Chờ QC', 'Hỏng/Khóa'],
@@ -91,7 +101,7 @@ const OnHandLayer = () => {
                 <div className="card shadow-none border bg-gradient-start-3 h-100 scale-on-hover overflow-hidden">
                     <div className="card-body p-20">
                         <p className="fw-medium text-primary-600 mb-1 text-nowrap text-xs">VỊ TRÍ ĐÃ LẤP</p>
-                        <h4 className="mb-0 fw-bold text-dark">120 / 150</h4>
+                        <h4 className="mb-0 fw-bold text-dark">{filledBins} / {totalBins}</h4>
                          <Icon icon="solar:map-point-bold" className="position-absolute end-0 bottom-0 mb-n3 me-n3 text-primary-600 opacity-25" style={{fontSize: '80px'}} />
                     </div>
                 </div>

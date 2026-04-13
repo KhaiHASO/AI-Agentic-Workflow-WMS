@@ -1,25 +1,16 @@
-import React, { useState, useEffect } from "react";
-import cycleCountData from "../mockData/quality/cycleCount.json";
+import React from "react";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
+import { useWMS } from "../context/WMSContext";
 
 const CycleCountLayer = () => {
-  const [sessions, setSessions] = useState([]);
-
-  useEffect(() => {
-    setSessions(JSON.parse(JSON.stringify(cycleCountData)));
-  }, []);
+  const { cycleCounts, approveCycleCount } = useWMS();
 
   const handleApprove = (sessionId) => {
       toast.info(`Đang xử lý phê duyệt chênh lệch cho phiên ${sessionId}...`);
       
       setTimeout(() => {
-          setSessions(prev => prev.map(session => {
-              if (session.sessionId === sessionId) {
-                  return { ...session, status: "Posted" };
-              }
-              return session;
-          }));
+          approveCycleCount(sessionId);
           toast.success(`Đã duyệt điều chỉnh cho phiên ${sessionId}. Tồn kho đã được cập nhật khớp với thực tế.`);
       }, 1500);
   }
@@ -37,7 +28,7 @@ const CycleCountLayer = () => {
                           </div>
                           <div>
                               <h6 className="mb-0 text-secondary-light">Chờ duyệt</h6>
-                              <h4 className="mb-0 fw-bold">{sessions.filter(s => s.status === 'Pending Review').length}</h4>
+                              <h4 className="mb-0 fw-bold">{cycleCounts.filter(s => s.status === 'Pending Review').length}</h4>
                           </div>
                       </div>
                   </div>
@@ -50,7 +41,7 @@ const CycleCountLayer = () => {
                           </div>
                           <div>
                               <h6 className="mb-0 text-secondary-light">Đã hoàn tất</h6>
-                              <h4 className="mb-0 fw-bold">{sessions.filter(s => s.status === 'Posted').length}</h4>
+                              <h4 className="mb-0 fw-bold">{cycleCounts.filter(s => s.status === 'Posted').length}</h4>
                           </div>
                       </div>
                   </div>
@@ -107,7 +98,7 @@ const CycleCountLayer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sessions.map((session) => (
+                  {cycleCounts.map((session) => (
                     session.lines.map((line, idx) => (
                         <tr key={`${session.sessionId}-${idx}`} className="hover-bg-primary-50">
                           <td className="ps-24">

@@ -4,20 +4,9 @@ import { toast } from 'react-toastify';
 import { useWMS } from "../context/WMSContext";
 
 const SalesOrdersLayer = () => {
-  const { shipments } = useWMS();
-  const [orders, setOrders] = useState([]);
+  const { salesOrders, createWave } = useWMS();
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [isCreatingWave, setIsCreatingWave] = useState(false);
-
-  useEffect(() => {
-    // Mocking SO data from shipments for demo
-    setOrders([
-        { id: "SO-2026-001", customer: "Công ty Samsung VN", qty: 150, priority: "High", status: "Approved", date: "13/04/2026" },
-        { id: "SO-2026-002", customer: "Logistics ABA", qty: 80, priority: "Normal", status: "Approved", date: "13/04/2026" },
-        { id: "SO-2026-003", customer: "Điện Máy Xanh", qty: 200, priority: "Urgent", status: "Approved", date: "14/04/2026" },
-        { id: "SO-2026-004", customer: "Công ty Intel", qty: 45, priority: "Normal", status: "Approved", date: "14/04/2026" },
-    ]);
-  }, []);
 
   const toggleSelect = (id) => {
       if (selectedOrders.includes(id)) {
@@ -36,6 +25,7 @@ const SalesOrdersLayer = () => {
       toast.info(`Đang phân tích tồn kho và lập lộ trình lấy hàng cho ${selectedOrders.length} đơn hàng...`);
       
       setTimeout(() => {
+          createWave(selectedOrders);
           setIsCreatingWave(false);
           toast.success(`Đã tạo Đợt lấy hàng (Wave) WV-${Math.floor(Math.random()*9000)+1000} thành công!`);
           setSelectedOrders([]);
@@ -52,7 +42,7 @@ const SalesOrdersLayer = () => {
                       <div className="d-flex align-items-center justify-content-between">
                           <div>
                               <p className="fw-medium text-primary-600 mb-1 text-xs text-uppercase">SO Chờ Xử Lý</p>
-                              <h4 className="mb-0 fw-bold text-dark">{orders.length}</h4>
+                              <h4 className="mb-0 fw-bold text-dark">{salesOrders.length}</h4>
                           </div>
                           <div className="w-50-px h-50-px bg-white bg-opacity-25 rounded-circle d-flex justify-content-center align-items-center text-primary-600 h4 mb-0">
                               <Icon icon="solar:cart-large-minimalistic-bold" />
@@ -126,7 +116,7 @@ const SalesOrdersLayer = () => {
                   <tr>
                     <th className="ps-24 py-16" style={{width: '50px'}}>
                         <div className="form-check style-check">
-                            <input className="form-check-input" type="checkbox" onChange={(e) => e.target.checked ? setSelectedOrders(orders.map(o => o.id)) : setSelectedOrders([])} />
+                            <input className="form-check-input" type="checkbox" onChange={(e) => e.target.checked ? setSelectedOrders(salesOrders.map(o => o.id)) : setSelectedOrders([])} />
                         </div>
                     </th>
                     <th>Mã Đơn (SO)</th>
@@ -138,7 +128,7 @@ const SalesOrdersLayer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order) => (
+                  {salesOrders.map((order) => (
                     <tr key={order.id} className={`hover-bg-primary-50 transition-all ${selectedOrders.includes(order.id) ? 'bg-primary-50 bg-opacity-50' : ''}`} onClick={() => toggleSelect(order.id)} style={{cursor: 'pointer'}}>
                       <td className="ps-24 py-20">
                         <div className="form-check style-check">

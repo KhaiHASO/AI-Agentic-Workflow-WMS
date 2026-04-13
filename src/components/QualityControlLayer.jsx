@@ -1,25 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
-import qualityData from "../mockData/quality/qualityOrders.json";
+import { useWMS } from "../context/WMSContext";
 
 const QualityControlLayer = () => {
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    setOrders(JSON.parse(JSON.stringify(qualityData)));
-  }, []);
+  const { qualityOrders, completeQualityOrder } = useWMS();
 
   const handleDecision = (id, decisionType) => {
       toast.info(`Đang ghi nhận quyết định: ${decisionType}...`);
       
       setTimeout(() => {
-          setOrders(prev => prev.map(order => {
-              if (order.qualityOrderId === id) {
-                  return { ...order, status: decisionType, disposition: decisionType };
-              }
-              return order;
-          }));
+          completeQualityOrder(id, decisionType);
           
           if (decisionType === 'Chấp Nhận') {
               toast.success(`Đã phê duyệt phiếu ${id}. Hàng đã được giải phóng vào tồn khả dụng.`);
@@ -49,11 +40,11 @@ const QualityControlLayer = () => {
       </div>
 
       {/* QC Tasks Grid */}
-      {orders.length === 0 ? (
+      {qualityOrders.length === 0 ? (
           <div className="col-12 text-center py-40">
               <h6>Không có lệnh QC nào cần xử lý.</h6>
           </div>
-      ) : orders.map((order) => (
+      ) : qualityOrders.map((order) => (
         <div className="col-xxl-6 col-md-12" key={order.qualityOrderId}>
             <div className="card border-0 shadow-sm overflow-hidden scale-on-hover">
                 <div className="card-header bg-base border-bottom p-24 d-flex justify-content-between align-items-center">

@@ -1,8 +1,19 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useWMS } from "../context/WMSContext";
+import { toast } from 'react-toastify';
 
 const ReturnsLayer = () => {
+  const { returns, approveReturn } = useWMS();
   const [returnType, setReturnType] = useState("RTV"); // RTV or RMA
+
+  const handleApprove = (id) => {
+      toast.info(`Đang xác nhận phiếu ${id}...`);
+      setTimeout(() => {
+          approveReturn(id);
+          toast.success(`Đã xác nhận thành công phiếu ${id}.`);
+      }, 1000);
+  };
 
   return (
     <div className='row gy-4'>
@@ -35,8 +46,8 @@ const ReturnsLayer = () => {
       {/* Summary Metrics for Returns */}
       <div className="col-xxl-3 col-sm-6">
           <div className="card p-24 border-0 shadow-sm text-center">
-              <h2 className="mb-8 fw-bold">12</h2>
-              <p className="text-secondary mb-0">Phiếu đang chờ xử lý</p>
+              <h2 className="mb-8 fw-bold">{returns.filter(r => r.type === returnType && r.status === 'Pending Review').length}</h2>
+              <p className="text-secondary mb-0">Phiếu {returnType} đang chờ xử lý</p>
           </div>
       </div>
       <div className="col-xxl-3 col-sm-6">
@@ -81,38 +92,46 @@ const ReturnsLayer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="hover-bg-primary-50">
-                    <td className="ps-24">
-                        <div className="d-flex align-items-center gap-2">
-                            <span className={`w-8-px h-8-px rounded-circle ${returnType === 'RTV' ? 'bg-primary-600' : 'bg-success-main'}`}></span>
-                            <span className="fw-bold">{returnType === 'RTV' ? 'RTV-2026-001' : 'RMA-2026-001'}</span>
-                        </div>
-                    </td>
-                    <td><span className="text-secondary fw-medium">{returnType === 'RTV' ? 'PO-2026-045' : 'SO-2026-781'}</span></td>
-                    <td>
-                        <div className="d-flex align-items-center gap-2">
-                            <div className="w-32-px h-32-px bg-secondary-focus rounded-circle d-flex justify-content-center align-items-center text-xs">
-                                {returnType === 'RTV' ? 'SUP' : 'CUS'}
+                  {returns.filter(r => r.type === returnType).map((ret) => (
+                    <tr key={ret.id} className="hover-bg-primary-50">
+                        <td className="ps-24">
+                            <div className="d-flex align-items-center gap-2">
+                                <span className={`w-8-px h-8-px rounded-circle ${returnType === 'RTV' ? 'bg-primary-600' : 'bg-success-main'}`}></span>
+                                <span className="fw-bold">{ret.id}</span>
                             </div>
-                            <span className="fw-semibold">{returnType === 'RTV' ? 'Supplier A' : 'Customer B'}</span>
-                        </div>
-                    </td>
-                    <td><code>LOT-20260412</code></td>
-                    <td>
-                        <span className="px-12 py-4 rounded-pill fw-medium text-xs bg-warning-focus text-warning-main">
-                            <Icon icon="lucide:clock" className="me-1" /> Chờ Kiểm Định
-                        </span>
-                    </td>
-                    <td><span className="text-danger-main fw-medium">Hàng lỗi kỹ thuật</span></td>
-                    <td className="pe-24 text-end">
-                        <div className="d-flex justify-content-end gap-2">
-                            <button className="btn btn-primary-600 btn-sm px-16">Chi Tiết</button>
-                            <button className="w-32-px h-32-px bg-success-focus text-success-main rounded-8 d-inline-flex align-items-center justify-content-center border-0" title="Xác nhận">
-                                <Icon icon="lucide:check" />
-                            </button>
-                        </div>
-                    </td>
-                  </tr>
+                        </td>
+                        <td><span className="text-secondary fw-medium">{ret.reference}</span></td>
+                        <td>
+                            <div className="d-flex align-items-center gap-2">
+                                <div className="w-32-px h-32-px bg-secondary-focus rounded-circle d-flex justify-content-center align-items-center text-xs">
+                                    {returnType === 'RTV' ? 'SUP' : 'CUS'}
+                                </div>
+                                <span className="fw-semibold">{ret.partner}</span>
+                            </div>
+                        </td>
+                        <td><code>{ret.lotNo}</code></td>
+                        <td>
+                            <span className={`px-12 py-4 rounded-pill fw-medium text-xs ${ret.status === 'Approved' ? 'bg-success-focus text-success-main' : 'bg-warning-focus text-warning-main'}`}>
+                                <Icon icon={ret.status === 'Approved' ? 'lucide:check-circle' : 'lucide:clock'} className="me-1" />
+                                {ret.status === 'Approved' ? 'Đã Xác Nhận' : 'Chờ Kiểm Định'}
+                            </span>
+                        </td>
+                        <td><span className="text-danger-main fw-medium">{ret.reason}</span></td>
+                        <td className="pe-24 text-end">
+                            <div className="d-flex justify-content-end gap-2">
+                                {ret.status === 'Pending Review' ? (
+                                    <button className="w-32-px h-32-px bg-success-focus text-success-main rounded-8 d-inline-flex align-items-center justify-content-center border-0" onClick={() => handleApprove(ret.id)}>
+                                        <Icon icon="lucide:check" />
+                                    </button>
+                                ) : (
+                                    <button className="btn btn-outline-secondary btn-sm radius-8" disabled>
+                                        OK
+                                    </button>
+                                )}
+                            </div>
+                        </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

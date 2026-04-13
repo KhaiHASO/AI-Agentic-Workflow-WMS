@@ -8,6 +8,12 @@ const WMSDashboardLayer = () => {
   let { paymentStatusChartSeriesThree, paymentStatusChartOptionsThree } = useReactApexChart();
   const { inboundDrafts, putawayTasks, onHand, shipments, ledger } = useWMS();
 
+  const totalAvailableQty = onHand.reduce((acc, curr) => acc + curr.qty, 0);
+  const filledBins = new Set(onHand.map(oh => oh.locationCode)).size;
+  const totalBins = 150;
+  const fillRate = Math.round((filledBins / totalBins) * 100);
+  const completedOrders = ledger.filter(t => t.transactionType === 'OUTBOUND_SHIP').length;
+
   return (
     <>
       <div className='row row-cols-xxxl-5 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4'>
@@ -137,7 +143,7 @@ const WMSDashboardLayer = () => {
                         <Icon icon='solar:box-minimalistic-bold' />
                       </span>
                       <span className='mb-1 fw-medium text-secondary text-sm'>Tồn khả dụng</span>
-                      <h5 className='fw-bold text-dark mb-1'>1,250</h5>
+                      <h5 className='fw-bold text-dark mb-1'>{totalAvailableQty.toLocaleString()}</h5>
                       <p className='text-xs mb-0'>
                         <span className='text-success-main fw-bold'>+15%</span> so với dự trữ
                       </p>
@@ -161,7 +167,7 @@ const WMSDashboardLayer = () => {
                         <Icon icon='solar:checklist-bold' />
                       </span>
                       <span className='mb-1 fw-medium text-secondary text-sm'>Lệnh Hoàn Tất</span>
-                      <h5 className='fw-bold text-dark mb-1'>1,205</h5>
+                      <h5 className='fw-bold text-dark mb-1'>{completedOrders}</h5>
                       <p className='text-xs mb-0 text-success-main fw-bold'>99.9% Chính xác</p>
                     </div>
                   </div>
@@ -171,9 +177,9 @@ const WMSDashboardLayer = () => {
                         <Icon icon='solar:map-point-bold' />
                       </span>
                       <span className='mb-1 fw-medium text-secondary text-sm'>Lấp Đầy Bin</span>
-                      <h5 className='fw-bold text-dark mb-1'>120 / 150</h5>
+                      <h5 className='fw-bold text-dark mb-1'>{filledBins} / {totalBins}</h5>
                       <div className="progress mt-2" style={{height: '6px'}}>
-                        <div className="progress-bar bg-info-main" style={{width: '80%'}}></div>
+                        <div className="progress-bar bg-info-main" style={{width: `${fillRate}%`}}></div>
                       </div>
                     </div>
                   </div>

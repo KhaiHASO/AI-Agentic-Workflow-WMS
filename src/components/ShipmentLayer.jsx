@@ -1,27 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
-import shipmentsData from "../mockData/wms/shipments.json";
+import { useWMS } from "../context/WMSContext";
 
 const ShipmentLayer = () => {
-  const [shipments, setShipments] = useState([]);
+  const { shipments, confirmShipment } = useWMS();
   const [loadingId, setLoadingId] = useState(null);
-
-  useEffect(() => {
-    setShipments(JSON.parse(JSON.stringify(shipmentsData)));
-  }, []);
 
   const handleConfirm = (shipmentId) => {
     setLoadingId(shipmentId);
     toast.info(`Đang chốt bàn giao và đẩy dữ liệu Goods Issue sang ERP cho phiếu ${shipmentId}...`);
     
     setTimeout(() => {
-      setShipments(prev => prev.map(s => {
-          if (s.shipmentId === shipmentId) {
-              return { ...s, status: "Shipped", confirmedAt: new Date().toISOString() };
-          }
-          return s;
-      }));
+      confirmShipment(shipmentId);
       setLoadingId(null);
       toast.success(`Phiếu giao hàng ${shipmentId} đã hoàn tất! Chuyến xe đã có thể rời kho.`);
     }, 2000);

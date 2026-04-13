@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
-import ledgerData from "../mockData/wms/ledger.json";
+import React from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useWMS } from "../context/WMSContext";
 
 const LedgerLayer = () => {
-  const [ledger, setLedger] = useState([]);
+  const { ledger } = useWMS();
 
-  useEffect(() => {
-    setLedger(ledgerData);
-  }, []);
+  // Calculate stats from ledger
+  const totalEntries = ledger.length;
+  const inboundCount = ledger.filter(t => t.transactionType === 'INBOUND_RECEIPT' || t.transactionType === 'QUALITY_RELEASE').length;
+  const outboundCount = ledger.filter(t => t.transactionType === 'OUTBOUND_SHIP' || t.transactionType === 'PICKING').length;
+  const internalCount = ledger.filter(t => t.transactionType === 'INTERNAL_TRANSFER' || t.transactionType === 'INTERNAL_RELOC' || t.transactionType === 'CYCLE_COUNT_ADJ').length;
 
   return (
     <div className='row gy-4'>
@@ -22,7 +24,7 @@ const LedgerLayer = () => {
                           </div>
                           <div>
                               <h6 className="mb-0 text-secondary">Tổng biến động</h6>
-                              <h4 className="mb-0 fw-bold">1,250</h4>
+                              <h4 className="mb-0 fw-bold">{totalEntries}</h4>
                           </div>
                       </div>
                   </div>
@@ -35,7 +37,7 @@ const LedgerLayer = () => {
                           </div>
                           <div>
                               <h6 className="mb-0 text-secondary">Nhập kho (In)</h6>
-                              <h4 className="mb-0 fw-bold">850</h4>
+                              <h4 className="mb-0 fw-bold">{inboundCount}</h4>
                           </div>
                       </div>
                   </div>
@@ -48,7 +50,7 @@ const LedgerLayer = () => {
                           </div>
                           <div>
                               <h6 className="mb-0 text-secondary">Xuất kho (Out)</h6>
-                              <h4 className="mb-0 fw-bold">380</h4>
+                              <h4 className="mb-0 fw-bold">{outboundCount}</h4>
                           </div>
                       </div>
                   </div>
@@ -61,7 +63,7 @@ const LedgerLayer = () => {
                           </div>
                           <div>
                               <h6 className="mb-0 text-secondary">Nội bộ (Internal)</h6>
-                              <h4 className="mb-0 fw-bold">20</h4>
+                              <h4 className="mb-0 fw-bold">{internalCount}</h4>
                           </div>
                       </div>
                   </div>
