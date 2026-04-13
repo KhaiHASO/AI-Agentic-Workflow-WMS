@@ -1,1 +1,39 @@
-hãy cho tôi một số câu hỏi trắc nghiệm sql server liên quan đến nội dung như tài liệu sau khoảng 20 câu (không đánh thứ tự câu và thứ tự đáp án) chỉ chú thích câu chứ mấy là câu trả lời đúng, xuất dưới dạng excel 
+Do not give me a summary-only status.
+
+I need a completion audit with proof.
+
+Output in this exact structure:
+1. Overall status:
+   - Done for current phase?
+   - Done for full WMS scope?
+   - Remaining scope?
+
+2. Requirement coverage table:
+   - Requirement / spec item
+   - Status: done / partial / missing
+   - Implemented in files
+   - UI screen / business flow affected
+   - Notes
+
+3. Files changed:
+   - exact file paths
+   - what changed in each file
+
+4. Validation proof:
+   - build status
+   - lint status
+   - type-check status
+   - test status
+   - manual test flows completed
+
+5. Remaining gaps:
+   - unresolved items
+   - lower-priority items
+   - optional enhancements
+   - technical debt still left
+
+6. Final verdict:
+   - Is the system truly complete against the specification?
+   - If not, list the exact missing items only.
+
+Be strict, do not mark something as done without traceable proof in code or UI.

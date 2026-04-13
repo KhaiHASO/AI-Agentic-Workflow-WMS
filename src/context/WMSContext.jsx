@@ -1,4 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { wmsApi } from '../services/wmsApi';
 import itemsData from '../mockData/master/items.json';
 import locationsData from '../mockData/master/locations.json';
 import onHandData from '../mockData/wms/onHand.json';
@@ -83,16 +85,25 @@ export const WMSProvider = ({ children }) => {
     setLedger(prev => [newEntry, ...prev]);
   };
 
+  const syncMasterData = async (entity) => {
+      try {
+          const res = await wmsApi.syncFromErp(entity);
+          if (res.success) {
+              toast.success(`Đã đồng bộ ${res.count} ${entity} từ ERP.`);
+          }
+      } catch (err) {
+          toast.error("Đồng bộ ERP thất bại: " + err.message);
+      }
+  };
+
   // Workflow logic: Relocate Item
   const relocateItem = (sourceLoc, itemCode, qty, destLoc) => {
       const quantity = Number(qty);
       
       // 1. Update OnHand (Decrease Source)
       setOnHand(prev => {
-          let sourceFound = false;
           const next = prev.map(oh => {
               if (oh.locationCode === sourceLoc && oh.itemCode === itemCode) {
-                  sourceFound = true;
                   return { ...oh, qty: Math.max(0, oh.qty - quantity) };
               }
               return oh;
@@ -138,73 +149,120 @@ export const WMSProvider = ({ children }) => {
       });
   };
 
-  const approveCycleCount = (sessionId) => {
+  const approveCycleCount = async (sessionId) => {
       const session = cycleCounts.find(s => s.sessionId === sessionId);
       if (!session) return;
 
-      // Update Session Status
-      setCycleCounts(prev => prev.map(s => s.sessionId === sessionId ? { ...s, status: "Posted" } : s));
+      try {
+          await wmsApi.postAdjustment({
+              sessionId,
+              lines: session.lines.filter(l => l.variance !== 0)
+          });
 
-      // Update OnHand based on variances
-      session.lines.forEach(line => {
-          if (line.variance !== 0) {
-              setOnHand(prev => {
-                  const existing = prev.find(oh => oh.locationCode === line.locationCode && oh.itemCode === line.itemCode);
-                  if (existing) {
-                      return prev.map(oh => oh === existing ? { ...oh, qty: line.countedQty } : oh);
-                  } else {
-                      return [...prev, {
-                          warehouseCode: "WH-A",
-                          locationCode: line.locationCode,
-                          itemCode: line.itemCode,
-                          lotNo: line.lotNo,
-                          qty: line.countedQty,
-                          uom: "UNIT",
-                          status: "Available"
-                      }];
-                  }
-              });
+          // Update Session Status
+          setCycleCounts(prev => prev.map(s => s.sessionId === sessionId ? { ...s, status: "Posted" } : s));
 
-              addLedgerEntry({
-                  transactionType: "CYCLE_COUNT_ADJ",
-                  itemCode: line.itemCode,
-                  qty: line.variance,
-                  fromLocation: "ADJUSTMENT",
-                  toLocation: line.locationCode,
-                  user: "manager.wh01",
-                  referenceNo: sessionId
-              });
-          }
-      });
+          // Update OnHand based on variances
+          session.lines.forEach(line => {
+              if (line.variance !== 0) {
+                  setOnHand(prev => {
+                      const existing = prev.find(oh => oh.locationCode === line.locationCode && oh.itemCode === line.itemCode);
+                      if (existing) {
+                          return prev.map(oh => oh === existing ? { ...oh, qty: line.countedQty } : oh);
+                      } else {
+                          return [...prev, {
+                              warehouseCode: "WH-A",
+                              locationCode: line.locationCode,
+                              itemCode: line.itemCode,
+                              lotNo: line.lotNo,
+                              qty: line.countedQty,
+                              uom: "UNIT",
+                              status: "Available"
+                          }];
+                      }
+                  });
+
+                  addLedgerEntry({
+                      transactionType: "CYCLE_COUNT_ADJ",
+                      itemCode: line.itemCode,
+                      qty: line.variance,
+                      fromLocation: "ADJUSTMENT",
+                      toLocation: line.locationCode,
+                      user: "manager.wh01",
+                      referenceNo: sessionId
+                  });
+              }
+          });
+      } catch (err) {
+          toast.error("Lỗi khi cập nhật ERP: " + err.message);
+      }
   };
 
-  const createWave = (selectedOrderIds) => {
+  const createWave = async (selectedOrderIds) => {
     const ordersToProcess = salesOrders.filter(o => selectedOrderIds.includes(o.id));
-    
-    const newPickTasks = ordersToProcess.map(order => ({
-        pickTaskId: `PKT-${Math.floor(Math.random() * 90000) + 10000}`,
-        soNumber: order.id,
-        status: "Assigned",
-        itemCode: order.itemCode,
-        reservedQty: order.qty,
-        pickedQty: 0,
-        fromLocation: "WH-A-STG-01-01-L1", 
-        lotNo: "LOT-AUTO",
-        assignedTo: "user.wh01"
-    }));
+    const allNewPickTasks = [];
+    const updatedSalesOrders = [...salesOrders];
 
-    setPickTasks(prev => [...newPickTasks, ...prev]);
-    setSalesOrders(prev => prev.filter(o => !selectedOrderIds.includes(o.id)));
-    
-    addLedgerEntry({
-        transactionType: "WAVE_RELEASE",
-        itemCode: "MULTIPLE",
-        qty: 0,
-        fromLocation: "OFFICE",
-        toLocation: "FLOOR",
-        user: "planner.wh01",
-        referenceNo: `WAVE-${Date.now().toString().slice(-4)}`
-    });
+    try {
+        await wmsApi.releaseWave(selectedOrderIds);
+
+        ordersToProcess.forEach(order => {
+            let remainingToPick = order.qty;
+            
+            // FEFO/FIFO Allocation Logic
+            const availableStock = onHand
+                .filter(oh => oh.itemCode === order.itemCode && oh.status === 'Available' && oh.qty > 0)
+                .sort((a, b) => {
+                    if (!a.expiryDate) return 1;
+                    if (!b.expiryDate) return -1;
+                    return new Date(a.expiryDate) - new Date(b.expiryDate);
+                });
+
+            for (const stock of availableStock) {
+                if (remainingToPick <= 0) break;
+                
+                const pickQty = Math.min(remainingToPick, stock.qty);
+                
+                allNewPickTasks.push({
+                    pickTaskId: `PKT-${Math.floor(Math.random() * 90000) + 10000}`,
+                    soNumber: order.id,
+                    status: "Assigned",
+                    itemCode: order.itemCode,
+                    reservedQty: pickQty,
+                    pickedQty: 0,
+                    fromLocation: stock.locationCode,
+                    lotNo: stock.lotNo,
+                    assignedTo: "user.wh01"
+                });
+                
+                remainingToPick -= pickQty;
+            }
+
+            if (remainingToPick > 0) {
+                toast.warning(`Thiếu tồn kho cho đơn ${order.id}. Còn thiếu ${remainingToPick} ${order.itemCode}`);
+            }
+            
+            if (remainingToPick < order.qty) {
+                const idx = updatedSalesOrders.findIndex(so => so.id === order.id);
+                if (idx !== -1) updatedSalesOrders.splice(idx, 1);
+            }
+        });
+
+        setPickTasks(prev => [...allNewPickTasks, ...prev]);
+        setSalesOrders(updatedSalesOrders);
+        
+        addLedgerEntry({
+            transactionType: "WAVE_RELEASE",
+            itemCode: "MULTIPLE",
+            qty: allNewPickTasks.reduce((acc, t) => acc + t.reservedQty, 0),
+            fromLocation: "OFFICE",
+            toLocation: "FLOOR",
+            user: "planner.wh01",
+            referenceNo: `WAVE-${Date.now().toString().slice(-4)}`
+        });
+    } catch (err) {
+        toast.error("Giải phóng Wave thất bại: " + err.message);
+    }
   };
 
   const approveReturn = (returnId) => {
@@ -213,7 +271,6 @@ export const WMSProvider = ({ children }) => {
 
     setReturns(prev => prev.map(r => r.id === returnId ? { ...r, status: "Approved" } : r));
     
-    // Logic: If RMA (Customer return), increase OnHand. If RTV (Return to vendor), it's already decreased or handled via QC
     if (ret.type === "RMA") {
         setOnHand(prev => {
             const existing = prev.find(oh => oh.locationCode === "RETURN-AREA" && oh.itemCode === ret.itemCode);
@@ -244,69 +301,139 @@ export const WMSProvider = ({ children }) => {
     });
   };
 
-  // Workflow logic: Submit Inbound Draft
-  const submitInboundDraft = (draftId) => {
+  const startCycleCount = (zoneCode) => {
+      const newSession = {
+          sessionId: `CC-${Date.now().toString().slice(-6)}`,
+          status: "Counting",
+          zone: zoneCode,
+          startedAt: new Date().toISOString(),
+          lines: []
+      };
+      setCycleCounts(prev => [newSession, ...prev]);
+      return newSession.sessionId;
+  };
+
+  const submitCountLine = (sessionId, lineData) => {
+      setCycleCounts(prev => prev.map(s => {
+          if (s.sessionId === sessionId) {
+              const systemEntry = onHand.find(oh => oh.locationCode === lineData.locationCode && oh.itemCode === lineData.itemCode && oh.lotNo === lineData.lotNo);
+              const systemQty = systemEntry ? systemEntry.qty : 0;
+              const variance = lineData.countedQty - systemQty;
+              
+              const newLine = {
+                  ...lineData,
+                  systemQty,
+                  variance,
+                  countedAt: new Date().toISOString()
+              };
+              
+              return { ...s, lines: [...s.lines, newLine] };
+          }
+          return s;
+      }));
+  };
+
+  const submitInboundDraft = async (draftId) => {
     const draft = inboundDrafts.find(d => d.draftId === draftId);
     if (!draft) return;
 
-    // 1. Create Putaway Tasks for accepted lines
-    const newPutawayTasks = draft.lines.filter(l => l.acceptedQty > 0).map(line => ({
-      taskId: `PT-${Math.floor(Math.random() * 9000) + 1000}`,
-      status: "Open",
-      itemCode: line.itemCode,
-      qty: line.acceptedQty,
-      fromLocation: "INB-STAGE-01",
-      toLocation: locations.find(l => l.type === 'STORAGE')?.locationCode || "WH-A-STG-01-01-L1",
-      handlingUnitBarcode: `LP-${Math.floor(Math.random() * 90000) + 10000}`,
-      createdAt: new Date().toISOString()
-    }));
-
-    setPutawayTasks(prev => [...newPutawayTasks, ...prev]);
-    
-    // 2. Remove draft (mark as submitted)
-    setInboundDrafts(prev => prev.filter(d => d.draftId !== draftId));
-
-    // 3. Log to ledger (Staging entry)
-    newPutawayTasks.forEach(task => {
-        addLedgerEntry({
-            transactionType: "INBOUND_RECEIPT",
-            itemCode: task.itemCode,
-            qty: task.qty,
-            fromLocation: "EXTERNAL",
-            toLocation: "WH-A-REC-01",
-            user: "user.wh01",
-            referenceNo: draftId
+    try {
+        await wmsApi.submitReceipt({
+            draftId,
+            masterReceiptId: draft.masterReceiptId,
+            lines: draft.lines.map(l => ({
+                itemCode: l.itemCode,
+                acceptedQty: l.acceptedQty,
+                rejectedQty: l.rejectedQty,
+                lotNo: l.lotNo
+            }))
         });
-    });
 
-    // 4. Create Quality Order if needed (Realistic: RM-003 always needs QC)
-    const qcLines = draft.lines.filter(l => l.itemCode === 'RM-003');
-    if (qcLines.length > 0) {
-        const newQOs = qcLines.map(l => ({
-            qualityOrderId: `QO-${Math.floor(Math.random() * 9000) + 1000}`,
-            itemCode: l.itemCode,
-            lotNo: l.lotNo || "N/A",
-            qty: l.acceptedQty,
-            status: "Pending",
-            createdAt: new Date().toISOString(),
-            disposition: null
+        const newPutawayTasks = draft.lines.filter(l => l.acceptedQty > 0).map(line => ({
+            taskId: `PT-${Math.floor(Math.random() * 9000) + 1000}`,
+            status: "Open",
+            itemCode: line.itemCode,
+            qty: line.acceptedQty,
+            lotNo: line.lotNo,
+            expiryDate: line.expiryDate,
+            fromLocation: "WH-A-REC-01",
+            toLocation: locations.find(l => l.canReceive && l.type === 'STORAGE')?.locationCode || "WH-A-STG-01-01-L1",
+            handlingUnitBarcode: `LP-${Math.floor(Math.random() * 90000) + 10000}`,
+            createdAt: new Date().toISOString()
         }));
-        setQualityOrders(prev => [...newQOs, ...prev]);
+
+        setPutawayTasks(prev => [...newPutawayTasks, ...prev]);
+        setInboundDrafts(prev => prev.filter(d => d.draftId !== draftId));
+
+        newPutawayTasks.forEach(task => {
+            addLedgerEntry({
+                transactionType: "INBOUND_RECEIPT",
+                itemCode: task.itemCode,
+                qty: task.qty,
+                lotNo: task.lotNo,
+                fromLocation: "EXTERNAL",
+                toLocation: "WH-A-REC-01",
+                user: "user.wh01",
+                referenceNo: draftId
+            });
+        });
+
+        draft.lines.filter(l => (l.rejectedQty || 0) > 0).forEach(line => {
+            addLedgerEntry({
+                transactionType: "INBOUND_REJECT",
+                itemCode: line.itemCode,
+                qty: line.rejectedQty,
+                lotNo: line.lotNo,
+                fromLocation: "EXTERNAL",
+                toLocation: "REJECTED-AREA",
+                user: "user.wh01",
+                referenceNo: draftId,
+                reason: line.reason || "Hàng lỗi"
+            });
+            
+            setOnHand(prev => [...prev, {
+                warehouseCode: "WH-A",
+                locationCode: "REJECTED-AREA",
+                itemCode: line.itemCode,
+                lotNo: line.lotNo || "LOT-REJ",
+                qty: line.rejectedQty,
+                uom: "UNIT",
+                status: "Rejected"
+            }]);
+        });
+
+        const qcLines = draft.lines.filter(l => l.itemCode === 'RM-003');
+        if (qcLines.length > 0) {
+            const newQOs = qcLines.map(l => ({
+                qualityOrderId: `QO-${Math.floor(Math.random() * 9000) + 1000}`,
+                itemCode: l.itemCode,
+                lotNo: l.lotNo || "N/A",
+                qty: l.acceptedQty,
+                status: "Pending",
+                createdAt: new Date().toISOString(),
+                disposition: null
+            }));
+            setQualityOrders(prev => [...newQOs, ...prev]);
+        }
+    } catch (err) {
+        toast.error("Nộp phiếu Draft thất bại: " + err.message);
     }
   };
 
-  const confirmPutaway = (taskId) => {
+  const confirmPutaway = (taskId, actualLocation = null) => {
     const task = putawayTasks.find(t => t.taskId === taskId);
     if (!task) return;
 
+    const finalLocation = actualLocation || task.toLocation;
+
     setOnHand(prev => {
-        const existing = prev.find(oh => oh.locationCode === task.toLocation && oh.itemCode === task.itemCode);
+        const existing = prev.find(oh => oh.locationCode === finalLocation && oh.itemCode === task.itemCode);
         if (existing) {
             return prev.map(oh => oh === existing ? { ...oh, qty: oh.qty + task.qty } : oh);
         } else {
             return [...prev, {
                 warehouseCode: "WH-A",
-                locationCode: task.toLocation,
+                locationCode: finalLocation,
                 itemCode: task.itemCode,
                 lotNo: task.lotNo || "LOT-NEW",
                 qty: task.qty,
@@ -323,24 +450,31 @@ export const WMSProvider = ({ children }) => {
         itemCode: task.itemCode,
         qty: task.qty,
         fromLocation: task.fromLocation,
-        toLocation: task.toLocation,
+        toLocation: finalLocation,
         user: "user.wh01",
         referenceNo: taskId
     });
+  };
+
+  const suggestLocations = (itemCode) => {
+    return locations.filter(loc => {
+        if (!loc.canReceive) return false;
+        const currentOccupancy = onHand.filter(oh => oh.locationCode === loc.locationCode).length;
+        if (currentOccupancy >= (loc.maxPallets || 10)) return false;
+        return loc.type === 'STORAGE' || loc.type === 'PICKING';
+    }).slice(0, 3);
   };
 
   const confirmPickTask = (taskId, pickedQty) => {
     const task = pickTasks.find(t => t.pickTaskId === taskId);
     if (!task) return;
 
-    // Update pick task status
     setPickTasks(prev => prev.map(t => 
       t.pickTaskId === taskId 
         ? { ...t, pickedQty: t.pickedQty + pickedQty, status: (t.pickedQty + pickedQty >= t.reservedQty) ? "Completed" : "In Progress" } 
         : t
     ));
 
-    // Update OnHand (reduce from source location)
     setOnHand(prev => prev.map(oh => 
       (oh.locationCode === task.fromLocation && oh.itemCode === task.itemCode)
         ? { ...oh, qty: Math.max(0, oh.qty - pickedQty) }
@@ -377,99 +511,77 @@ export const WMSProvider = ({ children }) => {
     });
   };
 
-  const completeQualityOrder = (qoId, disposition) => {
-    setQualityOrders(prev => prev.map(qo => 
-      qo.qualityOrderId === qoId ? { ...qo, status: "Completed", disposition, completedAt: new Date().toISOString() } : qo
-    ));
-    
-    const qo = qualityOrders.find(q => q.qualityOrderId === qoId);
-    if (qo && disposition === 'Failed') {
-        // Move to SCRAP or BLOCKED if failed
-         addLedgerEntry({
-            transactionType: "QUALITY_BLOCK",
-            itemCode: qo.itemCode,
-            qty: qo.qty,
-            fromLocation: "STORAGE",
-            toLocation: "REJECTED-AREA",
-            user: "qc.user",
-            referenceNo: qoId
-        });
+  const completeQualityOrder = async (qoId, disposition) => {
+    try {
+        await wmsApi.updateQualityStatus(qoId, { status: 'Completed', disposition });
+        
+        setQualityOrders(prev => prev.map(qo => 
+          qo.qualityOrderId === qoId ? { ...qo, status: "Completed", disposition, completedAt: new Date().toISOString() } : qo
+        ));
+        
+        const qo = qualityOrders.find(q => q.qualityOrderId === qoId);
+        if (qo && disposition === 'Failed') {
+             addLedgerEntry({
+                transactionType: "QUALITY_BLOCK",
+                itemCode: qo.itemCode,
+                qty: qo.qty,
+                fromLocation: "STORAGE",
+                toLocation: "REJECTED-AREA",
+                user: "qc.user",
+                referenceNo: qoId
+            });
+        }
+    } catch (err) {
+        toast.error("Cập nhật chất lượng thất bại: " + err.message);
     }
   };
 
   const addItem = (newItem) => {
     setItems(prev => [...prev, newItem]);
-    addLedgerEntry({
-        transactionType: "MASTER_DATA_ADD",
-        itemCode: newItem.erpItemCode,
-        qty: 0,
-        fromLocation: "SYSTEM",
-        toLocation: "MASTER",
-        user: "admin.wh01",
-        referenceNo: "MANUAL_ADD"
-    });
+    addLedgerEntry({ transactionType: "MASTER_DATA_ADD", itemCode: newItem.erpItemCode, qty: 0, fromLocation: "SYSTEM", toLocation: "MASTER", user: "admin.wh01", referenceNo: "MANUAL_ADD" });
   };
 
   const updateItem = (itemCode, updates) => {
     setItems(prev => prev.map(item => item.erpItemCode === itemCode ? { ...item, ...updates } : item));
   };
 
-  const addUomConversion = (newConv) => {
-      setUomConversions(prev => [...prev, { ...newConv, id: Date.now() }]);
+  const addUomConversion = (newConv) => { setUomConversions(prev => [...prev, { ...newConv, id: Date.now() }]); };
+  const deleteUomConversion = (id) => { setUomConversions(prev => prev.filter(u => u.id !== id)); };
+  const addSupplier = (newSup) => { setSuppliers(prev => [...prev, { ...newSup, id: Date.now() }]); };
+  const updateSupplier = (id, updates) => { setSuppliers(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s)); };
+  const deleteSupplier = (id) => { setSuppliers(prev => prev.filter(s => s.id !== id)); };
+
+  const getConvertedQty = (itemCode, qty, fromUom, toUom) => {
+      if (fromUom === toUom) return qty;
+      const conversion = uomConversions.find(c => c.itemCode === itemCode && c.fromUom === fromUom && c.toUom === toUom);
+      if (conversion) return qty * conversion.factor;
+      const reverseConversion = uomConversions.find(c => c.itemCode === itemCode && c.fromUom === toUom && c.toUom === fromUom);
+      if (reverseConversion) return qty / reverseConversion.factor;
+      return qty;
   };
 
-  const deleteUomConversion = (id) => {
-      setUomConversions(prev => prev.filter(u => u.id !== id));
-  };
-
-  const addSupplier = (newSup) => {
-      setSuppliers(prev => [...prev, { ...newSup, id: Date.now() }]);
-  };
-
-  const updateSupplier = (id, updates) => {
-      setSuppliers(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
-  };
-
-  const deleteSupplier = (id) => {
-      setSuppliers(prev => prev.filter(s => s.id !== id));
+  const toggleHold = (locationCode, itemCode, lotNo) => {
+    setOnHand(prev => prev.map(oh => {
+      if (oh.locationCode === locationCode && oh.itemCode === itemCode && oh.lotNo === lotNo) {
+        const newStatus = oh.status === 'Hold' ? 'Available' : 'Hold';
+        addLedgerEntry({ transactionType: newStatus === 'Hold' ? "INVENTORY_HOLD" : "INVENTORY_UNHOLD", itemCode, qty: oh.qty, fromLocation: locationCode, toLocation: locationCode, user: "manager.wh01", referenceNo: "MANUAL_TOGGLE" });
+        return { ...oh, status: newStatus };
+      }
+      return oh;
+    }));
   };
 
   return (
     <WMSContext.Provider value={{
-      items, setItems,
-      locations, setLocations,
-      onHand, setOnHand,
-      putawayTasks, setPutawayTasks,
-      pickTasks, setPickTasks,
-      inboundDrafts, setInboundDrafts,
-      shipments, setShipments,
-      ledger, setLedger,
-      qualityOrders, setQualityOrders,
-      syncLogs, setSyncLogs,
-      cycleCounts, setCycleCounts,
-      relocationHistory, setRelocationHistory,
-      handlingUnits, setHandlingUnits,
-      salesOrders, setSalesOrders,
-      returns, setReturns,
-      uomConversions, setUomConversions,
-      suppliers, setSuppliers,
-      submitInboundDraft,
-      confirmPutaway,
-      confirmPickTask,
-      confirmShipment,
-      completeQualityOrder,
-      addLedgerEntry,
-      relocateItem,
-      approveCycleCount,
-      createWave,
-      approveReturn,
-      addItem,
-      updateItem,
-      addUomConversion,
-      deleteUomConversion,
-      addSupplier,
-      updateSupplier,
-      deleteSupplier
+      items, setItems, locations, setLocations, onHand, setOnHand, putawayTasks, setPutawayTasks,
+      pickTasks, setPickTasks, inboundDrafts, setInboundDrafts, shipments, setShipments, ledger, setLedger,
+      qualityOrders, setQualityOrders, syncLogs, setSyncLogs, cycleCounts, setCycleCounts,
+      relocationHistory, setRelocationHistory, handlingUnits, setHandlingUnits, salesOrders, setSalesOrders,
+      returns, setReturns, uomConversions, setUomConversions, suppliers, setSuppliers,
+      submitInboundDraft, confirmPutaway, confirmPickTask, confirmShipment, completeQualityOrder,
+      addLedgerEntry, relocateItem, approveCycleCount, createWave, approveReturn,
+      addItem, updateItem, addUomConversion, deleteUomConversion, addSupplier, updateSupplier, deleteSupplier,
+      toggleHold, suggestLocations, startCycleCount, submitCountLine, getConvertedQty, syncMasterData
     }}>
       {children}
     </WMSContext.Provider>

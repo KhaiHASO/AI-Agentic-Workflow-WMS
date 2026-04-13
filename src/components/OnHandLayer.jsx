@@ -5,7 +5,7 @@ import ReactApexChart from "react-apexcharts";
 import { useWMS } from "../context/WMSContext";
 
 const OnHandLayer = () => {
-  const { onHand } = useWMS();
+  const { onHand, toggleHold } = useWMS();
   const [isLoading, setIsLoading] = useState(true);
 
   const filledBins = new Set(onHand.map(oh => oh.locationCode)).size;
@@ -195,7 +195,17 @@ const OnHandLayer = () => {
                         </span>
                       </td>
                       <td className="pe-24 text-end">
-                         <button className='w-32-px h-32-px bg-base text-secondary rounded-circle d-inline-flex align-items-center justify-content-center border hvr-push' title="Lịch sử thẻ kho" onClick={() => toast.info(`Đang truy xuất thẻ kho cho ${stock.itemCode}...`)}>
+                        <button 
+                          className={`w-32-px h-32-px rounded-circle d-inline-flex align-items-center justify-content-center border hvr-push me-8 ${stock.status === 'Hold' ? 'bg-success-focus text-success-main' : 'bg-warning-focus text-warning-main'}`} 
+                          title={stock.status === 'Hold' ? "Bỏ chặn (Unhold)" : "Chặn hàng (Hold)"}
+                          onClick={() => {
+                            toggleHold(stock.locationCode, stock.itemCode, stock.lotNo);
+                            toast.info(`Đã cập nhật trạng thái cho ${stock.itemCode}`);
+                          }}
+                        >
+                          <Icon icon={stock.status === 'Hold' ? 'lucide:unlock' : 'lucide:lock'} />
+                        </button>
+                        <button className='w-32-px h-32-px bg-base text-secondary rounded-circle d-inline-flex align-items-center justify-content-center border hvr-push' title="Lịch sử thẻ kho" onClick={() => toast.info(`Đang truy xuất thẻ kho cho ${stock.itemCode}...`)}>
                           <Icon icon='lucide:history' />
                         </button>
                       </td>

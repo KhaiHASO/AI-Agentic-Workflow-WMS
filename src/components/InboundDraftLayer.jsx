@@ -11,13 +11,19 @@ const InboundDraftLayer = () => {
   const [scanHistory, setScanHistory] = useState([]);
   
   // Handheld & Lot state
-  const [isHandheldMode, setIsHandheldMode] = useState(false);
-  const [lastScannedItem, setLastScannedItem] = useState(null);
+  const [isHandheldMode] = useState(false);
   const [awaitingLotCapture, setAwaitingLotCapture] = useState(null);
   const [lotInput, setLotInput] = useState({ lot: "", expiry: "" });
   
   // Cross-dock state
   const [crossDockSuggest, setCrossDockSuggest] = useState(null);
+
+  // Exception handling state
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pinInput, setPinInput] = useState("");
+  const [pendingOverReceipt, setPendingOverReceipt] = useState(null);
+  const [showDamageModal, setShowDamageModal] = useState(false);
+  const [damageData, setDamageData] = useState({ lineIndex: -1, qty: 0, reason: "Hàng vỡ" });
 
   const scanInputRef = useRef(null);
 
@@ -29,7 +35,7 @@ const InboundDraftLayer = () => {
 
   useEffect(() => {
     if (scanInputRef.current) scanInputRef.current.focus();
-  }, [activeDraft, awaitingLotCapture, isHandheldMode]);
+  }, [activeDraft, awaitingLotCapture, isHandheldMode, showPinModal, showDamageModal]);
 
   const handleScan = (e) => {
     if (e.key === "Enter" || e.type === "click") {
@@ -50,8 +56,17 @@ const InboundDraftLayer = () => {
           return;
       }
 
+      const line = activeDraft.lines[lineIndex];
+      
+      // Check for Over-receipt (10% limit as business rule)
+      if (line.receivedQty + 1 > line.expectedQty * 1.1) {
+          setPendingOverReceipt({ index: lineIndex, masterItem });
+          setShowPinModal(true);
+          setScanInput("");
+          return;
+      }
+
       // Check for Cross-docking Opportunity (VIP Logic)
-      // If we receive RM-001 and there's a SO needing RM-001
       const matchingSO = shipments.find(s => s.status === 'Ready for Dispatch'); 
       if (masterItem.erpItemCode === 'RM-001' && matchingSO) {
           setCrossDockSuggest({
@@ -62,8 +77,8 @@ const InboundDraftLayer = () => {
           toast.info("PHÁT HIỆN CƠ HỘI CROSS-DOCKING!", { position: "top-center", autoClose: false, toastId: 'cd-toast' });
       }
 
-      if (masterItem.isLotControlled && !activeDraft.lines[lineIndex].lotNo && !awaitingLotCapture) {
-          setAwaitingLotCapture({ ...activeDraft.lines[lineIndex], masterItem });
+      if (masterItem.isLotControlled && !line.lotNo && !awaitingLotCapture) {
+          setAwaitingLotCapture({ ...line, masterItem });
           setScanInput("");
           return;
       }
@@ -82,10 +97,17 @@ const InboundDraftLayer = () => {
           line.lotNo = capturedLotData.lot;
           line.expiryDate = capturedLotData.expiry;
       }
-      line.status = line.receivedQty >= line.expectedQty ? "Completed" : "Partial";
+      
+      updateLineStatus(line);
       setActiveDraft({ ...activeDraft, lines: newLines });
-      setLastScannedItem(line);
       setScanHistory(prev => [{ time: new Date().toLocaleTimeString(), msg: `Quét ${line.itemCode}`, type: 'success' }, ...prev].slice(0, 10));
+  };
+
+  const updateLineStatus = (line) => {
+      if (line.receivedQty === 0) line.status = "Open";
+      else if (line.receivedQty === line.expectedQty) line.status = "Completed";
+      else if (line.receivedQty > line.expectedQty) line.status = "Excess";
+      else line.status = "Partial";
   };
 
   const handleCaptureLot = () => {
@@ -93,6 +115,35 @@ const InboundDraftLayer = () => {
       processIncrement(activeDraft.lines.findIndex(l => l.lineId === awaitingLotCapture.lineId), lotInput);
       setAwaitingLotCapture(null);
       setLotInput({ lot: "", expiry: "" });
+  };
+
+  const handleVerifyPin = () => {
+      if (pinInput === "1234") {
+          processIncrement(pendingOverReceipt.index);
+          setShowPinModal(false);
+          setPinInput("");
+          setPendingOverReceipt(null);
+          toast.success("Đã duyệt nhận vượt định mức.");
+      } else {
+          toast.error("Mã PIN không đúng!");
+      }
+  };
+
+  const handleSplitDamage = () => {
+      if (damageData.qty <= 0) return toast.error("Nhập số lượng lỗi!");
+      const newLines = [...activeDraft.lines];
+      const line = newLines[damageData.lineIndex];
+      
+      if (Number(damageData.qty) > line.receivedQty) return toast.error("Số lượng lỗi vượt quá thực nhận!");
+
+      line.acceptedQty -= Number(damageData.qty);
+      line.rejectedQty = (line.rejectedQty || 0) + Number(damageData.qty);
+      line.reason = damageData.reason;
+      
+      setActiveDraft({ ...activeDraft, lines: newLines });
+      setShowDamageModal(false);
+      setDamageData({ lineIndex: -1, qty: 0, reason: "Hàng vỡ" });
+      toast.warning("Đã tách dòng hàng lỗi.");
   };
 
   const handleSubmit = () => {
@@ -108,6 +159,15 @@ const InboundDraftLayer = () => {
   const totalExpected = activeDraft?.lines?.reduce((acc, line) => acc + (line.expectedQty || 0), 0) || 0;
   const totalReceived = activeDraft?.lines?.reduce((acc, line) => acc + (line.receivedQty || 0), 0) || 0;
   const completionRate = totalExpected > 0 ? Math.round((totalReceived / totalExpected) * 100) : 0;
+
+  const getStatusBadge = (status) => {
+      switch(status) {
+          case 'Completed': return <span className="badge bg-success-main px-12 py-6"><Icon icon="solar:check-circle-bold" className="me-1" /> Khớp</span>;
+          case 'Partial': return <span className="badge bg-warning-main px-12 py-6"><Icon icon="solar:clock-circle-bold" className="me-1" /> Một phần</span>;
+          case 'Excess': return <span className="badge bg-danger-main px-12 py-6"><Icon icon="solar:danger-bold" className="me-1" /> Vượt PO</span>;
+          default: return <span className="badge bg-secondary px-12 py-6">Chờ quét</span>;
+      }
+  };
 
   return (
     <div className='row gy-4 animate__animated animate__fadeIn'>
@@ -139,7 +199,13 @@ const InboundDraftLayer = () => {
                     <div className="card-header d-flex flex-wrap align-items-center justify-content-between gap-3 p-24 border-bottom-0">
                         <div className="d-flex align-items-center gap-3">
                             <div className="w-56-px h-56-px bg-primary-600 text-white rounded-circle d-flex justify-content-center align-items-center shadow-primary"><Icon icon="solar:scanner-bold" className="h3 mb-0" /></div>
-                            <div><h5 className='mb-0 fw-bold'>Phiếu Draft: {activeDraft.draftId}</h5><span className="badge bg-primary-light text-primary-600 px-12 py-4">CHUYẾN: {activeDraft.masterReceiptId}</span></div>
+                            <div>
+                                <h5 className='mb-0 fw-bold'>Phiếu Draft: {activeDraft.draftId}</h5>
+                                <div className="d-flex gap-2 mt-4">
+                                    <span className="badge bg-primary-light text-primary-600">CHUYẾN: {activeDraft.masterReceiptId}</span>
+                                    <span className="badge bg-info-light text-info-main">TIẾN ĐỘ: {completionRate}%</span>
+                                </div>
+                            </div>
                         </div>
                         <div className="input-group w-auto shadow-sm radius-12 overflow-hidden border">
                             <input ref={scanInputRef} type="text" className="form-control border-0 ps-24 fw-bold" placeholder="QUÉT MÃ RM-001..." value={scanInput} onChange={(e) => setScanInput(e.target.value)} onKeyDown={handleScan} style={{width: '300px'}} />
@@ -152,44 +218,87 @@ const InboundDraftLayer = () => {
                                 <thead className="bg-light text-secondary text-xxs fw-black text-uppercase">
                                     <tr>
                                         <th className="ps-24">Sản phẩm</th>
-                                        <th className="text-center">Kỳ vọng</th>
+                                        <th className="text-center">PO Kỳ vọng</th>
                                         <th className="text-center">Thực nhận</th>
-                                        <th>Tiến độ</th>
-                                        <th className="pe-24 text-end">Trạng thái</th>
+                                        <th className="text-center">Đạt (Accepted)</th>
+                                        <th className="text-center text-danger">Lỗi (Rejected)</th>
+                                        <th className="pe-24 text-end">Trạng thái / Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {activeDraft.lines.map((line, idx) => (
-                                        <tr key={idx} className="hover-bg-primary-50">
+                                        <tr key={idx} className={`hover-bg-primary-50 ${line.status === 'Excess' ? 'bg-danger-focus' : ''}`}>
                                             <td className="ps-24 py-20">
                                                 <div className="d-flex align-items-center gap-3">
                                                     <div className="w-40-px h-40-px bg-white border rounded-8 d-flex justify-content-center align-items-center text-primary-600 shadow-sm"><Icon icon="solar:box-minimalistic-bold" /></div>
-                                                    <div><span className="fw-bold text-dark d-block">{line.itemCode}</span><small className="text-secondary text-xs">Lô: {line.lotNo || "Chờ quét..."}</small></div>
+                                                    <div>
+                                                        <span className="fw-bold text-dark d-block">{line.itemCode}</span>
+                                                        <small className="text-secondary text-xs">Lô: {line.lotNo || "Chờ quét..."} {line.expiryDate && `| HSD: ${line.expiryDate}`}</small>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td className="text-center fw-bold">{line.expectedQty}</td>
                                             <td className="text-center"><h5 className="mb-0 fw-black text-primary-600">{line.receivedQty}</h5></td>
-                                            <td style={{minWidth: '120px'}}><div className="progress overflow-hidden" style={{height: '6px', width: '100px'}}><div className="progress-bar bg-primary-600" style={{width: `${(line.receivedQty/line.expectedQty)*100}%`}}></div></div></td>
-                                            <td className="pe-24 text-end"><span className={`badge ${line.status === 'Completed' ? 'bg-success-main' : 'bg-warning-main'} px-12 py-6`}>{line.status}</span></td>
+                                            <td className="text-center"><span className="fw-bold text-success-main">{line.acceptedQty}</span></td>
+                                            <td className="text-center"><span className="fw-bold text-danger-main">{line.rejectedQty || 0}</span></td>
+                                            <td className="pe-24 text-end">
+                                                <div className="d-flex flex-column align-items-end gap-2">
+                                                    {getStatusBadge(line.status)}
+                                                    <div className="d-flex gap-1">
+                                                        <button className="btn btn-outline-danger btn-xs radius-4 px-8" title="Báo hỏng / Trả hàng" onClick={() => { setDamageData({ ...damageData, lineIndex: idx }); setShowDamageModal(true); }}>
+                                                            <Icon icon="solar:bill-cross-bold" />
+                                                        </button>
+                                                        <button className="btn btn-outline-primary btn-xs radius-4 px-8" title="In Barcode" onClick={() => toast.info(`Đang in tem cho ${line.itemCode}...`)}>
+                                                            <Icon icon="solar:printer-bold" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div className="card-footer bg-base border-top p-24 text-end">
-                        <button className="btn btn-primary-600 px-40 radius-12 fw-bold" onClick={handleSubmit} disabled={isSubmitting}>XÁC NHẬN & NỘP PHIẾU</button>
+                    <div className="card-footer bg-base border-top p-24 d-flex justify-content-between align-items-center">
+                        <div className="d-flex gap-4">
+                            <div className="text-center px-24 border-end">
+                                <h5 className="mb-0 fw-bold">{totalReceived}</h5>
+                                <small className="text-secondary text-xs uppercase fw-bold">Tổng thực nhận</small>
+                            </div>
+                            <div className="text-center px-24">
+                                <h5 className="mb-0 fw-bold text-danger-main">{activeDraft.lines.reduce((acc, l) => acc + (l.rejectedQty || 0), 0)}</h5>
+                                <small className="text-secondary text-xs uppercase fw-bold">Tổng hàng lỗi</small>
+                            </div>
+                        </div>
+                        <button className="btn btn-primary-600 px-40 py-12 radius-12 fw-bold shadow-primary" onClick={handleSubmit} disabled={isSubmitting}>
+                            {isSubmitting ? <span className="spinner-border spinner-border-sm me-2"></span> : <Icon icon="solar:check-read-bold" className="me-2" />}
+                            XÁC NHẬN & NỘP PHIẾU (SUBMIT DRAFT)
+                        </button>
                     </div>
                 </div>
             </div>
             <div className="col-lg-3">
                 <div className="card border-0 shadow-sm h-100 radius-16 bg-dark text-white p-20 overflow-hidden">
-                    <h6 className="text-xs fw-bold mb-16 opacity-50 uppercase letter-spacing-1">Nhật ký quét thực tế</h6>
+                    <div className="d-flex justify-content-between align-items-center mb-16">
+                        <h6 className="text-xs fw-bold mb-0 opacity-50 uppercase letter-spacing-1">Nhật ký quét (Live Log)</h6>
+                        <Icon icon="solar:pulse-bold" className="text-success-main animate__animated animate__flash animate__infinite" />
+                    </div>
                     <div className="scan-log d-flex flex-column gap-12">
+                        {scanHistory.length === 0 && <p className="text-xs opacity-50 text-center py-20">Chưa có dữ liệu quét...</p>}
                         {scanHistory.map((h, i) => (<div key={i} className="p-12 rounded-8 bg-white bg-opacity-10 animate__animated animate__fadeInLeft">
                             <div className="d-flex justify-content-between mb-4"><span className="text-xs fw-bold text-success-main">{h.msg}</span><small className="opacity-50">{h.time}</small></div>
                             <div className="progress bg-white bg-opacity-10" style={{height: '2px'}}><div className="progress-bar bg-success-main" style={{width: '100%'}}></div></div>
                         </div>))}
+                    </div>
+                    <div className="mt-auto pt-20 border-top border-secondary">
+                        <div className="d-flex align-items-center gap-3">
+                            <div className="w-40-px h-40-px bg-primary-600 rounded-circle d-flex justify-content-center align-items-center"><Icon icon="solar:user-bold" /></div>
+                            <div>
+                                <h6 className="mb-0 text-sm">user.wh01</h6>
+                                <small className="opacity-50 text-xs text-uppercase">Nhân viên kho</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -211,6 +320,58 @@ const InboundDraftLayer = () => {
                           <div className="col-12"><label className="form-label text-xs fw-bold text-secondary uppercase">Ngày hết hạn</label><input type="date" className="form-control form-control-lg radius-12 fw-bold" value={lotInput.expiry} onChange={(e) => setLotInput({...lotInput, expiry: e.target.value})} /></div>
                       </div>
                       <button className="btn btn-primary-600 w-100 py-16 radius-16 fw-bold h5 mt-32" onClick={handleCaptureLot}>XÁC NHẬN THÔNG TIN</button>
+                  </div>
+              </div>
+          </div>
+      )}
+
+      {/* PIN Modal (Over-receipt) */}
+      {showPinModal && (
+          <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)'}} tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content radius-24 p-32 border-0 animate__animated animate__shakeX shadow-lg">
+                      <div className="text-center mb-24">
+                          <div className="w-64-px h-64-px bg-danger-focus text-danger-main rounded-circle d-flex justify-content-center align-items-center mx-auto mb-16 h2"><Icon icon="solar:lock-password-bold" /></div>
+                          <h4 className="fw-black text-dark mb-0 text-uppercase">DUYỆT NHẬN VƯỢT MỨC</h4>
+                          <p className="text-secondary fw-medium">Sản phẩm <span className="text-danger-main fw-bold">{pendingOverReceipt?.masterItem?.erpItemCode}</span> vượt quá 10% PO. Cần mã PIN Quản lý để tiếp tục.</p>
+                      </div>
+                      <div className="col-12">
+                          <input type="password" className="form-control form-control-lg radius-12 fw-bold text-center h3 py-16" placeholder="****" autoFocus value={pinInput} onChange={(e) => setPinInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleVerifyPin()} />
+                      </div>
+                      <div className="d-flex gap-2 mt-32">
+                          <button className="btn btn-outline-secondary w-100 py-16 radius-12 fw-bold" onClick={() => { setShowPinModal(false); setPendingOverReceipt(null); setPinInput(""); }}>HỦY BỎ</button>
+                          <button className="btn btn-danger-main w-100 py-16 radius-12 fw-bold" onClick={handleVerifyPin}>XÁC NHẬN</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      )}
+
+      {/* Damage / Rejected Modal */}
+      {showDamageModal && (
+          <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)'}} tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content radius-24 p-32 border-0 animate__animated animate__fadeInDown shadow-lg">
+                      <div className="text-center mb-24">
+                          <div className="w-64-px h-64-px bg-warning-focus text-warning-main rounded-circle d-flex justify-content-center align-items-center mx-auto mb-16 h2"><Icon icon="solar:bill-cross-bold" /></div>
+                          <h4 className="fw-black text-dark mb-0 text-uppercase">BÁO HỎNG / TÁCH DÒNG</h4>
+                          <p className="text-secondary fw-medium">Sản phẩm: <span className="text-primary-600 fw-bold">{activeDraft.lines[damageData.lineIndex].itemCode}</span></p>
+                      </div>
+                      <div className="row gy-3">
+                          <div className="col-12"><label className="form-label text-xs fw-bold text-secondary uppercase">Số lượng lỗi</label><input type="number" className="form-control form-control-lg radius-12 fw-bold" value={damageData.qty} onChange={(e) => setDamageData({...damageData, qty: e.target.value})} /></div>
+                          <div className="col-12"><label className="form-label text-xs fw-bold text-secondary uppercase">Lý do</label>
+                            <select className="form-select form-select-lg radius-12" value={damageData.reason} onChange={(e) => setDamageData({...damageData, reason: e.target.value})}>
+                                <option value="Hàng vỡ">Hàng vỡ / Móp méo</option>
+                                <option value="Sai quy cách">Sai quy cách</option>
+                                <option value="Hết hạn">Hết hạn sử dụng</option>
+                                <option value="Khác">Lý do khác</option>
+                            </select>
+                          </div>
+                      </div>
+                      <div className="d-flex gap-2 mt-32">
+                          <button className="btn btn-outline-secondary w-100 py-16 radius-12 fw-bold" onClick={() => setShowDamageModal(false)}>HỦY BỎ</button>
+                          <button className="btn btn-warning-main w-100 py-16 radius-12 fw-bold" onClick={handleSplitDamage}>XÁC NHẬN LỖI</button>
+                      </div>
                   </div>
               </div>
           </div>
