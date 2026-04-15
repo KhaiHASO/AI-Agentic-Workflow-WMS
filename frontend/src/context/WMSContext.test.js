@@ -10,27 +10,27 @@ describe('WMSContext Workflow Tests', () => {
     localStorage.clear();
   });
 
-  test('should submit inbound draft and create putaway tasks', () => {
+  test('should submit inbound draft and create putaway tasks', async () => {
     const { result } = renderHook(() => useWMS(), { wrapper });
 
     const initialDraftCount = result.current.inboundDrafts.length;
     const initialPutawayCount = result.current.putawayTasks.length;
     const draftId = result.current.inboundDrafts[0].draftId;
 
-    act(() => {
-      result.current.submitInboundDraft(draftId);
+    await act(async () => {
+      await result.current.submitInboundDraft(draftId);
     });
 
     expect(result.current.inboundDrafts.length).toBe(initialDraftCount - 1);
     expect(result.current.putawayTasks.length).toBeGreaterThan(initialPutawayCount);
   });
 
-  test('should confirm putaway and update onHand inventory', () => {
+  test('should confirm putaway and update onHand inventory', async () => {
     const { result } = renderHook(() => useWMS(), { wrapper });
 
     // 1. Submit a draft first to get putaway tasks
-    act(() => {
-      result.current.submitInboundDraft(result.current.inboundDrafts[0].draftId);
+    await act(async () => {
+      await result.current.submitInboundDraft(result.current.inboundDrafts[0].draftId);
     });
 
     const task = result.current.putawayTasks[0];
@@ -45,13 +45,13 @@ describe('WMSContext Workflow Tests', () => {
     expect(result.current.putawayTasks.find(t => t.taskId === task.taskId)).toBeUndefined();
   });
 
-  test('should confirm pick task and reduce onHand inventory', () => {
+  test('should confirm pick task and reduce onHand inventory', async () => {
     const { result } = renderHook(() => useWMS(), { wrapper });
 
     const task = result.current.pickTasks[0];
     
     // Ensure there is enough onHand at the specific location to pick
-    act(() => {
+    await act(async () => {
         result.current.setOnHand(prev => {
             const existing = prev.find(oh => oh.locationCode === task.fromLocation && oh.itemCode === task.itemCode);
             if (existing) {
@@ -69,8 +69,8 @@ describe('WMSContext Workflow Tests', () => {
         });
     });
 
-    act(() => {
-      result.current.confirmPickTask(task.pickTaskId, 10);
+    await act(async () => {
+      await result.current.confirmPickTask(task.pickTaskId, 10);
     });
 
     const updatedOnHand = result.current.onHand.find(oh => oh.locationCode === task.fromLocation && oh.itemCode === task.itemCode)?.qty;

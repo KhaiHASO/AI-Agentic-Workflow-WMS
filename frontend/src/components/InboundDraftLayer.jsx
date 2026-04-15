@@ -24,18 +24,20 @@ const InboundDraftLayer = () => {
   const [pendingOverReceipt, setPendingOverReceipt] = useState(null);
   const [showDamageModal, setShowDamageModal] = useState(false);
   const [damageData, setDamageData] = useState({ lineIndex: -1, qty: 0, reason: "Hàng vỡ" });
+  
+  // New: Substitution State
+  const [showSubModal, setShowSubModal] = useState(false);
+  const [subData, setSubData] = useState({ lineIndex: -1, originalCode: "", newCode: "" });
 
   const scanInputRef = useRef(null);
 
   useEffect(() => {
-    if (inboundDrafts.length > 0 && !activeDraft) {
-      setActiveDraft(JSON.parse(JSON.stringify(inboundDrafts[0])));
-    }
-  }, [inboundDrafts, activeDraft]);
+    // We don't auto-set activeDraft anymore, user must "Start" a session
+  }, []);
 
   useEffect(() => {
     if (scanInputRef.current) scanInputRef.current.focus();
-  }, [activeDraft, awaitingLotCapture, isHandheldMode, showPinModal, showDamageModal]);
+  }, [activeDraft, awaitingLotCapture, isHandheldMode, showPinModal, showDamageModal, showSubModal]);
 
   const handleScan = (e) => {
     if (e.key === "Enter" || e.type === "click") {
@@ -51,7 +53,7 @@ const InboundDraftLayer = () => {
 
       const lineIndex = activeDraft.lines.findIndex(l => l.itemCode === masterItem.erpItemCode);
       if (lineIndex === -1) {
-          toast.warning("Hàng không có trong PO!");
+          toast.warning("Hàng không có trong PO! Sử dụng tính năng 'Đổi mã tương đương' nếu cần.");
           setScanInput("");
           return;
       }
@@ -66,7 +68,7 @@ const InboundDraftLayer = () => {
           return;
       }
 
-      // Check for Cross-docking Opportunity (VIP Logic)
+      // Check for Cross-docking Opportunity
       const matchingSO = shipments.find(s => s.status === 'Ready for Dispatch'); 
       if (masterItem.erpItemCode === 'RM-001' && matchingSO) {
           setCrossDockSuggest({
@@ -74,7 +76,6 @@ const InboundDraftLayer = () => {
               so: "SO-2026-001",
               qty: 10
           });
-          toast.info("PHÁT HIỆN CƠ HỘI CROSS-DOCKING!", { position: "top-center", autoClose: false, toastId: 'cd-toast' });
       }
 
       if (masterItem.isLotControlled && !line.lotNo && !awaitingLotCapture) {
@@ -146,6 +147,17 @@ const InboundDraftLayer = () => {
       toast.warning("Đã tách dòng hàng lỗi.");
   };
 
+  const handleSubstitution = () => {
+      if (!subData.newCode) return toast.error("Nhập mã hàng mới!");
+      const newLines = [...activeDraft.lines];
+      const line = newLines[subData.lineIndex];
+      line.itemCode = subData.newCode;
+      line.isSubstituted = true;
+      setActiveDraft({ ...activeDraft, lines: newLines });
+      setShowSubModal(false);
+      toast.success(`Đã đổi mã ${subData.originalCode} sang ${subData.newCode}`);
+  };
+
   const handleSubmit = () => {
     setIsSubmitting(true);
     setTimeout(() => {
@@ -185,14 +197,14 @@ const InboundDraftLayer = () => {
                       </div>
                   </div>
                   <div className="d-flex gap-2">
-                      <button className="btn btn-warning-main btn-sm radius-8 fw-bold" onClick={() => { setCrossDockSuggest(null); toast.dismiss('cd-toast'); toast.success("Đã ghi nhận lệnh Cross-dock!"); }}>XÁC NHẬN XUẤT THẲNG</button>
+                      <button className="btn btn-warning-main btn-sm radius-8 fw-bold" onClick={() => { setCrossDockSuggest(null); toast.success("Đã ghi nhận lệnh Cross-dock!"); }}>XÁC NHẬN XUẤT THẲNG</button>
                       <button className="btn btn-outline-secondary btn-sm radius-8" onClick={() => setCrossDockSuggest(null)}>BỎ QUA</button>
                   </div>
               </div>
           </div>
       )}
 
-      {activeDraft && !isHandheldMode && (
+      {activeDraft && (
           <>
             <div className="col-lg-9">
                 <div className="card border-0 shadow-sm radius-16 bg-base overflow-hidden">
@@ -232,7 +244,9 @@ const InboundDraftLayer = () => {
                                                 <div className="d-flex align-items-center gap-3">
                                                     <div className="w-40-px h-40-px bg-white border rounded-8 d-flex justify-content-center align-items-center text-primary-600 shadow-sm"><Icon icon="solar:box-minimalistic-bold" /></div>
                                                     <div>
-                                                        <span className="fw-bold text-dark d-block">{line.itemCode}</span>
+                                                        <span className={`fw-bold d-block ${line.isSubstituted ? 'text-warning-main' : 'text-dark'}`}>
+                                                            {line.itemCode} {line.isSubstituted && '(Đã đổi mã)'}
+                                                        </span>
                                                         <small className="text-secondary text-xs">Lô: {line.lotNo || "Chờ quét..."} {line.expiryDate && `| HSD: ${line.expiryDate}`}</small>
                                                     </div>
                                                 </div>
@@ -245,7 +259,10 @@ const InboundDraftLayer = () => {
                                                 <div className="d-flex flex-column align-items-end gap-2">
                                                     {getStatusBadge(line.status)}
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-outline-danger btn-xs radius-4 px-8" title="Báo hỏng / Trả hàng" onClick={() => { setDamageData({ ...damageData, lineIndex: idx }); setShowDamageModal(true); }}>
+                                                        <button className="btn btn-outline-warning btn-xs radius-4 px-8" title="Đổi mã tương đương" onClick={() => { setSubData({ lineIndex: idx, originalCode: line.itemCode, newCode: "" }); setShowSubModal(true); }}>
+                                                            <Icon icon="solar:reorder-bold" />
+                                                        </button>
+                                                        <button className="btn btn-outline-danger btn-xs radius-4 px-8" title="Báo hỏng / Tách dòng" onClick={() => { setDamageData({ lineIndex: idx, qty: 0, reason: "Hàng vỡ" }); setShowDamageModal(true); }}>
                                                             <Icon icon="solar:bill-cross-bold" />
                                                         </button>
                                                         <button className="btn btn-outline-primary btn-xs radius-4 px-8" title="In Barcode" onClick={() => toast.info(`Đang in tem cho ${line.itemCode}...`)}>
@@ -291,14 +308,11 @@ const InboundDraftLayer = () => {
                             <div className="progress bg-white bg-opacity-10" style={{height: '2px'}}><div className="progress-bar bg-success-main" style={{width: '100%'}}></div></div>
                         </div>))}
                     </div>
-                    <div className="mt-auto pt-20 border-top border-secondary">
-                        <div className="d-flex align-items-center gap-3">
-                            <div className="w-40-px h-40-px bg-primary-600 rounded-circle d-flex justify-content-center align-items-center"><Icon icon="solar:user-bold" /></div>
-                            <div>
-                                <h6 className="mb-0 text-sm">user.wh01</h6>
-                                <small className="opacity-50 text-xs text-uppercase">Nhân viên kho</small>
-                            </div>
-                        </div>
+                    <div className="mt-auto pt-20 border-top border-secondary text-center">
+                         <div className="p-12 rounded-12 bg-primary-600 bg-opacity-10 border border-primary-600 mb-16">
+                            <small className="text-primary-600 fw-bold text-xs uppercase d-block mb-4">Gợi ý cất hàng</small>
+                            <h6 className="mb-0 text-white">Kệ A-01-05 (STG)</h6>
+                         </div>
                     </div>
                 </div>
             </div>
@@ -347,30 +361,50 @@ const InboundDraftLayer = () => {
           </div>
       )}
 
-      {/* Damage / Rejected Modal */}
+      {/* Damage Modal */}
       {showDamageModal && (
           <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)'}} tabIndex="-1">
               <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content radius-24 p-32 border-0 animate__animated animate__fadeInDown shadow-lg">
+                  <div className="modal-content radius-24 p-32 border-0 shadow-lg">
                       <div className="text-center mb-24">
-                          <div className="w-64-px h-64-px bg-warning-focus text-warning-main rounded-circle d-flex justify-content-center align-items-center mx-auto mb-16 h2"><Icon icon="solar:bill-cross-bold" /></div>
-                          <h4 className="fw-black text-dark mb-0 text-uppercase">BÁO HỎNG / TÁCH DÒNG</h4>
-                          <p className="text-secondary fw-medium">Sản phẩm: <span className="text-primary-600 fw-bold">{activeDraft.lines[damageData.lineIndex].itemCode}</span></p>
+                          <h4 className="fw-black text-dark text-uppercase">TÁCH DÒNG HÀNG LỖI</h4>
                       </div>
                       <div className="row gy-3">
-                          <div className="col-12"><label className="form-label text-xs fw-bold text-secondary uppercase">Số lượng lỗi</label><input type="number" className="form-control form-control-lg radius-12 fw-bold" value={damageData.qty} onChange={(e) => setDamageData({...damageData, qty: e.target.value})} /></div>
-                          <div className="col-12"><label className="form-label text-xs fw-bold text-secondary uppercase">Lý do</label>
-                            <select className="form-select form-select-lg radius-12" value={damageData.reason} onChange={(e) => setDamageData({...damageData, reason: e.target.value})}>
-                                <option value="Hàng vỡ">Hàng vỡ / Móp méo</option>
+                          <div className="col-12"><label className="form-label text-xs fw-bold">Số lượng lỗi</label><input type="number" className="form-control form-control-lg radius-12" value={damageData.qty} onChange={(e) => setDamageData({...damageData, qty: e.target.value})} /></div>
+                          <div className="col-12"><label className="form-label text-xs fw-bold">Lý do</label>
+                            <select className="form-select" value={damageData.reason} onChange={(e) => setDamageData({...damageData, reason: e.target.value})}>
+                                <option value="Hàng vỡ">Hàng vỡ</option>
                                 <option value="Sai quy cách">Sai quy cách</option>
-                                <option value="Hết hạn">Hết hạn sử dụng</option>
-                                <option value="Khác">Lý do khác</option>
+                                <option value="Khác">Khác</option>
                             </select>
                           </div>
                       </div>
                       <div className="d-flex gap-2 mt-32">
-                          <button className="btn btn-outline-secondary w-100 py-16 radius-12 fw-bold" onClick={() => setShowDamageModal(false)}>HỦY BỎ</button>
-                          <button className="btn btn-warning-main w-100 py-16 radius-12 fw-bold" onClick={handleSplitDamage}>XÁC NHẬN LỖI</button>
+                          <button className="btn btn-outline-secondary w-100 radius-12" onClick={() => setShowDamageModal(false)}>HỦY</button>
+                          <button className="btn btn-warning-main w-100 radius-12 fw-bold" onClick={handleSplitDamage}>XÁC NHẬN</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      )}
+
+      {/* Substitution Modal */}
+      {showSubModal && (
+          <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)'}} tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content radius-24 p-32 border-0 shadow-lg">
+                      <div className="text-center mb-24">
+                          <div className="w-64-px h-64-px bg-warning-focus text-warning-main rounded-circle d-flex justify-content-center align-items-center mx-auto mb-16 h2"><Icon icon="solar:reorder-bold" /></div>
+                          <h4 className="fw-black text-dark text-uppercase">ĐỔI MÃ TƯƠNG ĐƯƠNG</h4>
+                          <p className="text-secondary">Thay đổi mã gốc <span className="fw-bold">{subData.originalCode}</span> bằng mã thực tế nhận.</p>
+                      </div>
+                      <div className="col-12">
+                          <label className="form-label text-xs fw-bold">Mã hàng thực tế</label>
+                          <input type="text" className="form-control form-control-lg radius-12" placeholder="Nhập mã hàng mới..." value={subData.newCode} onChange={(e) => setSubData({...subData, newCode: e.target.value.toUpperCase()})} />
+                      </div>
+                      <div className="d-flex gap-2 mt-32">
+                          <button className="btn btn-outline-secondary w-100 radius-12" onClick={() => setShowSubModal(false)}>HỦY</button>
+                          <button className="btn btn-warning-main w-100 radius-12 fw-bold" onClick={handleSubstitution}>CẬP NHẬT MÃ</button>
                       </div>
                   </div>
               </div>
@@ -378,37 +412,33 @@ const InboundDraftLayer = () => {
       )}
 
       {!activeDraft && (
-          <div className="col-12 text-center p-40 card border-0 shadow-sm radius-24 bg-base animate__animated animate__fadeIn">
-              <Icon icon="solar:document-add-bold" className="display-1 text-primary-600 opacity-25 mb-24" />
-              <h4 className="fw-bold">Hệ thống đang trống</h4>
-              <button className="btn btn-primary-600 px-40 py-16 radius-12 mt-24 fw-bold shadow-primary hvr-grow" data-bs-toggle="modal" data-bs-target="#createDraftModal">KHỞI TẠO CHUYẾN HÀNG</button>
-          </div>
-      )}
+          <div className="col-12 text-center p-40 card border-0 shadow-sm radius-24 bg-base">
+              <div className="max-w-400 mx-auto">
+                  <Icon icon="solar:delivery-bold" className="display-1 text-primary-600 opacity-25 mb-24" />
+                  <h4 className="fw-bold">KHỞI TẠO CHUYẾN NHẬN HÀNG (MASTER RECEIPT)</h4>
+                  <p className="text-secondary mb-32">Vui lòng chọn Nhà cung cấp hoặc Biển số xe để bắt đầu đối soát.</p>
+                  
+                  <div className="row gy-3 text-start mb-32">
+                      <div className="col-12">
+                          <label className="form-label fw-bold text-xs uppercase">Nhà cung cấp (Vendor)</label>
+                          <select className="form-select form-select-lg radius-12">
+                              <option>NCC-001 (Công ty Thành Công)</option>
+                              <option>NCC-002 (Logistics Toàn Cầu)</option>
+                          </select>
+                      </div>
+                      <div className="col-12">
+                          <label className="form-label fw-bold text-xs uppercase">Biển số xe / Số seal</label>
+                          <input type="text" className="form-control form-control-lg radius-12" placeholder="VD: 29C-123.45" />
+                      </div>
+                  </div>
 
-      {/* Modal Create Draft (Simplified) */}
-      <div className="modal fade" id="createDraftModal" tabIndex="-1" aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered modal-lg">
-              <div className="modal-content radius-24 border-0 shadow-lg">
-                  <div className="modal-header py-20 px-32 border-bottom bg-primary-600 text-white"><h5 className="modal-title fw-bold">Khởi Tạo Phiếu Nhận Hàng Động</h5><button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-                  <div className="modal-body p-32 text-center">
-                      <Icon icon="solar:delivery-bold" className="display-1 text-primary-600 opacity-25 mb-24" />
-                      <h4 className="fw-bold text-dark">Bạn có muốn bắt đầu nhận hàng?</h4>
-                      <p className="text-secondary fw-medium">Hệ thống sẽ gom toàn bộ PO đang mở để đối soát tự động khi quét.</p>
-                  </div>
-                  <div className="modal-footer bg-light p-24 radius-b-24 border-0">
-                      <button type="button" className="btn btn-outline-secondary px-32 radius-12" data-bs-dismiss="modal">HỦY BỎ</button>
-                      <button type="button" className="btn btn-primary-600 px-40 radius-12 fw-bold shadow-primary" data-bs-dismiss="modal" onClick={() => { 
-                          if (inboundDrafts && inboundDrafts.length > 0) {
-                              setActiveDraft(JSON.parse(JSON.stringify(inboundDrafts[0]))); 
-                              toast.success("Đã khởi tạo thành công."); 
-                          } else {
-                              toast.error("Không có bản nháp nào khả dụng!");
-                          }
-                      }}>BẮT ĐẦU NGAY</button>
-                  </div>
+                  <button className="btn btn-primary-600 px-40 py-16 radius-12 fw-bold shadow-primary w-100" onClick={() => { 
+                      if (inboundDrafts.length > 0) setActiveDraft(JSON.parse(JSON.stringify(inboundDrafts[0])));
+                      toast.success("Đã mở chuyến nhận hàng.");
+                  }}>BẮT ĐẦU NHẬN HÀNG</button>
               </div>
           </div>
-      </div>
+      )}
     </div>
   );
 };
