@@ -98,7 +98,8 @@ import MaintenancePage from "./pages/MaintenancePage";
 import BlankPagePage from "./pages/BlankPagePage";
 import InboundDraftPage from "./pages/InboundDraftPage";
 import MasterDataPage from "./pages/MasterDataPage";
-import SyncLogsPage from "./pages/SyncLogsPage";
+import ErpIntegrationPage from "./pages/ErpIntegrationPage";
+import PurchaseOrderManagementPage from "./pages/PurchaseOrderManagementPage";
 import PutawayTaskPage from "./pages/PutawayTaskPage";
 import SalesOrdersPage from "./pages/SalesOrdersPage";
 import PickTaskPage from "./pages/PickTaskPage";
@@ -181,7 +182,9 @@ function App() {
         <Route exact path='/blank-page' element={<BlankPagePage />} />
         <Route exact path='/inbound-draft' element={<InboundDraftPage />} />
         <Route exact path='/master-data' element={<MasterDataPage />} />
-        <Route exact path='/sync-logs' element={<SyncLogsPage />} />
+        <Route exact path='/sync-logs' element={<ErpIntegrationPage />} />
+        <Route exact path='/erp-purchase-orders' element={<PurchaseOrderManagementPage />} />
+
         <Route exact path='/putaway' element={<PutawayTaskPage />} />
         <Route exact path='/sales-orders' element={<SalesOrdersPage />} />
         <Route exact path='/pick-task' element={<PickTaskPage />} />

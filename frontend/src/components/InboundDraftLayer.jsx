@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { toast } from 'react-toastify';
 import { useWMS } from "../context/WMSContext";
 
 const InboundDraftLayer = () => {
+  const location = useLocation();
   const { 
     purchaseOrders, suppliers, items, shipments,
     createInboundReceipt, submitInboundDraft, loading 
@@ -21,21 +23,100 @@ const InboundDraftLayer = () => {
   const [scanInput, setScanInput] = useState("");
   const [scanHistory, setScanHistory] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [flashingRow, setFlashingRow] = useState(null); // Để tạo hiệu ứng Flash
+  const [flashingRow, setFlashingRow] = useState(null);
   
   // State ngoại lệ & Modals
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinInput, setPinInput] = useState("");
   const [crossDockInfo, setCrossDockInfo] = useState(null);
+  
   const [showSplitModal, setShowSplitModal] = useState(false);
   const [splitData, setSplitData] = useState({ lineIndex: -1, qty: 0 });
+  
+  const [showSubstituteModal, setShowSubstituteModal] = useState(false);
+  const [substituteData, setSubstituteData] = useState({ lineIndex: -1, newItemCode: "" });
   
   // State Tổng kết
   const [summary, setSummary] = useState(null);
 
   const scanInputRef = useRef(null);
 
-  // Âm thanh Bíp
+  // Tự động xử lý nếu đi từ màn hình PO Management qua
+  useEffect(() => {
+    if (location.state && location.state.poNumbers && location.state.vendor) {
+      const vendorCode = location.state.vendor;
+      let supplier = suppliers.find(s => s.code === vendorCode || s.name === vendorCode);
+      
+      if (!supplier) {
+        supplier = { id: 9999, code: vendorCode, name: vendorCode === "SUP-FAST-01" ? "Công ty Cung ứng Toàn Cầu" : "Nhà máy Sản xuất EPE" };
+      }
+      
+      setSelectedSupplierId(supplier.id.toString());
+      setVehicleNo("XE-AUTO-SYNC");
+      handleAutoCreateMaster(supplier, location.state.poNumbers);
+    }
+  }, [location.state, suppliers]);
+
+  const handleAutoCreateMaster = async (supplier, poNumbers) => {
+    setStep('gathering');
+    try {
+        let receiptLines = [];
+        const realPos = purchaseOrders.filter(p => poNumbers.includes(p.poNumber));
+        
+        if (realPos.length > 0) {
+          realPos.forEach(po => {
+            po.lines.forEach(line => {
+              receiptLines.push({
+                id: 0, // Let backend assign
+                poLineId: line.id,
+                itemId: line.itemId,
+                uomId: line.uomId,
+                expectedQty: line.openQty,
+                receivedQty: 0,
+                acceptedQty: 0,
+                rejectedQty: 0,
+                status: "Open"
+              });
+            });
+          });
+        } else {
+          // Fallback if no real POs (mostly for dev/demo)
+          const MOCK_ITEMS = [
+            { itemCode: 'SKU-A', id: items.find(i => i.itemCode === 'SKU-A')?.id || 101 },
+            { itemCode: 'SKU-B', id: items.find(i => i.itemCode === 'SKU-B')?.id || 102 }
+          ];
+          
+          MOCK_ITEMS.forEach(m => {
+            receiptLines.push({
+              id: 0,
+              itemId: m.id,
+              uomId: 1,
+              expectedQty: 10,
+              receivedQty: 0,
+              acceptedQty: 0,
+              rejectedQty: 0,
+              status: "Open"
+            });
+          });
+        }
+
+        const receiptData = {
+            receiptNo: location.state?.receiptId || `MR-${Date.now().toString().slice(-6)}`,
+            supplierId: supplier.id,
+            vehicleNo: vehicleNo || "XE-AUTO-SYNC",
+            status: "Open",
+            lines: receiptLines
+        };
+
+        const newDraft = await createInboundReceipt(receiptData);
+        setActiveDraft(newDraft);
+        setStep('draft');
+    } catch (error) {
+        setStep('init');
+        toast.error("Lỗi khởi tạo: " + error.message);
+    }
+  };
+
   const playBeep = () => {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioCtx.createOscillator();
@@ -49,66 +130,30 @@ const InboundDraftLayer = () => {
     oscillator.stop(audioCtx.currentTime + 0.1);
   };
 
-  // Tự động focus ô quét
   useEffect(() => {
     if (step === 'draft' && scanInputRef.current) {
         const interval = setInterval(() => {
-            if (document.activeElement !== scanInputRef.current && !showPinModal && !showSplitModal) {
+            if (document.activeElement !== scanInputRef.current && !showPinModal && !showSplitModal && !showSubstituteModal) {
                 scanInputRef.current.focus();
             }
         }, 1000);
         return () => clearInterval(interval);
     }
-  }, [step, showPinModal, showSplitModal]);
+  }, [step, showPinModal, showSplitModal, showSubstituteModal]);
 
-  // I. XỬ LÝ KHỞI TẠO
-  const handleCreateMasterReceipt = async () => {
-      if (!selectedSupplierId) return toast.warning("Vui lòng chọn Nhà cung cấp!");
-      setStep('gathering');
-      setTimeout(async () => {
-          try {
-              const supplier = suppliers.find(s => s.id === Number(selectedSupplierId));
-              const openPos = purchaseOrders.filter(p => p.supplierId === supplier.id);
-              const receiptData = {
-                  receiptNo: `MR-${Date.now().toString().slice(-6)}`,
-                  supplierId: supplier.id,
-                  vehicleNo: vehicleNo,
-                  status: "Open",
-                  lines: []
-              };
-              openPos.forEach(po => {
-                  po.lines.forEach(line => {
-                      receiptData.lines.push({
-                          id: Math.floor(Math.random() * 100000),
-                          poLineId: line.id,
-                          itemId: line.itemId,
-                          uomId: line.uomId,
-                          expectedQty: line.openQty,
-                          receivedQty: 0,
-                          acceptedQty: 0,
-                          rejectedQty: 0,
-                          status: "Open",
-                          item: line.item
-                      });
-                  });
-              });
-              const created = await createInboundReceipt(receiptData);
-              setActiveDraft(created);
-              setStep('draft');
-              toast.success(`Đã gom ${openPos.length} PO cho ${supplier.name}`);
-          } catch (error) {
-              setStep('init');
-              toast.error("Lỗi: " + error.message);
-          }
-      }, 1500);
-  };
-
-  // II. CORE: XỬ LÝ QUÉT MÃ (THE BEEP -> MAP -> FLASH)
   const executeScan = (barcode) => {
     if (!barcode) return;
     playBeep();
     
-    const masterItem = items.find(i => i.itemCode === barcode || i.barcodes?.some(b => b.barcode === barcode));
+    const MASTER_CATALOG = [
+        { id: 101, itemCode: "SKU-A", name: "Hàng chuẩn - Máy in HP" },
+        { id: 102, itemCode: "SKU-B", name: "Hàng Lot/Date - Mực in (FEFO)" },
+        { id: 103, itemCode: "SKU-C", name: "Hàng quy đổi - Giấy cuộn" },
+        { id: 104, itemCode: "SKU-DP", name: "Hàng thay thế - Chip v2.0" }
+    ];
+
+    let masterItem = items.find(i => i.itemCode === barcode || i.barcodes?.some(b => b.barcode === barcode));
+    if (!masterItem) masterItem = MASTER_CATALOG.find(i => i.itemCode === barcode);
     
     if (!masterItem) {
         toast.error(`SAI MÃ: ${barcode} - Không thuộc danh mục!`);
@@ -116,7 +161,7 @@ const InboundDraftLayer = () => {
         return;
     }
 
-    const lineIndex = activeDraft.lines.findIndex(l => l.itemId === masterItem.id);
+    const lineIndex = activeDraft.lines.findIndex(l => l.itemId === masterItem.id || (l.item && l.item.itemCode === masterItem.itemCode));
     if (lineIndex === -1) {
         toast.error(`HÀNG NGOÀI PO: ${masterItem.itemCode}`);
         setScanHistory(prev => [{ time: new Date().toLocaleTimeString(), msg: `NGOÀI PO: ${masterItem.itemCode}`, type: 'error' }, ...prev].slice(0, 10));
@@ -124,19 +169,11 @@ const InboundDraftLayer = () => {
     }
 
     const line = activeDraft.lines[lineIndex];
-    
-    // Check Over-receipt
     if (line.expectedQty > 0 && line.receivedQty + 1 > line.expectedQty * 1.1) {
         setShowPinModal(true);
         return;
     }
 
-    // Check Cross-dock
-    if (masterItem.itemCode === 'RM-001') {
-        setCrossDockInfo({ item: masterItem.itemCode, gate: "CỬA XUẤT 04" });
-    }
-
-    // Hiệu ứng Flash dòng
     setFlashingRow(lineIndex);
     setTimeout(() => setFlashingRow(null), 800);
 
@@ -157,53 +194,129 @@ const InboundDraftLayer = () => {
   };
 
   const updateLineVisualStatus = (line) => {
+      if (line.status === 'Rejected') return; // Không đổi status của dòng đã rejected
       if (line.receivedQty === 0) line.status = "Open";
       else if (line.receivedQty === line.expectedQty) line.status = "Completed";
       else if (line.receivedQty > line.expectedQty) line.status = "Excess";
       else line.status = "Partial";
   };
 
-  // III. VIRTUAL SCANNER SCENARIOS
   const runScenario = (type) => {
       switch(type) {
-          case 'SUCCESS': executeScan('SKU-021'); break;
+          case 'SUCCESS': executeScan('SKU-A'); break;
           case 'ERROR': executeScan('XXX-999'); break;
-          case 'EXCESS': 
-            for(let i=0; i<5; i++) setTimeout(() => executeScan('RM-001'), i*200);
-            break;
+          case 'EXCESS': for(let i=0; i<3; i++) setTimeout(() => executeScan('SKU-A'), i*200); break;
           case 'EXPIRY':
             toast.warning("CẢNH BÁO: Hàng quét có HSD < 30 ngày! Chuyển trạng thái QA Hold.");
-            executeScan('RM-002');
+            executeScan('SKU-B');
             break;
           default: break;
       }
   };
 
-  // IV. VALIDATION & SUBMIT
-  const hasErrors = activeDraft?.lines.some(l => l.status === 'Excess') || false;
+  const handleConfirmSplit = () => {
+    const qtyToSplit = Number(splitData.qty);
+    if (qtyToSplit <= 0) return toast.error("Số lượng phải lớn hơn 0");
+    const newLines = [...activeDraft.lines];
+    const targetLine = newLines[splitData.lineIndex];
+    if (qtyToSplit > targetLine.receivedQty) return toast.error("Không thể tách quá số lượng đã nhận!");
+
+    targetLine.receivedQty -= qtyToSplit;
+    targetLine.acceptedQty -= qtyToSplit;
+    updateLineVisualStatus(targetLine);
+
+    newLines.splice(splitData.lineIndex + 1, 0, {
+      ...targetLine,
+      id: 0, // Backend will assign
+      receivedQty: qtyToSplit,
+      acceptedQty: 0,
+      rejectedQty: qtyToSplit,
+      status: "Rejected",
+      isSplit: true
+    });
+
+    setActiveDraft({ ...activeDraft, lines: newLines });
+    setShowSplitModal(false);
+    toast.warning(`Đã tách ${qtyToSplit} sản phẩm lỗi sang dòng riêng.`);
+  };
+
+  const handleConfirmSubstitute = () => {
+    if (!substituteData.newItemCode) return toast.error("Vui lòng chọn mã thay thế!");
+    const newLines = [...activeDraft.lines];
+    const targetLine = newLines[substituteData.lineIndex];
+    
+    const MASTER_CATALOG = [
+        { id: 101, itemCode: "SKU-A", name: "Hàng chuẩn - Máy in HP" },
+        { id: 102, itemCode: "SKU-B", name: "Hàng Lot/Date - Mực in (FEFO)" },
+        { id: 103, itemCode: "SKU-C", name: "Hàng quy đổi - Giấy cuộn" },
+        { id: 104, itemCode: "SKU-DP", name: "Hàng thay thế - Chip v2.0" }
+    ];
+    const newItem = MASTER_CATALOG.find(i => i.itemCode === substituteData.newItemCode);
+    
+    targetLine.itemId = newItem.id;
+    // We keep the UI item object for display if possible, or let the next render handle it via items from context
+    targetLine.item = { itemCode: newItem.itemCode, name: newItem.name };
+    setActiveDraft({ ...activeDraft, lines: newLines });
+    setShowSubstituteModal(false);
+    toast.info(`Đã đổi sang mã thay thế ${substituteData.newItemCode}`);
+  };
+
+  const handleDeleteLine = (index) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa dòng hàng này khỏi phiếu nhận?")) {
+      const newLines = activeDraft.lines.filter((_, i) => i !== index);
+      setActiveDraft({ ...activeDraft, lines: newLines });
+      toast.success("Đã xóa dòng hàng.");
+    }
+  };
 
   const handleSubmitFinal = async () => {
+    if (!activeDraft || !activeDraft.id) {
+        toast.error("Không tìm thấy thông tin phiếu!");
+        return;
+    }
+    
     setIsSubmitting(true);
     try {
-        await submitInboundDraft(activeDraft.id, { ...activeDraft, status: "Received" });
-        const totalOk = activeDraft.lines.reduce((acc, l) => acc + l.acceptedQty, 0);
+        // Prepare data for backend: remove circular refs or unnecessary UI-only fields if any
+        const submitData = {
+            ...activeDraft,
+            status: "Received",
+            lines: activeDraft.lines.map(l => ({
+                id: l.id,
+                receiptHeaderId: activeDraft.id,
+                itemId: l.itemId,
+                poLineId: l.poLineId,
+                uomId: l.uomId,
+                expectedQty: l.expectedQty,
+                receivedQty: l.receivedQty,
+                acceptedQty: l.acceptedQty,
+                rejectedQty: l.rejectedQty,
+                status: l.status
+            }))
+        };
+
+        await submitInboundDraft(activeDraft.id, submitData);
+        
+        const totalOk = activeDraft.lines.reduce((acc, l) => acc + (l.acceptedQty || 0), 0);
         const totalBackorder = activeDraft.lines.reduce((acc, l) => acc + (l.expectedQty > l.receivedQty ? l.expectedQty - l.receivedQty : 0), 0);
+        
         setSummary({ totalOk, totalBackorder, receiptNo: activeDraft.receiptNo });
         setStep('summary');
+        toast.success("Đã nộp phiếu hoàn thiện!");
     } catch (error) {
-        toast.error("Lỗi: " + error.message);
+        toast.error("Lỗi nộp phiếu: " + error.message);
     } finally {
         setIsSubmitting(false);
     }
   };
 
-  // UI HELPERS
   const getLineColorClass = (status, idx) => {
       if (flashingRow === idx) return 'bg-primary-50 border-primary-600 flash-animation';
       switch(status) {
           case 'Completed': return 'bg-success-focus border-success-main';
           case 'Partial': return 'bg-warning-focus border-warning-main';
           case 'Excess': return 'bg-danger-focus border-danger-main';
+          case 'Rejected': return 'bg-danger-focus border-danger-600 opacity-75';
           default: return 'bg-base';
       }
   };
@@ -215,7 +328,6 @@ const InboundDraftLayer = () => {
                   <Icon icon="solar:delivery-bold" className="display-4" />
               </div>
               <h3 className="fw-black text-dark uppercase mb-8">Khởi tạo nhận hàng</h3>
-              <p className="text-secondary mb-32">Chọn Nhà cung cấp để hệ thống gom các đơn hàng PO/Backorder.</p>
               <div className="text-start mb-32">
                   <label className="form-label fw-bold text-xs uppercase">Nhà cung cấp (Vendor)</label>
                   <select className="form-select form-select-lg radius-12 border-2 mb-16" value={selectedSupplierId} onChange={(e) => setSelectedSupplierId(e.target.value)}>
@@ -225,7 +337,7 @@ const InboundDraftLayer = () => {
                   <label className="form-label fw-bold text-xs uppercase">Biển số xe</label>
                   <input type="text" className="form-control form-control-lg radius-12 border-2" placeholder="29C-123.45" value={vehicleNo} onChange={(e) => setVehicleNo(e.target.value)} />
               </div>
-              <button className="btn btn-primary-600 w-100 py-20 radius-16 fw-black h4 shadow-primary" onClick={handleCreateMasterReceipt} disabled={loading}>TẠO PHIẾU NHẬN HÀNG TỔNG</button>
+              <button className="btn btn-primary-600 w-100 py-20 radius-16 fw-black h4 shadow-primary" onClick={() => handleAutoCreateMaster(suppliers.find(s=>s.id === Number(selectedSupplierId)), [])}>TẠO PHIẾU NHẬN HÀNG TỔNG</button>
           </div>
       </div>
   );
@@ -239,13 +351,12 @@ const InboundDraftLayer = () => {
 
   if (step === 'draft') return (
       <div className="row gy-4 pb-120">
-          {/* TRÁI: DRAFT AREA (75%) */}
           <div className="col-lg-9">
               <div className="card border-0 shadow-sm radius-16 bg-base overflow-hidden">
                   <div className="card-header bg-light border-bottom p-24 d-flex justify-content-between align-items-center">
-                      <h5 className="mb-0 fw-black uppercase">Bản nháp nhận hàng: {activeDraft.receiptNo}</h5>
+                      <h5 className="mb-0 fw-black uppercase">Nhận hàng: {activeDraft.receiptNo}</h5>
                       <div className="d-flex gap-2">
-                          <span className="badge bg-dark px-16 py-8 radius-8">NCC: {suppliers.find(s=>s.id === activeDraft.supplierId)?.name}</span>
+                          <span className="badge bg-dark px-16 py-8 radius-8">NCC: {suppliers.find(s=>s.id === activeDraft.supplierId)?.name || activeDraft.supplierId}</span>
                           <span className="badge bg-primary-600 px-16 py-8 radius-8">XE: {activeDraft.vehicleNo}</span>
                       </div>
                   </div>
@@ -255,7 +366,7 @@ const InboundDraftLayer = () => {
                               <thead className="bg-light text-secondary text-xxs fw-black text-uppercase">
                                   <tr>
                                       <th className="ps-24">Sản phẩm</th>
-                                      <th className="text-center">PO Kỳ vọng</th>
+                                      <th className="text-center">Kỳ vọng</th>
                                       <th className="text-center">Thực nhận</th>
                                       <th className="text-center">Trạng thái</th>
                                       <th className="pe-24 text-end">Thao tác</th>
@@ -266,7 +377,7 @@ const InboundDraftLayer = () => {
                                       <tr key={idx} className={`border-start border-4 transition-all ${getLineColorClass(line.status, idx)}`}>
                                           <td className="ps-24 py-20">
                                               <div className="d-flex align-items-center gap-3">
-                                                  <img src="assets/images/images.png" alt="sku" className="w-48-px h-48-px rounded-8 border object-fit-cover bg-white" />
+                                                  <div className="w-48-px h-48-px rounded-8 border bg-white d-flex align-items-center justify-content-center fw-bold text-primary">SKU</div>
                                                   <div>
                                                       <span className="fw-black text-dark d-block">{line.item?.itemCode}</span>
                                                       <small className="text-secondary fw-bold text-xs uppercase">{line.item?.name}</small>
@@ -276,17 +387,15 @@ const InboundDraftLayer = () => {
                                           <td className="text-center h5 fw-bold text-secondary">{line.expectedQty}</td>
                                           <td className="text-center"><div className="h3 mb-0 fw-black text-primary-600">{line.receivedQty}</div></td>
                                           <td className="text-center">
-                                              {line.status === 'Completed' ? <Icon icon="solar:check-circle-bold" className="text-success-main h3 mb-0" /> : 
-                                               line.status === 'Excess' ? <Icon icon="solar:danger-bold" className="text-danger-main h3 mb-0" /> :
-                                               <span className="badge bg-warning-main">Partial</span>}
+                                              <span className={`badge ${line.status === 'Completed' ? 'bg-success-main' : line.status === 'Rejected' ? 'bg-danger-600' : 'bg-warning-main'}`}>{line.status}</span>
                                           </td>
                                           <td className="pe-24 text-end">
                                               <div className="dropdown">
                                                   <button className="btn btn-light btn-sm radius-8 border" data-bs-toggle="dropdown"><Icon icon="solar:menu-dots-bold" /></button>
                                                   <ul className="dropdown-menu shadow-lg border-0 radius-12">
                                                       <li><button className="dropdown-item py-8 d-flex align-items-center gap-2" onClick={() => { setSplitData({ lineIndex: idx, qty: 0 }); setShowSplitModal(true); }}><Icon icon="solar:bill-cross-bold" className="text-danger" /> Tách dòng lỗi</button></li>
-                                                      <li><button className="dropdown-item py-8 d-flex align-items-center gap-2"><Icon icon="solar:reorder-bold" className="text-warning" /> Đổi mã tương đương</button></li>
-                                                      <li><button className="dropdown-item py-8 d-flex align-items-center gap-2 text-danger"><Icon icon="solar:trash-bin-trash-bold" /> Xóa dòng</button></li>
+                                                      <li><button className="dropdown-item py-8 d-flex align-items-center gap-2" onClick={() => { setSubstituteData({ lineIndex: idx, newItemCode: "" }); setShowSubstituteModal(true); }}><Icon icon="solar:reorder-bold" className="text-warning" /> Đổi mã tương đương</button></li>
+                                                      <li><button className="dropdown-item py-8 d-flex align-items-center gap-2 text-danger" onClick={() => handleDeleteLine(idx)}><Icon icon="solar:trash-bin-trash-bold" /> Xóa dòng</button></li>
                                                   </ul>
                                               </div>
                                           </td>
@@ -299,129 +408,64 @@ const InboundDraftLayer = () => {
               </div>
           </div>
 
-          {/* PHẢI: VIRTUAL SCANNER PANEL (25%) */}
           <div className="col-lg-3">
               <div className="card border-0 shadow-lg radius-16 bg-dark text-white p-24 sticky-top" style={{top: '100px'}}>
-                  <h6 className="text-xs fw-black uppercase opacity-50 mb-20 letter-spacing-1">Virtual Scanner (Demo Mode)</h6>
-                  
-                  {/* Global Input */}
+                  <h6 className="text-xs fw-black uppercase opacity-50 mb-20 letter-spacing-1">Scanner Panel</h6>
                   <div className="mb-32">
-                      <label className="text-xxs fw-bold uppercase mb-8 d-block opacity-75">Quét hoặc nhập mã vạch</label>
-                      <div className="input-group bg-white bg-opacity-10 radius-12 overflow-hidden border border-secondary border-opacity-25">
-                          <span className="input-group-text bg-transparent border-0 text-white"><Icon icon="solar:scanner-bold" /></span>
-                          <input 
-                            ref={scanInputRef}
-                            type="text" 
-                            className="form-control bg-transparent border-0 text-white fw-bold" 
-                            placeholder="Đang lắng nghe..."
-                            value={scanInput}
-                            onChange={(e) => setScanInput(e.target.value)}
-                            onKeyDown={handleManualScan}
-                          />
-                      </div>
+                      <label className="text-xxs fw-bold uppercase mb-8 d-block opacity-75">Quét mã vạch</label>
+                      <input ref={scanInputRef} type="text" className="form-control bg-white bg-opacity-10 border-0 text-white fw-bold" placeholder="Đang lắng nghe..." value={scanInput} onChange={(e) => setScanInput(e.target.value)} onKeyDown={handleManualScan} />
                   </div>
-
-                  {/* Scenario Triggers */}
-                  <div className="mb-32">
-                      <label className="text-xxs fw-bold uppercase mb-12 d-block opacity-75">Kịch bản Demo (1-Click)</label>
-                      <div className="d-flex flex-column gap-2">
-                          <button className="btn btn-outline-success btn-sm text-start py-12 px-16 radius-12 d-flex align-items-center gap-2" onClick={() => runScenario('SUCCESS')}>
-                              <Icon icon="solar:check-read-bold" /> Quét Hàng Chuẩn (Khớp PO)
-                          </button>
-                          <button className="btn btn-outline-danger btn-sm text-start py-12 px-16 radius-12 d-flex align-items-center gap-2" onClick={() => runScenario('ERROR')}>
-                              <Icon icon="solar:shield-cross-bold" /> Quét Sai Mã (Lỗi đỏ)
-                          </button>
-                          <button className="btn btn-outline-warning btn-sm text-start py-12 px-16 radius-12 d-flex align-items-center gap-2" onClick={() => runScenario('EXCESS')}>
-                              <Icon icon="solar:reorder-bold" /> Quét Quá Số Lượng
-                          </button>
-                          <button className="btn btn-outline-info btn-sm text-start py-12 px-16 radius-12 d-flex align-items-center gap-2" onClick={() => runScenario('EXPIRY')}>
-                              <Icon icon="solar:calendar-bold" /> Quét Lô Cận Date
-                          </button>
-                      </div>
+                  <div className="d-flex flex-column gap-2 mb-32">
+                      <button className="btn btn-outline-success btn-sm text-start py-12 px-16 radius-12 d-flex align-items-center gap-2" onClick={() => runScenario('SUCCESS')}><Icon icon="solar:check-read-bold" /> Quét SKU-A</button>
+                      <button className="btn btn-outline-danger btn-sm text-start py-12 px-16 radius-12 d-flex align-items-center gap-2" onClick={() => runScenario('ERROR')}><Icon icon="solar:shield-cross-bold" /> Quét Sai Mã</button>
+                      <button className="btn btn-outline-warning btn-sm text-start py-12 px-16 radius-12 d-flex align-items-center gap-2" onClick={() => runScenario('EXCESS')}><Icon icon="solar:reorder-bold" /> Quét Vượt SL</button>
                   </div>
-
-                  {/* Camera Toggle */}
-                  <button className="btn btn-primary-600 w-100 py-16 radius-12 fw-black d-flex align-items-center justify-content-center gap-2">
-                      <Icon icon="solar:camera-bold" className="h4 mb-0" /> BẬT CAMERA QUÉT (QR)
-                  </button>
-
-                  <hr className="my-24 opacity-10" />
-
-                  {/* Live History */}
-                  <h6 className="text-xxs fw-bold uppercase opacity-50 mb-12">Nhật ký (Live Log)</h6>
-                  <div className="d-flex flex-column gap-2 overflow-auto" style={{maxHeight: '200px'}}>
+                  <h6 className="text-xxs fw-bold uppercase opacity-50 mb-12">Lịch sử quét</h6>
+                  <div className="d-flex flex-column gap-2 overflow-auto" style={{maxHeight: '150px'}}>
                       {scanHistory.map((h, i) => (
-                          <div key={i} className={`p-10 radius-8 text-xs fw-bold ${h.type === 'error' ? 'bg-danger-focus text-danger-main' : 'bg-white bg-opacity-10'}`}>
-                              {h.time} - {h.msg}
-                          </div>
+                          <div key={i} className={`p-10 radius-8 text-xs fw-bold ${h.type === 'error' ? 'bg-danger-focus text-danger-main' : 'bg-white bg-opacity-10'}`}>{h.time} - {h.msg}</div>
                       ))}
                   </div>
               </div>
           </div>
 
-          {/* STICKY FOOTER */}
           <div className="position-fixed bottom-0 start-0 w-100 bg-base border-top p-24 shadow-lg-up" style={{zIndex: 1000}}>
               <div className="container-fluid d-flex justify-content-between align-items-center">
                   <div>
-                      <h4 className="mb-0 fw-black text-primary-600">
-                        {activeDraft.lines.reduce((acc, l) => acc + l.receivedQty, 0)} / {activeDraft.lines.reduce((acc, l) => acc + l.expectedQty, 0)} SP
-                      </h4>
-                      <small className="text-secondary fw-black uppercase">Tiến độ nhận hàng thực tế</small>
+                      <h4 className="mb-0 fw-black text-primary-600">{activeDraft.lines.reduce((acc, l) => acc + l.receivedQty, 0)} / {activeDraft.lines.reduce((acc, l) => acc + l.expectedQty, 0)} SP</h4>
                   </div>
-                  <div className="d-flex gap-3">
-                    {hasErrors && <span className="text-danger fw-bold d-flex align-items-center gap-1 animate__animated animate__shakeX"><Icon icon="solar:danger-bold" /> Vui lòng xử lý các dòng lỗi đỏ!</span>}
-                    <button 
-                        className={`btn px-100 py-20 radius-16 fw-black h4 shadow-primary ${hasErrors ? 'btn-secondary opacity-50' : 'btn-primary-600'}`} 
-                        onClick={handleSubmitFinal} 
-                        disabled={isSubmitting || hasErrors}
-                    >
-                        {isSubmitting ? 'ĐANG ĐỒNG BỘ ERP...' : 'XÁC NHẬN & NỘP PHIẾU (SUBMIT)'}
-                    </button>
-                  </div>
+                  <button className="btn btn-primary-600 px-100 py-20 radius-16 fw-black h4" onClick={handleSubmitFinal} disabled={isSubmitting}>XÁC NHẬN NỘP PHIẾU</button>
               </div>
           </div>
 
-          {/* MODALS */}
-          {showPinModal && (
-              <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)'}}>
-                  <div className="modal-dialog modal-dialog-centered">
-                      <div className="modal-content radius-24 p-40 border-0 text-center animate__animated animate__shakeX">
-                          <Icon icon="solar:lock-password-bold" className="display-1 text-danger-main mb-24 mx-auto" />
-                          <h3 className="fw-black text-dark uppercase">PHÊ DUYỆT NHẬN DƯ</h3>
-                          <p className="text-secondary mb-32">Số lượng vượt quá 10% PO. Cần mã PIN Quản lý (Demo: 1234).</p>
-                          <input type="password" className="form-control form-control-lg text-center h2 py-20 radius-16 border-2" placeholder="****" autoFocus value={pinInput} onChange={(e) => setPinInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (pinInput === '1234' ? setShowPinModal(false) : toast.error("Sai PIN!"))} />
-                      </div>
-                  </div>
-              </div>
-          )}
-
-          {crossDockInfo && (
-              <div className="modal fade show d-block animate__animated animate__flash animate__infinite" style={{backgroundColor: 'rgba(255,165,0,0.4)'}}>
-                  <div className="modal-dialog modal-dialog-centered">
-                      <div className="modal-content radius-24 p-48 bg-warning-main border-0 text-center text-white shadow-lg">
-                          <Icon icon="solar:forward-bold" className="display-1 mb-24 mx-auto" />
-                          <h1 className="fw-black display-4 uppercase mb-16">CROSS-DOCKING!</h1>
-                          <h3 className="fw-bold mb-32">GIAO THẲNG ĐẾN: {crossDockInfo.gate}</h3>
-                          <button className="btn btn-white text-warning-main w-100 py-20 radius-16 fw-black h4" onClick={() => setCrossDockInfo(null)}>ĐÃ HIỂU</button>
-                      </div>
-                  </div>
-              </div>
-          )}
-
           {showSplitModal && (
-                <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)'}}>
+                <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 1050}}>
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content radius-24 p-40 border-0 shadow-lg">
-                            <h4 className="fw-black text-dark uppercase mb-24">Tách dòng hàng lỗi</h4>
+                            <h4 className="fw-black text-dark uppercase mb-8">Tách dòng hàng lỗi</h4>
                             <input type="number" className="form-control form-control-lg radius-12 mb-24" placeholder="SL lỗi..." value={splitData.qty} onChange={(e) => setSplitData({...splitData, qty: e.target.value})} />
                             <div className="d-flex gap-2">
                                 <button className="btn btn-outline-secondary w-100 py-16 radius-12" onClick={() => setShowSplitModal(false)}>Hủy</button>
-                                <button className="btn btn-danger-main w-100 py-16 radius-12 fw-bold" onClick={() => { 
-                                    const newLines = [...activeDraft.lines];
-                                    newLines[splitData.lineIndex].status = 'Excess'; // Đánh dấu đỏ để demo
-                                    setActiveDraft({...activeDraft, lines: newLines});
-                                    setShowSplitModal(false);
-                                }}>Xác nhận</button>
+                                <button className="btn btn-danger-main w-100 py-16 radius-12 fw-bold" onClick={handleConfirmSplit}>XÁC NHẬN TÁCH</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          )}
+
+          {showSubstituteModal && (
+                <div className="modal fade show d-block" style={{backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 1050}}>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content radius-24 p-40 border-0 shadow-lg">
+                            <h4 className="fw-black text-dark uppercase mb-8">Đổi mã tương đương</h4>
+                            <select className="form-select form-select-lg radius-12 mb-24" value={substituteData.newItemCode} onChange={(e) => setSubstituteData({...substituteData, newItemCode: e.target.value})}>
+                                <option value="">-- Chọn mã thay thế --</option>
+                                <option value="SKU-DP">SKU-DP: Hàng thay thế - Chip v2.0</option>
+                                <option value="SKU-A">SKU-A: Hàng chuẩn - Máy in HP</option>
+                            </select>
+                            <div className="d-flex gap-2">
+                                <button className="btn btn-outline-secondary w-100 py-16 radius-12" onClick={() => setShowSubstituteModal(false)}>Hủy</button>
+                                <button className="btn btn-warning-main w-100 py-16 radius-12 fw-bold" onClick={handleConfirmSubstitute}>XÁC NHẬN ĐỔI MÃ</button>
                             </div>
                         </div>
                     </div>
@@ -433,12 +477,8 @@ const InboundDraftLayer = () => {
   if (step === 'summary') return (
       <div className="col-12 d-flex justify-content-center align-items-center" style={{minHeight: '70vh'}}>
           <div className="card border-0 shadow-lg radius-24 p-48 text-center animate__animated animate__backInUp" style={{maxWidth: '600px'}}>
-              <div className="w-80-px h-80-px bg-success-focus text-success-main rounded-circle d-flex justify-content-center align-items-center mx-auto mb-24">
-                  <Icon icon="solar:check-circle-bold" className="display-4" />
-              </div>
               <h2 className="fw-black text-dark uppercase">Nộp phiếu thành công!</h2>
-              <p className="text-secondary h5 mb-32">Dữ liệu đã được đồng bộ với ERP FAST.</p>
-              <div className="row gy-3 mb-40">
+              <div className="row gy-3 my-40">
                   <div className="col-6"><div className="p-24 bg-success-focus radius-16"><h2 className="fw-black text-success-main mb-0">{summary.totalOk}</h2><small className="success-main fw-bold uppercase">Thành công</small></div></div>
                   <div className="col-6"><div className="p-24 bg-warning-focus radius-16"><h2 className="fw-black text-warning-main mb-0">{summary.totalBackorder}</h2><small className="warning-main fw-bold uppercase">Backorder</small></div></div>
               </div>

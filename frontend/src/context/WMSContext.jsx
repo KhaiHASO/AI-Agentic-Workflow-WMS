@@ -29,23 +29,25 @@ export const WMSProvider = ({ children }) => {
         try {
             const results = await Promise.allSettled([
                 wmsApi.fetchItems(),
-                wmsApi.fetchLocations ? wmsApi.fetchLocations() : Promise.resolve([]),
-                wmsApi.fetchInventory ? wmsApi.fetchInventory() : Promise.resolve([]),
-                wmsApi.fetchInboundReceipts ? wmsApi.fetchInboundReceipts() : Promise.resolve([]),
-                wmsApi.fetchShipments ? wmsApi.fetchShipments() : Promise.resolve([]),
-                wmsApi.fetchPutawayTasks ? wmsApi.fetchPutawayTasks() : Promise.resolve([]),
-                wmsApi.fetchQualityOrders ? wmsApi.fetchQualityOrders() : Promise.resolve([]),
+                wmsApi.fetchLocations(),
+                wmsApi.fetchInventory(),
+                wmsApi.fetchInboundReceipts(),
+                wmsApi.fetchShipments(),
+                wmsApi.fetchPutawayTasks(),
+                wmsApi.fetchQualityOrders(),
                 wmsApi.fetchRelocations ? wmsApi.fetchRelocations() : Promise.resolve([]),
-                wmsApi.fetchCycleCounts ? wmsApi.fetchCycleCounts() : Promise.resolve([]),
+                wmsApi.fetchCycleCounts(),
                 wmsApi.fetchReturns ? wmsApi.fetchReturns() : Promise.resolve([]),
                 wmsApi.fetchDevices ? wmsApi.fetchDevices() : Promise.resolve([]),
-                wmsApi.fetchLedger ? wmsApi.fetchLedger() : Promise.resolve([]),
-                wmsApi.fetchSyncLogs ? wmsApi.fetchSyncLogs() : Promise.resolve([]),
-                wmsApi.fetchPurchaseOrders ? wmsApi.fetchPurchaseOrders() : Promise.resolve([]),
-                wmsApi.fetchSuppliers ? wmsApi.fetchSuppliers() : Promise.resolve([])
+                wmsApi.fetchLedger(),
+                wmsApi.fetchSyncOutbox(),
+                wmsApi.fetchPurchaseOrders(),
+                wmsApi.fetchSuppliers(),
+                wmsApi.fetchSalesOrders ? wmsApi.fetchSalesOrders() : Promise.resolve([]),
+                wmsApi.fetchPickTasks()
             ]);
 
-            const getData = (index) => results[index].status === 'fulfilled' ? results[index].value : [];
+            const getData = (index) => (results[index] && results[index].status === 'fulfilled') ? results[index].value : [];
 
             setItems(getData(0));
             setLocations(getData(1));
@@ -62,6 +64,8 @@ export const WMSProvider = ({ children }) => {
             setSyncLogs(getData(12));
             setPurchaseOrders(getData(13));
             setSuppliers(getData(14));
+            setSalesOrders(getData(15));
+            setPickTasks(getData(16));
 
         } catch (error) {
             console.error("Critical error in WMS data sync:", error);

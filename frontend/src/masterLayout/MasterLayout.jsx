@@ -149,7 +149,12 @@ const MasterLayout = ({ children }) => {
                 </li>
                 <li>
                   <NavLink to='/sync-logs' className={(navData) => navData.isActive ? "active-page" : ""}>
-                    <i className='ri-circle-fill circle-icon text-danger-main w-auto' /> Lịch sử đồng bộ ERP
+                    <i className='ri-circle-fill circle-icon text-danger-main w-auto' /> Nhật ký đồng bộ ERP
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to='/erp-purchase-orders' className={(navData) => navData.isActive ? "active-page" : ""}>
+                    <i className='ri-circle-fill circle-icon text-success-main w-auto' /> Đơn mua hàng từ ERP
                   </NavLink>
                 </li>
               </ul>

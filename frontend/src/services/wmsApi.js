@@ -66,10 +66,19 @@ export const wmsApi = {
     // 4. Outbound / Shipping
     fetchShipments: () => fetch(`${API_BASE_URL}/Shipments`, { headers: getHeaders() }).then(handleResponse),
     fetchPickTasks: () => fetch(`${API_BASE_URL}/PickTask`, { headers: getHeaders() }).then(handleResponse),
+    fetchSalesOrders: () => fetch(`${API_BASE_URL}/SalesOrders`, { headers: getHeaders() }).then(handleResponse),
 
     // 5. Warehouse Operations
     fetchLedger: () => fetch(`${API_BASE_URL}/Ledger`, { headers: getHeaders() }).then(handleResponse),
     fetchCycleCounts: () => fetch(`${API_BASE_URL}/CycleCounts`, { headers: getHeaders() }).then(handleResponse),
+    fetchRelocations: () => fetch(`${API_BASE_URL}/Relocation`, { headers: getHeaders() }).then(handleResponse),
+    createRelocation: (data) => fetch(`${API_BASE_URL}/Relocation`, { 
+        method: 'POST', 
+        headers: getHeaders(),
+        body: JSON.stringify(data)
+    }).then(handleResponse),
+    fetchReturns: () => fetch(`${API_BASE_URL}/Returns`, { headers: getHeaders() }).then(handleResponse),
+    fetchDevices: () => fetch(`${API_BASE_URL}/Devices`, { headers: getHeaders() }).then(handleResponse),
     fetchDashboardSummary: () => fetch(`${API_BASE_URL}/Dashboard/summary`, { headers: getHeaders() }).then(handleResponse),
     
     // 6. Integration & Logs
