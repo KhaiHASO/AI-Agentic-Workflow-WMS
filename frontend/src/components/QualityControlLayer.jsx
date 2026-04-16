@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useWMS } from "../context/WMSContext";
 
 const QualityControlLayer = () => {
-  const { qualityOrders, completeQualityOrder } = useWMS();
+  const { qualityOrders = [], completeQualityOrder } = useWMS();
 
   const handleDecision = (id, decisionType) => {
       toast.info(`Đang ghi nhận quyết định: ${decisionType}...`);

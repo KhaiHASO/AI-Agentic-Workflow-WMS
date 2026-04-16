@@ -1,765 +1,729 @@
-# WMS Structural UI Context Report
+# WMS API & Database Design Context
 
-## Route: `/add-user` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: file]` Label/Placeholder: "N/A" | id/name: `imageUpload` | Value: `Empty`
-  - `[Input: text]` Label/Placeholder: "Full Name *" | id/name: `name` | Value: `Empty`
-  - `[Input: email]` Label/Placeholder: "Email *" | id/name: `email` | Value: `Empty`
-  - `[Input: email]` Label/Placeholder: "Phone" | id/name: `number` | Value: `Empty`
-  - `[Input: dropdown]` Label/Placeholder: "Department*" | id/name: `depart` | Value: `Enter Event Title`
-  - `[Input: dropdown]` Label/Placeholder: "Designation*" | id/name: `desig` | Value: `Enter Designation Title`
-  - `[Input: textarea]` Label/Placeholder: "Description" | id/name: `#0` | Value: `Empty`
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Danger/Warning]` Text: "Cancel" | id: `border.border-danger-600.bg-hover-danger-200.text-danger-600.text-md.px-56.py-11.radius-8`
-  - `[Button: Primary]` Text: "Save" | id: `btn.btn-primary.border.border-primary-600.text-md.px-56.py-12.radius-8`
+## Route: `/add-user` (WMS Module)
 
----
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:** No data table found.
 
-## Route: `/assign-role` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: dropdown]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `1`
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: dropdown]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `Status`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-- **Data Table 1:**
-  - Columns: [S.L, Username, Role Permission, Action]
-  - Mock Sample:
-    - Row 1: [01, Kathryn Murphy, Waiter, Assign Role]
-    - Row 2: [01, Annette Black, manager, Assign Role]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Assign Role" | id: `btn.btn-outline-primary-600.not-active.px-18.py-11.dropdown-toggle.toggle-icon`
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: file]` Label: "field" -> Key: `imageUpload`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: text]` Label: "Full Name" -> Key: `name`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: email]` Label: "Email" -> Key: `email`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: email]` Label: "Phone" -> Key: `number`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: select-one]` Label: "Department" -> Key: `depart`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Enter Event Title`
+  - `[Input: select-one]` Label: "Designation" -> Key: `desig`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Enter Designation Title`
+  - `[Input: textarea]` Label: "Description" -> Key: `#0`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/add-user/post`
+- `[Action: DELETE]` UI Text: "Cancel" -> Suggested Endpoint: `[DELETE] /api/add-user/delete`
+- `[Action: POST]` UI Text: "Save" -> Suggested Endpoint: `[POST] /api/add-user/post`
 
 ---
 
-## Route: `/company` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "Full Name *" | id/name: `name` | Value: `Empty`
-  - `[Input: email]` Label/Placeholder: "Email *" | id/name: `email` | Value: `Empty`
-  - `[Input: email]` Label/Placeholder: "Phone Number" | id/name: `number` | Value: `Empty`
-  - `[Input: url]` Label/Placeholder: "Website" | id/name: `Website` | Value: `Empty`
-  - `[Input: dropdown]` Label/Placeholder: "Country *" | id/name: `country` | Value: `Select Country`
-  - `[Input: dropdown]` Label/Placeholder: "City *" | id/name: `city` | Value: `Select City`
-  - `[Input: dropdown]` Label/Placeholder: "State *" | id/name: `state` | Value: `Select State`
-  - `[Input: text]` Label/Placeholder: "Zip Code *" | id/name: `zip` | Value: `Empty`
-  - `[Input: text]` Label/Placeholder: "Address* *" | id/name: `address` | Value: `Empty`
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Danger/Warning]` Text: "Reset" | id: `border.border-danger-600.bg-hover-danger-200.text-danger-600.text-md.px-40.py-11.radius-8`
-  - `[Button: Primary]` Text: "Save Change" | id: `btn.btn-primary.border.border-primary-600.text-md.px-24.py-12.radius-8`
+## Route: `/assign-role` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: dropdown]` Label: "filter" -> Likely Key: `filter`
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: dropdown]` Label: "filter" -> Likely Key: `filter`
+- **Table / Grid Data Schema:**
+  - `[Column]` "S.L" -> Likely Key: `sL` | Type: `Number` | Sample: `01`
+  - `[Column]` "Username" -> Likely Key: `username` | Type: `String` | Sample: `Kathryn Murphy`
+  - `[Column]` "Role Permission" -> Likely Key: `rolePermission` | Type: `String` | Sample: `Waiter`
+  - `[Column]` "Action" -> Likely Key: `action` | Type: `String` | Sample: `Assign Role`
+- **Pagination Detected:** Yes
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "checkbox" -> Key: `checkbox`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/assign-role/post`
+- `[Action: POST]` UI Text: "Assign Role" -> Suggested Endpoint: `[POST] /api/assign-role/post`
+
+---
+
+## Route: `/company` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: text]` Label: "Full Name *" -> Likely Key: `fullName`
+- **Table / Grid Data Schema:** No data table found.
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: text]` Label: "Full Name" -> Key: `name`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: email]` Label: "Email" -> Key: `email`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: email]` Label: "Phone Number" -> Key: `number`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: url]` Label: "Website" -> Key: `Website`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: select-one]` Label: "Country" -> Key: `country`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Select Country`
+  - `[Input: select-one]` Label: "City" -> Key: `city`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Select City`
+  - `[Input: select-one]` Label: "State" -> Key: `state`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Select State`
+  - `[Input: text]` Label: "Zip Code" -> Key: `zip`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: text]` Label: "Address" -> Key: `address`
+    - Validation: [Required: Yes] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/company/post`
+- `[Action: POST]` UI Text: "Reset" -> Suggested Endpoint: `[POST] /api/company/post`
+- `[Action: PUT]` UI Text: "Save Change" -> Suggested Endpoint: `[PUT] /api/company/put`
 
 ---
 
 ## Route: `/currencies` (Add New Currency)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: dropdown]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `1`
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "Name" | id/name: `name` | Value: `Empty`
-  - `[Input: dropdown]` Label/Placeholder: "Country" | id/name: `country` | Value: `Select symbol`
-  - `[Input: dropdown]` Label/Placeholder: "Code" | id/name: `code` | Value: `Select Code`
-  - `[Input: dropdown]` Label/Placeholder: "Is Cryptocurrency" | id/name: `currency` | Value: `No`
-  - `[Input: text]` Label/Placeholder: "Name" | id/name: `editname` | Value: `Empty`
-  - `[Input: dropdown]` Label/Placeholder: "Country" | id/name: `editcountry` | Value: `Select symbol`
-  - `[Input: dropdown]` Label/Placeholder: "Code" | id/name: `editcode` | Value: `Select Code`
-  - `[Input: dropdown]` Label/Placeholder: "Is Cryptocurrency" | id/name: `editcurrency` | Value: `No`
-- **Data Table 1:**
-  - Columns: [S.L, Name, Symbol, Code, Is Cryptocurrency, Status, Action]
-  - Mock Sample:
-    - Row 1: [01, Dollars(Default), $, USD, No, , ]
-    - Row 2: [02, Taka, ৳, BDT, No, , ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Add Currency" | id: `btn.btn-primary.text-sm.btn-sm.px-12.py-12.radius-8.d-flex.align-items-center.gap-2`
-  - `[Button: Danger/Warning]` Text: "Reset" | id: `border.border-danger-600.bg-hover-danger-200.text-danger-600.text-md.px-40.py-11.radius-8`
-  - `[Button: Primary]` Text: "Save Change" | id: `btn.btn-primary.border.border-primary-600.text-md.px-24.py-12.radius-8`
-  - `[Button: Danger/Warning]` Text: "Cancel" | id: `border.border-danger-600.bg-hover-danger-200.text-danger-600.text-md.px-50.py-11.radius-8`
-  - `[Button: Primary]` Text: "Update" | id: `btn.btn-primary.border.border-primary-600.text-md.px-50.py-12.radius-8`
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: dropdown]` Label: "filter" -> Likely Key: `filter`
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: text]` Label: "Name" -> Likely Key: `name`
+  - `[Input: dropdown]` Label: "Country" -> Likely Key: `country`
+  - `[Input: dropdown]` Label: "Code" -> Likely Key: `code`
+  - `[Input: dropdown]` Label: "Is Cryptocurrency" -> Likely Key: `isCryptocurrency`
+  - `[Input: text]` Label: "Name" -> Likely Key: `name`
+  - `[Input: dropdown]` Label: "Country" -> Likely Key: `country`
+  - `[Input: dropdown]` Label: "Code" -> Likely Key: `code`
+  - `[Input: dropdown]` Label: "Is Cryptocurrency" -> Likely Key: `isCryptocurrency`
+- **Table / Grid Data Schema:**
+  - `[Column]` "S.L" -> Likely Key: `sL` | Type: `Number` | Sample: `01`
+  - `[Column]` "Name" -> Likely Key: `name` | Type: `String` | Sample: `Dollars(Default)`
+  - `[Column]` "Symbol" -> Likely Key: `symbol` | Type: `String` | Sample: `$`
+  - `[Column]` "Code" -> Likely Key: `code` | Type: `String` | Sample: `USD`
+  - `[Column]` "Is Cryptocurrency" -> Likely Key: `isCryptocurrency` | Type: `String` | Sample: `No`
+  - `[Column]` "Status" -> Likely Key: `status` | Type: `String` | Sample: `N/A`
+  - `[Column]` "Action" -> Likely Key: `action` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** Yes
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `on`
+  - `[Input: text]` Label: "Name" -> Key: `name`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: select-one]` Label: "Country" -> Key: `country`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Select symbol`
+  - `[Input: select-one]` Label: "Code" -> Key: `code`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Select Code`
+  - `[Input: select-one]` Label: "Is Cryptocurrency" -> Key: `currency`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `No`
+  - `[Input: text]` Label: "Name" -> Key: `editname`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: select-one]` Label: "Country" -> Key: `editcountry`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Select symbol`
+  - `[Input: select-one]` Label: "Code" -> Key: `editcode`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Select Code`
+  - `[Input: select-one]` Label: "Is Cryptocurrency" -> Key: `editcurrency`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `No`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/currencies/post`
+- `[Action: POST]` UI Text: "Add Currency" -> Suggested Endpoint: `[POST] /api/currencies/post`
+- `[Action: POST]` UI Text: "Reset" -> Suggested Endpoint: `[POST] /api/currencies/post`
+- `[Action: PUT]` UI Text: "Save Change" -> Suggested Endpoint: `[PUT] /api/currencies/put`
+- `[Action: DELETE]` UI Text: "Cancel" -> Suggested Endpoint: `[DELETE] /api/currencies/delete`
+- `[Action: PUT]` UI Text: "Update" -> Suggested Endpoint: `[PUT] /api/currencies/put`
 
 ---
 
-## Route: `/inbound-draft` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "QUÉT MÃ RM-001..." | id/name: `N/A` | Value: `Empty`
-- **Data Table 1:**
-  - Columns: [SẢN PHẨM, PO KỲ VỌNG, THỰC NHẬN, ĐẠT (ACCEPTED), LỖI (REJECTED), TRẠNG THÁI / THAO TÁC]
-  - Mock Sample:
-    - Row 1: [RM-001
-Lô: LOT-20260412-02 | HSD: 2026-10-12, 100, 55, 55, 0, Một phần]
-    - Row 2: [RM-002
-Lô: Chờ quét..., 4, 4, 4, 0, Khớp]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "QUÉT" | id: `btn.btn-primary-600.px-24`
-  - `[Button: Primary]` Text: "XÁC NHẬN & NỘP PHIẾU (SUBMIT DRAFT)" | id: `btn.btn-primary-600.px-40.py-12.radius-12.fw-bold.shadow-primary`
-  - `[Button: Secondary]` Text: "HỦY BỎ" | id: `btn.btn-outline-secondary.px-32.radius-12`
-  - `[Button: Primary]` Text: "BẮT ĐẦU NGAY" | id: `btn.btn-primary-600.px-40.radius-12.fw-bold.shadow-primary`
+## Route: `/inbound-draft` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:** No data table found.
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/inbound-draft/post`
+- `[Action: POST]` UI Text: "BẮT ĐẦU NHẬN HÀNG" -> Suggested Endpoint: `[POST] /api/inbound-draft/post`
 
 ---
 
-## Route: `/master-data` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [THÔNG TIN SẢN PHẨM, ĐVT GỐC, QUẢN LÝ LÔ, CHIẾN LƯỢC PICK, TRẠNG THÁI, HÀNH ĐỘNG]
-  - Mock Sample:
-    - Row 1: [RM
+## Route: `/master-data` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "THÔNG TIN SẢN PHẨM" -> Likely Key: `thNgTinSNPhM` | Type: `String` | Sample: `RM
 Màng PE 5kg (Loại A)
-Mã ERP: RM-001, ROLL, , FEFO, Hoạt động, ]
-    - Row 2: [RM
-Băng keo đóng gói 48mm
-Mã ERP: RM-002, BOX, -, FIFO, Hoạt động, ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Sản Phẩm" | id: `nav-link.w-100.py-24.border-0.fw-bold.d-flex.align-items-center.justify-content-center.gap-2.active.bg-primary-600.text-white.shadow-primary`
-  - `[Button: Secondary]` Text: "Quy Đổi ĐVT" | id: `nav-link.w-100.py-24.border-0.fw-bold.d-flex.align-items-center.justify-content-center.gap-2.text-secondary`
-  - `[Button: Secondary]` Text: "Nhà Cung Cấp" | id: `nav-link.w-100.py-24.border-0.fw-bold.d-flex.align-items-center.justify-content-center.gap-2.text-secondary`
-  - `[Button: Primary]` Text: "ĐỒNG BỘ ERP" | id: `btn.btn-outline-primary.px-24.radius-12.d-flex.align-items-center.gap-2.fw-bold`
-  - `[Button: Primary]` Text: "THÊM MỚI" | id: `btn.btn-primary-600.px-24.radius-12.d-flex.align-items-center.gap-2.fw-bold.shadow-primary`
+Mã ERP: RM-001`
+  - `[Column]` "ĐVT GỐC" -> Likely Key: `VtGC` | Type: `String` | Sample: `ROLL`
+  - `[Column]` "QUẢN LÝ LÔ" -> Likely Key: `quNLL` | Type: `String` | Sample: `N/A`
+  - `[Column]` "CHIẾN LƯỢC PICK" -> Likely Key: `chiNLCPick` | Type: `String` | Sample: `FEFO`
+  - `[Column]` "TRẠNG THÁI" -> Likely Key: `trNgThI` | Type: `String` | Sample: `Hoạt động`
+  - `[Column]` "HÀNH ĐỘNG" -> Likely Key: `hNhNg` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/master-data/post`
+- `[Action: POST]` UI Text: "Sản Phẩm" -> Suggested Endpoint: `[POST] /api/master-data/post`
+- `[Action: POST]` UI Text: "Quy Đổi ĐVT" -> Suggested Endpoint: `[POST] /api/master-data/post`
+- `[Action: POST]` UI Text: "Nhà Cung Cấp" -> Suggested Endpoint: `[POST] /api/master-data/post`
+- `[Action: POST]` UI Text: "ĐỒNG BỘ ERP" -> Suggested Endpoint: `[POST] /api/master-data/post`
+- `[Action: POST]` UI Text: "THÊM MỚI" -> Suggested Endpoint: `[POST] /api/master-data/post`
 
 ---
 
-## Route: `/sync-logs` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [Phiên Đồng Bộ, Đối Tượng, Loại, Thời Gian & Thời Lượng, Bản Ghi, Trạng Thái, Chi Tiết Lỗi]
-  - Mock Sample:
-    - Row 1: [SYNC-001, ITEM, ERP → WMS, 4/12/2026, 7:00:00 AM
-Xử lý trong 1m 5s, 500, Success, Không có lỗi]
-    - Row 2: [SYNC-002, PO, ERP → WMS, 4/12/2026, 3:00:00 PM
-Xử lý trong 1m 5s, 10, Success, Không có lỗi]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Đồng Bộ Ngay" | id: `btn.btn-primary-600.btn-sm.d-flex.align-items-center.gap-2`
+## Route: `/sync-logs` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "PHIÊN / ID" -> Likely Key: `phiNId` | Type: `String` | Sample: `SYNC-001`
+  - `[Column]` "ĐỐI TƯỢNG" -> Likely Key: `ITNg` | Type: `String` | Sample: `ITEM`
+  - `[Column]` "HƯỚNG" -> Likely Key: `hNg` | Type: `String` | Sample: `← PULL (ERP-IN)`
+  - `[Column]` "THỜI GIAN" -> Likely Key: `thIGian` | Type: `String` | Sample: `4/12/2026, 7:00:00 AM
+Xử lý: 1m 5s`
+  - `[Column]` "SỐ BẢN GHI" -> Likely Key: `sBNGhi` | Type: `Number` | Sample: `500`
+  - `[Column]` "TRẠNG THÁI" -> Likely Key: `trNgThI` | Type: `String` | Sample: `KHỚP (SYNCED)`
+  - `[Column]` "NỘI DUNG LỖI / LOG" -> Likely Key: `nIDungLILog` | Type: `String` | Sample: `Sẵn sàng (Clean)`
+  - `[Column]` "THAO TÁC" -> Likely Key: `thaoTC` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/sync-logs/post`
+- `[Action: POST]` UI Text: "Lọc bản tin lỗi" -> Suggested Endpoint: `[POST] /api/sync-logs/post`
+- `[Action: POST]` UI Text: "BUỘC ĐỒNG BỘ TOÀN BỘ" -> Suggested Endpoint: `[POST] /api/sync-logs/post`
+- `[Action: POST]` UI Text: "RETRY (PHÁT LẠI)" -> Suggested Endpoint: `[POST] /api/sync-logs/post`
 
 ---
 
-## Route: `/putaway` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "QUÉT VỊ TRÍ..." | id/name: `N/A` | Value: `Empty`
-- **Data Table 1:**
-  - Columns: [NHIỆM VỤ / PALLET, SẢN PHẨM, SỐ LƯỢNG, VỊ TRÍ ĐÍCH (TARGET), XÁC NHẬN QUÉT]
-  - Mock Sample:
-    - Row 1: [#PT-000221
-Pallet: LP-000981, RM-001
-NGUYÊN VẬT LIỆU, 55, WH-A-STG-01-01, XÁC NHẬN]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "XÁC NHẬN" | id: `btn.btn-primary-600.px-20.radius-12.fw-bold.d-flex.align-items-center.gap-2.shadow-sm`
+## Route: `/putaway` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: text]` Label: "QUÉT VỊ TRÍ..." -> Likely Key: `quTVTr`
+- **Table / Grid Data Schema:**
+  - `[Column]` "NHIỆM VỤ / PALLET" -> Likely Key: `nhiMVPallet` | Type: `String` | Sample: `#PT-000221
+Pallet: LP-000981`
+  - `[Column]` "SẢN PHẨM" -> Likely Key: `sNPhM` | Type: `String` | Sample: `RM-001
+NGUYÊN VẬT LIỆU`
+  - `[Column]` "SỐ LƯỢNG" -> Likely Key: `sLNg` | Type: `Number` | Sample: `55`
+  - `[Column]` "VỊ TRÍ ĐÍCH (TARGET)" -> Likely Key: `vTrChTarget` | Type: `String` | Sample: `WH-A-STG-01-01`
+  - `[Column]` "XÁC NHẬN QUÉT" -> Likely Key: `xCNhNQuT` | Type: `String` | Sample: `XÁC NHẬN`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: text]` Label: "QUÉT VỊ TRÍ..." -> Key: `quTVTr`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/putaway/post`
+- `[Action: POST]` UI Text: "XÁC NHẬN" -> Suggested Endpoint: `[POST] /api/putaway/post`
 
 ---
 
-## Route: `/sales-orders` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `on`
-- **Data Table 1:**
-  - Columns: [, MÃ ĐƠN (SO), KHÁCH HÀNG, SỐ LƯỢNG, NGÀY GIAO, ĐỘ ƯU TIÊN, TRẠNG THÁI ERP]
-  - Mock Sample:
-    - Row 1: [, SO-2026-001, CUS
-Công ty Samsung VN, 150, 13/04/2026, HIGH, Approved]
-    - Row 2: [, SO-2026-002, CUS
-Logistics ABA, 80, 13/04/2026, NORMAL, Approved]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "GOM WAVE (0)" | id: `btn.btn-outline-primary.radius-12.px-24.fw-bold.d-flex.align-items-center.gap-2`
+## Route: `/sales-orders` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "" -> Likely Key: `` | Type: `String` | Sample: `N/A`
+  - `[Column]` "MÃ ĐƠN (SO)" -> Likely Key: `mNSo` | Type: `String` | Sample: `SO-2026-001`
+  - `[Column]` "KHÁCH HÀNG" -> Likely Key: `khChHNg` | Type: `String` | Sample: `CUS
+Công ty Samsung VN`
+  - `[Column]` "SỐ LƯỢNG" -> Likely Key: `sLNg` | Type: `Number` | Sample: `150`
+  - `[Column]` "NGÀY GIAO" -> Likely Key: `ngYGiao` | Type: `String` | Sample: `13/04/2026`
+  - `[Column]` "ĐỘ ƯU TIÊN" -> Likely Key: `UTiN` | Type: `String` | Sample: `HIGH`
+  - `[Column]` "TRẠNG THÁI ERP" -> Likely Key: `trNgThIErp` | Type: `String` | Sample: `Approved`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: Yes]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: Yes]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: Yes]
+    - Default/Sample Value: `on`
+  - `[Input: checkbox]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: Yes]
+    - Default/Sample Value: `on`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/sales-orders/post`
+- `[Action: POST]` UI Text: "GOM WAVE (0)" -> Suggested Endpoint: `[POST] /api/sales-orders/post`
 
 ---
 
-## Route: `/pick-task` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "Quét FG-001 hoặc Loc..." | id/name: `N/A` | Value: `Empty`
-- **Data Table 1:**
-  - Columns: [Mã Pick Task, Thông Tin Đơn & Hàng, Vị Trí Lấy (Source), SL Yêu Cầu, Tiến Độ, Trạng Thái, Quét Xác Nhận (Scan Code)]
-  - Mock Sample:
-    - Row 1: [PKT-00012, FG-001
-SO: SO-000781 | Lô: LOT-20260413-01, WH-A-PCK-01-01, 50, 0/50, Chưa lấy, OK]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Xuất Pick List" | id: `btn.btn-outline-primary.btn-sm.d-flex.align-items-center.gap-2`
-  - `[Button: Primary]` Text: "Hoàn Tất Đợt Lấy" | id: `btn.btn-success-600.btn-sm`
-  - `[Button: Primary]` Text: "OK" | id: `btn.btn-primary-600.btn-sm.px-16.radius-8`
+## Route: `/pick-task` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "VỊ TRÍ (SOURCE)" -> Likely Key: `vTrSource` | Type: `String` | Sample: `WH-A-PCK-01-01`
+  - `[Column]` "SẢN PHẨM & LÔ" -> Likely Key: `sNPhML` | Type: `String` | Sample: `FG-001
+Lô: LOT-20260413-01 | SO: SO-000781`
+  - `[Column]` "SỐ LƯỢNG" -> Likely Key: `sLNg` | Type: `String` | Sample: `50
+Yêu cầu`
+  - `[Column]` "TIẾN ĐỘ" -> Likely Key: `tiN` | Type: `String` | Sample: `0/50`
+  - `[Column]` "XÁC NHẬN (QUÉT)" -> Likely Key: `xCNhNQuT` | Type: `String` | Sample: `N/A`
+  - `[Column]` "NGOẠI LỆ" -> Likely Key: `ngoIL` | Type: `String` | Sample: `Xử lý`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: text]` Label: "Quét Mã/Vị trí..." -> Key: `quTMVTr`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/pick-task/post`
+- `[Action: POST]` UI Text: "In Pick List" -> Suggested Endpoint: `[POST] /api/pick-task/post`
+- `[Action: POST]` UI Text: "XÁC NHẬN HOÀN TẤT ĐỢT" -> Suggested Endpoint: `[POST] /api/pick-task/post`
+- `[Action: POST]` UI Text: "Xử lý" -> Suggested Endpoint: `[POST] /api/pick-task/post`
+- `[Action: POST]` UI Text: "Báo thiếu hàng (Short)" -> Suggested Endpoint: `[POST] /api/pick-task/post`
+- `[Action: POST]` UI Text: "Đổi vị trí/Lô (Override)" -> Suggested Endpoint: `[POST] /api/pick-task/post`
+- `[Action: POST]` UI Text: "Yêu cầu kiểm kho" -> Suggested Endpoint: `[POST] /api/pick-task/post`
 
 ---
 
 ## Route: `/shipment` (1)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [Mã Giao Hàng, Chứng Từ Gốc (SO), Đơn Vị Vận Chuyển, Biển Số Xe, Cửa Xuất (Dock), Trạng Thái, Hành Động]
-  - Mock Sample:
-    - Row 1: [SHP-00045, SO-000781, VN-POST, 60H-98765, DOOR-02, Sẵn Sàng Giao, CHỐT GIAO HÀNG]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "CHỐT GIAO HÀNG" | id: `btn.btn-primary-600.btn-sm.px-24.radius-8.d-inline-flex.align-items-center.gap-2`
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "Mã Giao Hàng" -> Likely Key: `mGiaoHNg` | Type: `String` | Sample: `SHP-00045`
+  - `[Column]` "Chứng Từ Gốc (SO)" -> Likely Key: `chNgTGCSo` | Type: `String` | Sample: `SO-000781`
+  - `[Column]` "Đơn Vị Vận Chuyển" -> Likely Key: `NVVNChuyN` | Type: `String` | Sample: `VN-POST`
+  - `[Column]` "Biển Số Xe" -> Likely Key: `biNSXe` | Type: `String` | Sample: `60H-98765`
+  - `[Column]` "Cửa Xuất (Dock)" -> Likely Key: `cAXuTDock` | Type: `String` | Sample: `DOOR-02`
+  - `[Column]` "Trạng Thái" -> Likely Key: `trNgThI` | Type: `String` | Sample: `Sẵn Sàng Giao`
+  - `[Column]` "Hành Động" -> Likely Key: `hNhNg` | Type: `String` | Sample: `CHỐT GIAO HÀNG`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/shipment/post`
+- `[Action: POST]` UI Text: "CHỐT GIAO HÀNG" -> Suggested Endpoint: `[POST] /api/shipment/post`
 
 ---
 
-## Route: `/inventory` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "Tìm vị trí, SKU, Lô..." | id/name: `N/A` | Value: `Empty`
-- **Data Table 1:**
-  - Columns: [VỊ TRÍ (LOCATION), SẢN PHẨM (ITEM), LÔ (LOT NO), HẠN SỬ DỤNG, SỐ LƯỢNG, ĐVT, TRẠNG THÁI, THAO TÁC]
-  - Mock Sample:
-    - Row 1: [L1
-WH-A-STG-01-01-L1, RM-001
-Nguyên vật liệu, LOT-20260412-01, 2026-10-12, 50, ROLL, Sẵn Sàng, ]
-    - Row 2: [L1
-WH-A-PCK-01-01-L1, RM-002
-Nguyên vật liệu, N/A, Không có hạn, 20, BOX, Sẵn Sàng, ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Danger/Warning]` Text: "Xử Lý Ngay" | id: `btn.btn-danger-600.btn-sm.radius-8.px-24`
-  - `[Button: Primary]` Text: "Bộ lọc" | id: `btn.btn-outline-primary.btn-sm.d-flex.align-items-center.gap-2.text-nowrap.radius-8`
-  - `[Button: Primary]` Text: "Xuất Excel" | id: `btn.btn-success-600.btn-sm.d-flex.align-items-center.gap-2.text-nowrap.radius-8`
+## Route: `/inventory` (4)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: text]` Label: "Vị trí, SKU, Lô..." -> Likely Key: `vTrSkuL`
+- **Table / Grid Data Schema:**
+  - `[Column]` "VỊ TRÍ (LOCATION)" -> Likely Key: `vTrLocation` | Type: `String` | Sample: `WH-A-STG-01-01-L1`
+  - `[Column]` "SẢN PHẨM (ITEM)" -> Likely Key: `sNPhMItem` | Type: `String` | Sample: `RM-001
+Phân loại: Raw Material`
+  - `[Column]` "LÔ (LOT NO)" -> Likely Key: `lLotNo` | Type: `String` | Sample: `LOT-20260412-01`
+  - `[Column]` "HẠN SỬ DỤNG" -> Likely Key: `hNSDNg` | Type: `Date` | Sample: `2026-10-12`
+  - `[Column]` "SỐ LƯỢNG" -> Likely Key: `sLNg` | Type: `Number` | Sample: `50`
+  - `[Column]` "ĐVT" -> Likely Key: `Vt` | Type: `String` | Sample: `ROLL`
+  - `[Column]` "TRẠNG THÁI" -> Likely Key: `trNgThI` | Type: `String` | Sample: `SẴN SÀNG`
+  - `[Column]` "KHÓA / GIỮ HÀNG" -> Likely Key: `khAGiHNg` | Type: `String` | Sample: `HOLD/BLOCK`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/inventory/post`
+- `[Action: POST]` UI Text: "TẠO LỆNH NHẬP" -> Suggested Endpoint: `[POST] /api/inventory/post`
+- `[Action: POST]` UI Text: "EXPORT" -> Suggested Endpoint: `[POST] /api/inventory/post`
+- `[Action: POST]` UI Text: "HOLD/BLOCK" -> Suggested Endpoint: `[POST] /api/inventory/post`
 
 ---
 
-## Route: `/ledger` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "Tìm SKU, Mã TXN..." | id/name: `N/A` | Value: `Empty`
-- **Data Table 1:**
-  - Columns: [Thời Gian & Mã TXN, Loại Giao Dịch, Sản Phẩm, Số Lượng, Vị Trí Biến Động, Chứng Từ Gốc, Người Thực Hiện]
-  - Mock Sample:
-    - Row 1: [4/12/2026, 4:30:00 PM
-ID: TXN-00001, INBOUND_RECEIPT, SKU
-RM-001, +50, EXTERNAL
-WH-A-REC-01, GRN-2026-00150, user.wh01]
-    - Row 2: [4/12/2026, 5:15:00 PM
-ID: TXN-00002, INTERNAL_TRANSFER, SKU
-RM-001, +50, WH-A-REC-01
-WH-A-STG-01-01-L1, PT-001, user.wh01]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Excel" | id: `btn.btn-outline-success-600.btn-sm.text-nowrap`
+## Route: `/ledger` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: text]` Label: "Tìm SKU, Mã TXN..." -> Likely Key: `tMSkuMTxn`
+- **Table / Grid Data Schema:**
+  - `[Column]` "Thời Gian & Mã TXN" -> Likely Key: `thIGianMTxn` | Type: `String` | Sample: `4/12/2026, 4:30:00 PM
+ID: TXN-00001`
+  - `[Column]` "Loại Giao Dịch" -> Likely Key: `loIGiaoDCh` | Type: `String` | Sample: `INBOUND_RECEIPT`
+  - `[Column]` "Sản Phẩm" -> Likely Key: `sNPhM` | Type: `String` | Sample: `SKU
+RM-001`
+  - `[Column]` "Số Lượng" -> Likely Key: `sLNg` | Type: `Number` | Sample: `+50`
+  - `[Column]` "Vị Trí Biến Động" -> Likely Key: `vTrBiNNg` | Type: `String` | Sample: `EXTERNAL
+WH-A-REC-01`
+  - `[Column]` "Chứng Từ Gốc" -> Likely Key: `chNgTGC` | Type: `String` | Sample: `GRN-2026-00150`
+  - `[Column]` "Người Thực Hiện" -> Likely Key: `ngIThCHiN` | Type: `String` | Sample: `user.wh01`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/ledger/post`
+- `[Action: POST]` UI Text: "Excel" -> Suggested Endpoint: `[POST] /api/ledger/post`
 
 ---
 
-## Route: `/cycle-count` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [MÃ PHIÊN / ZONE, CHI TIẾT KIỂM, HỆ THỐNG, THỰC TẾ, CHÊNH LỆCH, TRẠNG THÁI, HÀNH ĐỘNG]
-  - Mock Sample:
-    - Row 1: [021
+## Route: `/cycle-count` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "MÃ PHIÊN / VỊ TRÍ" -> Likely Key: `mPhiNVTr` | Type: `String` | Sample: `021
 CC-00021
-Vị trí: WH-A-STG-01-01, RM-001
-Lô: LOT-20260412-01, 50, 48, -2, Pending Review, XÁC NHẬN PHIẾU]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "TẠO PHIÊN KIỂM MỚI" | id: `btn.btn-primary-600.w-100.h-100.radius-16.d-flex.flex-column.justify-content-center.align-items-center.gap-2.py-20.shadow-primary`
-  - `[Button: Primary]` Text: "Quay lại Scanner" | id: `btn.btn-outline-primary.btn-sm.radius-8.px-16`
-  - `[Button: Primary]` Text: "XÁC NHẬN PHIẾU" | id: `btn.btn-success-600.btn-sm.radius-8.fw-bold`
+WH-A-STG-01-01`
+  - `[Column]` "SẢN PHẨM / LÔ" -> Likely Key: `sNPhML` | Type: `String` | Sample: `RM-001
+Lô: LOT-20260412-01`
+  - `[Column]` "TỒN HỆ THỐNG" -> Likely Key: `tNHThNg` | Type: `Number` | Sample: `50`
+  - `[Column]` "KIỂM THỰC TẾ" -> Likely Key: `kiMThCT` | Type: `Number` | Sample: `48`
+  - `[Column]` "CHÊNH LỆCH (VARIANCE)" -> Likely Key: `chNhLChVariance` | Type: `Number` | Sample: `-2`
+  - `[Column]` "TRẠNG THÁI" -> Likely Key: `trNgThI` | Type: `String` | Sample: `PENDING REVIEW`
+  - `[Column]` "HÀNH ĐỘNG" -> Likely Key: `hNhNg` | Type: `String` | Sample: `XEM XÉT & PHÊ DUYỆT`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/cycle-count/post`
+- `[Action: POST]` UI Text: "BẮT ĐẦU PHIÊN QUÉT MỚI" -> Suggested Endpoint: `[POST] /api/cycle-count/post`
+- `[Action: POST]` UI Text: "In Báo Cáo" -> Suggested Endpoint: `[POST] /api/cycle-count/post`
+- `[Action: POST]` UI Text: "XEM XÉT & PHÊ DUYỆT" -> Suggested Endpoint: `[POST] /api/cycle-count/post`
 
 ---
 
-## Route: `/pallet-hu` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [Mã Pallet (License Plate), Vị Trí Hiện Tại, Trạng Thái, Nội Dung SKU, Tổng SL, Khối Lượng, Thao Tác]
-  - Mock Sample:
-    - Row 1: [LP-000981
-Loại: PALLET, INB-STAGE-01, In Staging, RM-001
-(Lô: LOT-20260412-02), 55, 275 kg, ]
-    - Row 2: [LP-000982
-Loại: PALLET, WH-A-STG-01-01, In Storage, RM-001
-(Lô: LOT-20260412-01), 50, 250 kg, ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "In Tem Pallet" | id: `btn.btn-outline-primary.btn-sm`
-  - `[Button: Primary]` Text: "Khởi Tạo Pallet" | id: `btn.btn-primary-600.btn-sm.d-flex.align-items-center.gap-2`
+## Route: `/pallet-hu` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "Mã Pallet (License Plate)" -> Likely Key: `mPalletLicensePlate` | Type: `String` | Sample: `LP-000981
+Loại: PALLET`
+  - `[Column]` "Vị Trí Hiện Tại" -> Likely Key: `vTrHiNTI` | Type: `String` | Sample: `INB-STAGE-01`
+  - `[Column]` "Trạng Thái" -> Likely Key: `trNgThI` | Type: `String` | Sample: `In Staging`
+  - `[Column]` "Nội Dung SKU" -> Likely Key: `nIDungSku` | Type: `String` | Sample: `RM-001
+(Lô: LOT-20260412-02)`
+  - `[Column]` "Tổng SL" -> Likely Key: `tNgSl` | Type: `Number` | Sample: `55`
+  - `[Column]` "Khối Lượng" -> Likely Key: `khILNg` | Type: `String` | Sample: `275 kg`
+  - `[Column]` "Thao Tác" -> Likely Key: `thaoTC` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/pallet-hu/post`
+- `[Action: POST]` UI Text: "In Tem Pallet" -> Suggested Endpoint: `[POST] /api/pallet-hu/post`
+- `[Action: POST]` UI Text: "Khởi Tạo Pallet" -> Suggested Endpoint: `[POST] /api/pallet-hu/post`
 
 ---
 
-## Route: `/quality-control` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "Nguyên đai nguyên kiện" | id/name: `check1` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "Thông tin nhãn mác rõ ràng" | id/name: `check2` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "Không có dấu hiệu ẩm ướt" | id/name: `check3` | Value: `on`
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Danger/Warning]` Text: "Từ Chối" | id: `btn.btn-outline-danger-600.px-24.radius-8`
-  - `[Button: Danger/Warning]` Text: "Cách Ly" | id: `btn.btn-outline-warning-600.px-24.radius-8`
-  - `[Button: Primary]` Text: "Chấp Nhận & Release" | id: `btn.btn-success-600.px-32.radius-8`
+## Route: `/quality-control` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:** No data table found.
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/quality-control/post`
+- `[Action: POST]` UI Text: "Từ Chối" -> Suggested Endpoint: `[POST] /api/quality-control/post`
+- `[Action: POST]` UI Text: "Cách Ly" -> Suggested Endpoint: `[POST] /api/quality-control/post`
+- `[Action: POST]` UI Text: "Chấp Nhận & Release" -> Suggested Endpoint: `[POST] /api/quality-control/post`
 
 ---
 
-## Route: `/relocation` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "Ví dụ: WH-A-STG-01-01" | id/name: `N/A` | Value: `Empty`
-  - `[Input: text]` Label/Placeholder: "Ví dụ: RM-001 hoặc LP-001" | id/name: `N/A` | Value: `Empty`
-  - `[Input: text]` Label/Placeholder: "Ví dụ: WH-A-PCK-01-01" | id/name: `N/A` | Value: `Empty`
-  - `[Input: number]` Label/Placeholder: "Nhập số lượng..." | id/name: `N/A` | Value: `Empty`
-- **Data Table 1:**
-  - Columns: [Thời Gian, Sản Phẩm, Số Lượng, Từ Vị Trí, Đến Vị Trí, Người Thực Hiện, Trạng Thái]
-  - Mock Sample:
-    - Row 1: [Chưa có lịch sử điều chuyển trong phiên này.]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Secondary]` Text: "Đề xuất tự động" | id: `btn.btn-info-focus.text-info-main.btn-sm.d-flex.align-items-center.gap-2.radius-8`
-  - `[Button: Primary]` Text: "XÁC NHẬN ĐIỀU CHUYỂN" | id: `btn.btn-primary-600.w-100.py-12.radius-12.d-flex.align-items-center.justify-content-center.gap-2.h5.mb-0`
+## Route: `/relocation` (WMS Module)
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: text]` Label: "Ví dụ: WH-A-STG-01-01" -> Likely Key: `vDWhAStg0101`
+  - `[Input: text]` Label: "Ví dụ: WH-A-PCK-01-01" -> Likely Key: `vDWhAPck0101`
+- **Table / Grid Data Schema:**
+  - `[Column]` "Thời Gian" -> Likely Key: `thIGian` | Type: `String` | Sample: `Chưa có lịch sử điều chuyển trong phiên này.`
+  - `[Column]` "Sản Phẩm" -> Likely Key: `sNPhM` | Type: `String` | Sample: `N/A`
+  - `[Column]` "Số Lượng" -> Likely Key: `sLNg` | Type: `String` | Sample: `N/A`
+  - `[Column]` "Từ Vị Trí" -> Likely Key: `tVTr` | Type: `String` | Sample: `N/A`
+  - `[Column]` "Đến Vị Trí" -> Likely Key: `NVTr` | Type: `String` | Sample: `N/A`
+  - `[Column]` "Người Thực Hiện" -> Likely Key: `ngIThCHiN` | Type: `String` | Sample: `N/A`
+  - `[Column]` "Trạng Thái" -> Likely Key: `trNgThI` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: text]` Label: "Ví dụ: WH-A-STG-01-01" -> Key: `vDWhAStg0101`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: text]` Label: "Ví dụ: RM-001 hoặc LP-001" -> Key: `vDRm001HoCLp001`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: text]` Label: "Ví dụ: WH-A-PCK-01-01" -> Key: `vDWhAPck0101`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+  - `[Input: number]` Label: "Nhập số lượng..." -> Key: `nhPSLNg`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Empty`
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/relocation/post`
+- `[Action: POST]` UI Text: "Đề xuất tự động" -> Suggested Endpoint: `[POST] /api/relocation/post`
+- `[Action: POST]` UI Text: "XÁC NHẬN ĐIỀU CHUYỂN" -> Suggested Endpoint: `[POST] /api/relocation/post`
 
 ---
 
 ## Route: `/warehouse-layout` (85%)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [, Kệ 01, Kệ 02, Kệ 03, Kệ 04, Kệ 05, Kệ 06, Kệ 07, Kệ 08]
-  - Mock Sample:
-    - Row 1: [Tầng L4, A1-01
-60%, A1-02, A1-03, A1-04
-60%, A1-05
-60%, A1-06, A1-07
-60%, A1-08
-100%]
-    - Row 2: [Tầng L3, A1-01, A1-02
-60%, A1-03, A1-04, A1-05
-60%, A1-06
-60%, A1-07, A1-08
-60%]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Dãy A1" | id: `btn.btn-sm.px-24.radius-8.border-0.bg-primary-600.text-primary-light.shadow-sm`
-  - `[Button: Secondary]` Text: "Dãy A2" | id: `btn.btn-sm.px-24.radius-8.border-0.text-secondary`
-  - `[Button: Secondary]` Text: "Dãy B1" | id: `btn.btn-sm.px-24.radius-8.border-0.text-secondary`
-  - `[Button: Secondary]` Text: "Dãy B2" | id: `btn.btn-sm.px-24.radius-8.border-0.text-secondary`
-  - `[Button: Primary]` Text: "Chế độ 3D" | id: `btn.btn-outline-primary.btn-sm.radius-8`
-  - `[Button: Primary]` Text: "Tối ưu hóa vị trí" | id: `btn.btn-primary-600.w-100.radius-12.py-12`
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "" -> Likely Key: `` | Type: `String` | Sample: `Tầng L4`
+  - `[Column]` "Kệ 01" -> Likely Key: `k01` | Type: `String` | Sample: `A1-01
+60%`
+  - `[Column]` "Kệ 02" -> Likely Key: `k02` | Type: `String` | Sample: `A1-02`
+  - `[Column]` "Kệ 03" -> Likely Key: `k03` | Type: `String` | Sample: `A1-03`
+  - `[Column]` "Kệ 04" -> Likely Key: `k04` | Type: `String` | Sample: `A1-04
+60%`
+  - `[Column]` "Kệ 05" -> Likely Key: `k05` | Type: `String` | Sample: `A1-05
+60%`
+  - `[Column]` "Kệ 06" -> Likely Key: `k06` | Type: `String` | Sample: `A1-06`
+  - `[Column]` "Kệ 07" -> Likely Key: `k07` | Type: `String` | Sample: `A1-07
+60%`
+  - `[Column]` "Kệ 08" -> Likely Key: `k08` | Type: `String` | Sample: `A1-08
+100%`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/warehouse-layout/post`
+- `[Action: POST]` UI Text: "Dãy A1" -> Suggested Endpoint: `[POST] /api/warehouse-layout/post`
+- `[Action: POST]` UI Text: "Dãy A2" -> Suggested Endpoint: `[POST] /api/warehouse-layout/post`
+- `[Action: POST]` UI Text: "Dãy B1" -> Suggested Endpoint: `[POST] /api/warehouse-layout/post`
+- `[Action: POST]` UI Text: "Dãy B2" -> Suggested Endpoint: `[POST] /api/warehouse-layout/post`
+- `[Action: POST]` UI Text: "Chế độ 3D" -> Suggested Endpoint: `[POST] /api/warehouse-layout/post`
+- `[Action: POST]` UI Text: "Tối ưu hóa vị trí" -> Suggested Endpoint: `[POST] /api/warehouse-layout/post`
 
 ---
 
 ## Route: `/returns` (1)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [Mã Phiếu, Chứng Từ Gốc, Đối Tác / NCC, Lô Hàng, Trạng Thái, Lý Do, Hành Động]
-  - Mock Sample:
-    - Row 1: [RTV-2026-001, PO-2026-045, SUP
-Supplier A, LOT-20260412, Chờ Kiểm Định, Hàng lỗi kỹ thuật, ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Trả Nhà Cung Cấp (RTV) Return to Vendor" | id: `flex-grow-1.py-24.border-0.d-flex.flex-column.align-items-center.gap-2.transition-all.bg-primary-600.text-primary-light`
-  - `[Button: Secondary]` Text: "Khách Trả Hàng (RMA) Return Merchandise Authorization" | id: `flex-grow-1.py-24.border-0.d-flex.flex-column.align-items-center.gap-2.transition-all.bg-base.text-secondary`
-  - `[Button: Primary]` Text: "Tạo Phiếu Mới" | id: `btn.btn-sm.d-flex.align-items-center.gap-2.btn-primary-600`
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "Mã Phiếu" -> Likely Key: `mPhiU` | Type: `String` | Sample: `RTV-2026-001`
+  - `[Column]` "Chứng Từ Gốc" -> Likely Key: `chNgTGC` | Type: `String` | Sample: `PO-2026-045`
+  - `[Column]` "Đối Tác / NCC" -> Likely Key: `ITCNcc` | Type: `String` | Sample: `SUP
+Supplier A`
+  - `[Column]` "Lô Hàng" -> Likely Key: `lHNg` | Type: `String` | Sample: `LOT-20260412`
+  - `[Column]` "Trạng Thái" -> Likely Key: `trNgThI` | Type: `String` | Sample: `Chờ Kiểm Định`
+  - `[Column]` "Lý Do" -> Likely Key: `lDo` | Type: `String` | Sample: `Hàng lỗi kỹ thuật`
+  - `[Column]` "Hành Động" -> Likely Key: `hNhNg` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/returns/post`
+- `[Action: POST]` UI Text: "Tạo Phiếu Mới" -> Suggested Endpoint: `[POST] /api/returns/post`
 
 ---
 
 ## Route: `/reports` (4,250)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: [Khoảng Thời Gian, SL Sản Phẩm, Giá Trị Ước Tính, Trạng Thái]
-  - Mock Sample:
-    - Row 1: [0 - 30 ngày, 850 SKU, $1.2M, ]
-    - Row 2: [31 - 90 ngày, 320 SKU, $450K, ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Secondary]` Text: "30 ngày gần nhất" | id: `btn.btn-outline-secondary.btn-sm.dropdown-toggle`
+
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+- **Table / Grid Data Schema:**
+  - `[Column]` "Khoảng Thời Gian" -> Likely Key: `khoNgThIGian` | Type: `String` | Sample: `0 - 30 ngày`
+  - `[Column]` "SL Sản Phẩm" -> Likely Key: `slSNPhM` | Type: `String` | Sample: `850 SKU`
+  - `[Column]` "Giá Trị Ước Tính" -> Likely Key: `giTrCTNh` | Type: `String` | Sample: `$1.2M`
+  - `[Column]` "Trạng Thái" -> Likely Key: `trNgThI` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** No
+
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - No mutation form detected on this route.
+
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/reports/post`
+- `[Action: POST]` UI Text: "30 ngày gần nhất" -> Suggested Endpoint: `[POST] /api/reports/post`
 
 ---
 
-## Route: `/devices` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `SCN-003`
-  - `[Input: text]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `Zebra TC52`
-  - `[Input: text]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `Nhân viên Kho mới`
-  - `[Input: dropdown]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `ANDROID_HANDHELD`
-- **Data Table 1:**
-  - Columns: [Thiết Bị, Người Sử Dụng, Kết Nối, Pin / Sóng, Thời Gian Truy Cập, Hành Động]
-  - Mock Sample:
-    - Row 1: [SCN-001
-Honeywell EDA51, Phan Khải, ONLINE, 85%, 13/04/2026 14:30, ]
-    - Row 2: [SCN-002
-Zebra TC21, Chưa bàn giao, OFFLINE, 12%, 12/04/2026 17:05, ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Đăng Ký Mới" | id: `btn.btn-primary-600.btn-sm.d-flex.align-items-center.gap-2`
-  - `[Button: Secondary]` Text: "Hủy" | id: `btn.btn-outline-secondary.px-24`
-  - `[Button: Primary]` Text: "Kích Hoạt Thiết Bị" | id: `btn.btn-primary-600.px-32`
+## Route: `/devices` (WMS Module)
 
----
+### 1. Data Retrieval (GET List/Filters)
+- **Query Parameters:**
+  - `[Input: text]` Label: "Search" -> Likely Key: `search`
+  - `[Input: text]` Label: "filter" -> Likely Key: `filter`
+  - `[Input: text]` Label: "filter" -> Likely Key: `filter`
+  - `[Input: text]` Label: "filter" -> Likely Key: `filter`
+  - `[Input: dropdown]` Label: "filter" -> Likely Key: `filter`
+- **Table / Grid Data Schema:**
+  - `[Column]` "Thiết Bị" -> Likely Key: `thiTB` | Type: `String` | Sample: `SCN-001
+Honeywell EDA51`
+  - `[Column]` "Người Sử Dụng" -> Likely Key: `ngISDNg` | Type: `String` | Sample: `Phan Khải`
+  - `[Column]` "Kết Nối" -> Likely Key: `kTNI` | Type: `String` | Sample: `ONLINE`
+  - `[Column]` "Pin / Sóng" -> Likely Key: `pinSNg` | Type: `String` | Sample: `85%`
+  - `[Column]` "Thời Gian Truy Cập" -> Likely Key: `thIGianTruyCP` | Type: `String` | Sample: `13/04/2026 14:30`
+  - `[Column]` "Hành Động" -> Likely Key: `hNhNg` | Type: `String` | Sample: `N/A`
+- **Pagination Detected:** No
 
-## Route: `/invoice-add` (Invoice #3492)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Name, : Will Marthas]
-    - Row 2: [Address, : 4517 Washington Ave.USA]
-- **Data Table 2:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Issus Date, :25 Jan 2024]
-    - Row 2: [Order ID, :#653214]
-- **Data Table 3:**
-  - Columns: [SL., Items, Qty, Units, Unit Price, Price, Action]
-  - Mock Sample:
-    - Row 1: [01, Apple's Shoes, 5, PC, $200, $1000.00, ]
-    - Row 2: [02, Apple's Shoes, 5, PC, $200, $1000.00, ]
-- **Data Table 4:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Subtotal:, $4000.00]
-    - Row 2: [Discount:, $0.00]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Save" | id: `btn.btn-sm.btn-primary-600.radius-8.d-inline-flex.align-items-center.gap-1`
-  - `[Button: Primary]` Text: "Add New" | id: `addRow`
+### 2. Data Mutation (POST/PUT Form)
+- **Payload Fields:**
+  - `[Input: text]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `SCN-006`
+  - `[Input: text]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Zebra TC52`
+  - `[Input: text]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `Nhân viên Kho mới`
+  - `[Input: select-one]` Label: "field" -> Key: `field`
+    - Validation: [Required: No] | [Readonly: No]
+    - Default/Sample Value: `ANDROID_HANDHELD`
 
----
-
-## Route: `/invoice-edit` (Invoice #3492)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Name, : Will Marthas]
-    - Row 2: [Address, : 4517 Washington Ave.USA]
-- **Data Table 2:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Issus Date, :25 Jan 2024]
-    - Row 2: [Order ID, :#653214]
-- **Data Table 3:**
-  - Columns: [SL., Items, Qty, Units, Unit Price, Price, Action]
-  - Mock Sample:
-    - Row 1: [01, Apple's Shoes, 5, PC, $200, $1000.00, ]
-    - Row 2: [02, Apple's Shoes, 5, PC, $200, $1000.00, ]
-- **Data Table 4:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Subtotal:, $4000.00]
-    - Row 2: [Discount:, $0.00]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Save" | id: `btn.btn-sm.btn-primary-600.radius-8.d-inline-flex.align-items-center.gap-1`
-  - `[Button: Primary]` Text: "Add New" | id: `addRow`
-
----
-
-## Route: `/invoice-preview` (Invoice #3492)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-- **Data Table 1:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Name, :Will Marthas]
-    - Row 2: [Address, :4517 Washington Ave.USA]
-- **Data Table 2:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Issus Date, :25 Jan 2024]
-    - Row 2: [Order ID, :#653214]
-- **Data Table 3:**
-  - Columns: [SL., Items, Qty, Units, Unit Price, Price]
-  - Mock Sample:
-    - Row 1: [01, Apple's Shoes, 5, PC, $200, $1000.00]
-    - Row 2: [02, Apple's Shoes, 5, PC, $200, $1000.00]
-- **Data Table 4:**
-  - Columns: []
-  - Mock Sample:
-    - Row 1: [Subtotal:, $4000.00]
-    - Row 2: [Discount:, $0.00]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Send Invoice" | id: `btn.btn-sm.btn-primary-600.radius-8.d-inline-flex.align-items-center.gap-1`
-  - `[Button: Danger/Warning]` Text: "Download" | id: `btn.btn-sm.btn-warning.radius-8.d-inline-flex.align-items-center.gap-1`
-  - `[Button: Primary]` Text: "Edit" | id: `btn.btn-sm.btn-success.radius-8.d-inline-flex.align-items-center.gap-1`
-  - `[Button: Danger/Warning]` Text: "Print" | id: `btn.btn-sm.btn-danger.radius-8.d-inline-flex.align-items-center.gap-1`
-
----
-
-## Route: `/role-access` (Add New Role)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: dropdown]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `Select Number`
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: dropdown]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `Select Status`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: checkbox]` Label/Placeholder: "N/A" | id/name: `checkbox` | Value: `on`
-  - `[Input: text]` Label/Placeholder: "Enter Role  Name" | id/name: `N/A` | Value: `Empty`
-  - `[Input: textarea]` Label/Placeholder: "Description" | id/name: `desc` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "Active" | id/name: `label` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Inactive" | id/name: `label` | Value: `on`
-- **Data Table 1:**
-  - Columns: [S.L, Create Date, Role, Description, Status, Action]
-  - Mock Sample:
-    - Row 1: [01, 25 Jan 2024, Test, Lorem Ipsum is simply dummy text of the printing and typesetting, Active, ]
-    - Row 2: [02, 25 Jan 2024, Waiter, Lorem Ipsum is simply dummy text of the printing and typesetting, Inactive, ]
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Add New Role" | id: `btn.btn-primary.text-sm.btn-sm.px-12.py-12.radius-8.d-flex.align-items-center.gap-2`
-  - `[Button: Danger/Warning]` Text: "Cancel" | id: `border.border-danger-600.bg-hover-danger-200.text-danger-600.text-md.px-40.py-11.radius-8`
-  - `[Button: Primary]` Text: "Save" | id: `btn.btn-primary.border.border-primary-600.text-md.px-48.py-12.radius-8`
-
----
-
-## Route: `/users-grid` (Wowdash React JS - Bootstrap 5 Admin Dashboard Template)
-- **Form Inputs:**
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-  - `[Input: radio]` Label/Placeholder: "English" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Japan" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "France" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Germany" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "South Korea" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Bangladesh" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "India" | id/name: `crypto` | Value: `on`
-  - `[Input: radio]` Label/Placeholder: "Canada" | id/name: `crypto` | Value: `on`
-  - `[Input: dropdown]` Label/Placeholder: "N/A" | id/name: `N/A` | Value: `Select Number`
-  - `[Input: text]` Label/Placeholder: "Search" | id/name: `search` | Value: `Empty`
-- **Main Actions:**
-  - `[Button: Secondary]` Text: "Toggle Theme" | id: `w-40-px.h-40-px.bg-neutral-200.rounded-circle.d-flex.justify-content-center.align-items-center`
-  - `[Button: Primary]` Text: "Add New User" | id: `btn.btn-primary.text-sm.btn-sm.px-12.py-12.radius-8.d-flex.align-items-center.gap-2`
-  - `[Button: Danger/Warning]` Text: "Delete" | id: `delete-btn.dropdown-item.px-16.py-8.rounded.text-secondary-light.bg-hover-danger-100.text-hover-danger-600.d-flex.align-items-center.gap-10`
+### 3. Business Actions (Endpoints Needed)
+- `[Action: POST]` UI Text: "Toggle Theme" -> Suggested Endpoint: `[POST] /api/devices/post`
+- `[Action: POST]` UI Text: "Đăng Ký Mới" -> Suggested Endpoint: `[POST] /api/devices/post`
+- `[Action: DELETE]` UI Text: "Hủy" -> Suggested Endpoint: `[DELETE] /api/devices/delete`
+- `[Action: POST]` UI Text: "Kích Hoạt Thiết Bị" -> Suggested Endpoint: `[POST] /api/devices/post`
 
 ---
 

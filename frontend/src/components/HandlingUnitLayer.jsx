@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from "react";
-import huData from "../mockData/wms/handlingUnits.json";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useWMS } from "../context/WMSContext";
 
 const HandlingUnitLayer = () => {
+  const { onHand, locations } = useWMS();
   const [hus, setHus] = useState([]);
 
   useEffect(() => {
-    setHus(huData);
-  }, []);
+    // Map Inventory (onHand) to a virtual Handling Unit view
+    const mappedHus = onHand.map((inv, index) => {
+      const location = locations.find(l => l.code === inv.locationCode);
+      return {
+        huCode: `LP-${1000 + (inv.id || index)}`,
+        type: "Pallet",
+        status: "In Storage",
+        location: inv.locationCode,
+        zone: location?.zone || "Unknown",
+        items: [
+          { itemCode: inv.itemCode, qty: inv.quantity || inv.qty, lotNo: inv.lotNo || "N/A" }
+        ],
+        weight: (inv.quantity || inv.qty) * 0.5, // Dummy weight calculation
+      };
+    });
+    setHus(mappedHus);
+  }, [onHand, locations]);
 
   return (
     <div className='row gy-4'>
@@ -18,7 +34,7 @@ const HandlingUnitLayer = () => {
                   <div className="card p-20 border-0 shadow-sm bg-gradient-start-1 h-100 scale-on-hover overflow-hidden">
                       <div className="card-body p-0">
                           <p className="fw-medium text-primary-600 mb-1 text-nowrap text-xs text-uppercase">Tổng số Pallet (LP)</p>
-                          <h4 className="mb-0 fw-bold text-dark">450</h4>
+                          <h4 className="mb-0 fw-bold text-dark">{hus.length}</h4>
                           <Icon icon="solar:box-bold" className="position-absolute end-0 bottom-0 mb-n3 me-n3 text-primary-600 opacity-25" style={{fontSize: '80px'}} />
                       </div>
                   </div>
@@ -27,7 +43,7 @@ const HandlingUnitLayer = () => {
                   <div className="card p-20 border-0 shadow-sm bg-gradient-start-2 h-100 scale-on-hover overflow-hidden">
                       <div className="card-body p-0">
                           <p className="fw-medium text-primary-600 mb-1 text-nowrap text-xs text-uppercase">Pallet Trống</p>
-                          <h4 className="mb-0 fw-bold text-dark">120</h4>
+                          <h4 className="mb-0 fw-bold text-dark">0</h4>
                           <Icon icon="solar:box-minimalistic-bold" className="position-absolute end-0 bottom-0 mb-n3 me-n3 text-primary-600 opacity-25" style={{fontSize: '80px'}} />
                       </div>
                   </div>
@@ -36,7 +52,7 @@ const HandlingUnitLayer = () => {
                   <div className="card p-20 border-0 shadow-sm bg-gradient-start-3 h-100 scale-on-hover overflow-hidden">
                       <div className="card-body p-0">
                           <p className="fw-medium text-primary-600 mb-1 text-nowrap text-xs text-uppercase">Đang di chuyển</p>
-                          <h4 className="mb-0 fw-bold text-dark">15</h4>
+                          <h4 className="mb-0 fw-bold text-dark">0</h4>
                           <Icon icon="solar:delivery-bold" className="position-absolute end-0 bottom-0 mb-n3 me-n3 text-primary-600 opacity-25" style={{fontSize: '80px'}} />
                       </div>
                   </div>
@@ -45,7 +61,7 @@ const HandlingUnitLayer = () => {
                   <div className="card p-20 border-0 shadow-sm bg-gradient-start-5 h-100 scale-on-hover overflow-hidden">
                       <div className="card-body p-0">
                           <p className="fw-medium text-primary-600 mb-1 text-nowrap text-xs text-uppercase">Pallet Hỏng</p>
-                          <h4 className="mb-0 fw-bold text-dark">5</h4>
+                          <h4 className="mb-0 fw-bold text-dark">0</h4>
                           <Icon icon="solar:shield-warning-bold" className="position-absolute end-0 bottom-0 mb-n3 me-n3 text-primary-600 opacity-25" style={{fontSize: '80px'}} />
                       </div>
                   </div>

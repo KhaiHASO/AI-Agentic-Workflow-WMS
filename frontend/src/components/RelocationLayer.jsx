@@ -4,14 +4,14 @@ import { toast } from 'react-toastify';
 import { useWMS } from "../context/WMSContext";
 
 const RelocationLayer = () => {
-  const { relocationHistory, relocateItem } = useWMS();
+  const { relocations, relocateItem } = useWMS();
   const [source, setSource] = useState("");
   const [item, setItem] = useState("");
   const [qty, setQty] = useState("");
   const [dest, setDest] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleRelocate = () => {
+  const handleRelocate = async () => {
       if(!source || !item || !qty || !dest) {
           toast.warning("Vui lòng nhập đầy đủ thông tin điều chuyển!");
           return;
@@ -20,12 +20,15 @@ const RelocationLayer = () => {
       setIsProcessing(true);
       toast.info(`Đang thực hiện lệnh chuyển ${qty} hàng từ ${source} sang ${dest}...`);
 
-      setTimeout(() => {
-          relocateItem(source, item, qty, dest);
+      try {
+          await relocateItem(source, item, qty, dest);
           setIsProcessing(false);
-          toast.success(`Điều chuyển thành công! Hệ thống đã cập nhật tồn kho và ghi sổ ledger.`);
+          toast.success(`Điều chuyển thành công! Hệ thống đã cập nhật tồn kho và ghi sổ BE.`);
           setSource(""); setItem(""); setQty(""); setDest("");
-      }, 2000);
+      } catch (error) {
+          setIsProcessing(false);
+          toast.error("Điều chuyển thất bại: " + error.message);
+      }
   }
 
   const handleAutoSuggest = () => {
@@ -129,7 +132,7 @@ const RelocationLayer = () => {
                     </div>
                 </div>
 
-                <div className="alert alert-warning border-warning-100 bg-warning-50 mt-32 p-16 rounded-12 d-flex align-items-start gap-2 animate__animated animate__pulse animate__infinite">
+                <div className="alert alert-warning border-warning-100 bg-warning-50 mt-32 p-16 rounded-12 d-flex align-items-start gap-2">
                     <Icon icon="lucide:alert-triangle" className="text-warning-main mt-1" />
                     <div className="text-sm text-warning-main fw-medium">
                         Lưu ý: Hệ thống sẽ tự động kiểm tra quy tắc trộn hàng (Mixed Rules) và sức chứa của vị trí đích.
@@ -163,17 +166,17 @@ const RelocationLayer = () => {
                               </tr>
                           </thead>
                           <tbody>
-                              {relocationHistory.length === 0 ? (
-                                  <tr><td colSpan="7" className="text-center py-20 text-secondary">Chưa có lịch sử điều chuyển trong phiên này.</td></tr>
-                              ) : relocationHistory.map((h, i) => (
+                              {relocations.length === 0 ? (
+                                  <tr><td colSpan="7" className="text-center py-20 text-secondary">Chưa có lịch sử điều chuyển trong hệ thống.</td></tr>
+                              ) : relocations.map((h, i) => (
                                 <tr key={i}>
-                                    <td className="ps-24 text-sm">{new Date(h.time).toLocaleString()}</td>
+                                    <td className="ps-24 text-sm">{new Date(h.timestamp).toLocaleString()}</td>
                                     <td><span className="fw-bold">{h.itemCode}</span></td>
-                                    <td><span className="fw-bold">{h.qty} UNIT</span></td>
-                                    <td><span className="badge bg-primary-focus text-primary-600 px-12 py-4">{h.fromLoc}</span></td>
-                                    <td><span className="badge bg-success-focus text-success-main px-12 py-4">{h.toLoc}</span></td>
-                                    <td>{h.user}</td>
-                                    <td className="pe-24"><span className="text-success-main fw-bold"><Icon icon="lucide:check-circle" /> Hoàn Thành</span></td>
+                                    <td><span className="fw-bold">{h.quantity} UNIT</span></td>
+                                    <td><span className="badge bg-primary-focus text-primary-600 px-12 py-4">{h.fromLocation}</span></td>
+                                    <td><span className="badge bg-success-focus text-success-main px-12 py-4">{h.toLocation}</span></td>
+                                    <td>System Admin</td>
+                                    <td className="pe-24"><span className="text-success-main fw-bold"><Icon icon="lucide:check-circle" /> {h.status}</span></td>
                                 </tr>
                               ))}
                           </tbody>

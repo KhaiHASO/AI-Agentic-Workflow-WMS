@@ -1,9 +1,25 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import React, { useState } from 'react';
+import { wmsApi } from '../services/wmsApi';
+import { toast } from 'react-toastify';
 
 const AddUserLayer = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        department: '',
+        designation: '',
+        description: '',
+        imageUrl: ''
+    });
 
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({ ...prev, [id]: value }));
+    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -11,10 +27,33 @@ const AddUserLayer = () => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreviewUrl(reader.result);
+                setFormData(prev => ({ ...prev, imageUrl: reader.result }));
             };
             reader.readAsDataURL(file);
         }
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await wmsApi.createUser(formData);
+            toast.success('User added successfully!');
+            // Reset form
+            setFormData({
+                name: '',
+                email: '',
+                phone: '',
+                department: '',
+                designation: '',
+                description: '',
+                imageUrl: ''
+            });
+            setImagePreviewUrl('');
+        } catch (error) {
+            toast.error('Failed to add user: ' + error.message);
+        }
+    };
+
     return (
         <div className="card h-100 p-0 radius-12">
             <div className="card-body p-24">
@@ -23,7 +62,6 @@ const AddUserLayer = () => {
                         <div className="card border">
                             <div className="card-body">
                                 <h6 className="text-md text-primary-light mb-16">Profile Image</h6>
-                                {/* Upload Image Start */}
                                 <div className="mb-24 mt-16">
                                     <div className="avatar-upload">
                                         <div className="avatar-edit position-absolute bottom-0 end-0 me-24 mt-16 z-1 cursor-pointer">
@@ -45,20 +83,15 @@ const AddUserLayer = () => {
                                                 id="imagePreview"
                                                 style={{
                                                     backgroundImage: imagePreviewUrl ? `url(${imagePreviewUrl})` : '',
-
                                                 }}
                                             >
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {/* Upload Image End */}
-                                <form action="#">
+                                <form onSubmit={handleSubmit}>
                                     <div className="mb-20">
-                                        <label
-                                            htmlFor="name"
-                                            className="form-label fw-semibold text-primary-light text-sm mb-8"
-                                        >
+                                        <label htmlFor="name" className="form-label fw-semibold text-primary-light text-sm mb-8">
                                             Full Name <span className="text-danger-600">*</span>
                                         </label>
                                         <input
@@ -66,13 +99,13 @@ const AddUserLayer = () => {
                                             className="form-control radius-8"
                                             id="name"
                                             placeholder="Enter Full Name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            required
                                         />
                                     </div>
                                     <div className="mb-20">
-                                        <label
-                                            htmlFor="email"
-                                            className="form-label fw-semibold text-primary-light text-sm mb-8"
-                                        >
+                                        <label htmlFor="email" className="form-label fw-semibold text-primary-light text-sm mb-8">
                                             Email <span className="text-danger-600">*</span>
                                         </label>
                                         <input
@@ -80,81 +113,75 @@ const AddUserLayer = () => {
                                             className="form-control radius-8"
                                             id="email"
                                             placeholder="Enter email address"
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            required
                                         />
                                     </div>
                                     <div className="mb-20">
-                                        <label
-                                            htmlFor="number"
-                                            className="form-label fw-semibold text-primary-light text-sm mb-8"
-                                        >
+                                        <label htmlFor="phone" className="form-label fw-semibold text-primary-light text-sm mb-8">
                                             Phone
                                         </label>
                                         <input
-                                            type="email"
+                                            type="text"
                                             className="form-control radius-8"
-                                            id="number"
+                                            id="phone"
                                             placeholder="Enter phone number"
+                                            value={formData.phone}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="mb-20">
-                                        <label
-                                            htmlFor="depart"
-                                            className="form-label fw-semibold text-primary-light text-sm mb-8"
-                                        >
-                                            Department
-                                            <span className="text-danger-600">*</span>{" "}
+                                        <label htmlFor="department" className="form-label fw-semibold text-primary-light text-sm mb-8">
+                                            Department <span className="text-danger-600">*</span>
                                         </label>
                                         <select
                                             className="form-control radius-8 form-select"
-                                            id="depart"
-                                            defaultValue="Enter Event Title"
+                                            id="department"
+                                            value={formData.department}
+                                            onChange={handleChange}
+                                            required
                                         >
-                                            <option value="Enter Event Title" disabled>
-                                                Enter Event Title
-                                            </option>
-                                            <option value="Enter Event Title One">Enter Event Title One</option>
-                                            <option value="Enter Event Title Two">Enter Event Title Two</option>
+                                            <option value="" disabled>Select Department</option>
+                                            <option value="IT">IT</option>
+                                            <option value="Logistics">Logistics</option>
+                                            <option value="Sales">Sales</option>
                                         </select>
                                     </div>
                                     <div className="mb-20">
-                                        <label
-                                            htmlFor="desig"
-                                            className="form-label fw-semibold text-primary-light text-sm mb-8"
-                                        >
-                                            Designation
-                                            <span className="text-danger-600">*</span>{" "}
+                                        <label htmlFor="designation" className="form-label fw-semibold text-primary-light text-sm mb-8">
+                                            Designation <span className="text-danger-600">*</span>
                                         </label>
                                         <select
                                             className="form-control radius-8 form-select"
-                                            id="desig"
-                                            defaultValue="Enter Designation Title"
+                                            id="designation"
+                                            value={formData.designation}
+                                            onChange={handleChange}
+                                            required
                                         >
-                                            <option value="Enter Designation Title" disabled>
-                                                Enter Designation Title
-                                            </option>
-                                            <option value="Enter Designation Title One">Enter Designation Title One</option>
-                                            <option value="Enter Designation Title Two">Enter Designation Title Two</option>
+                                            <option value="" disabled>Select Designation</option>
+                                            <option value="Manager">Manager</option>
+                                            <option value="Worker">Worker</option>
+                                            <option value="Admin">Admin</option>
                                         </select>
                                     </div>
                                     <div className="mb-20">
-                                        <label
-                                            htmlFor="desc"
-                                            className="form-label fw-semibold text-primary-light text-sm mb-8"
-                                        >
+                                        <label htmlFor="description" className="form-label fw-semibold text-primary-light text-sm mb-8">
                                             Description
                                         </label>
                                         <textarea
-                                            name="#0"
                                             className="form-control radius-8"
-                                            id="desc"
+                                            id="description"
                                             placeholder="Write description..."
-                                            defaultValue={""}
+                                            value={formData.description}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="d-flex align-items-center justify-content-center gap-3">
                                         <button
                                             type="button"
                                             className="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"
+                                            onClick={() => setFormData({ name: '', email: '', phone: '', department: '', designation: '', description: '', imageUrl: '' })}
                                         >
                                             Cancel
                                         </button>
@@ -172,7 +199,6 @@ const AddUserLayer = () => {
                 </div>
             </div>
         </div>
-
     );
 };
 

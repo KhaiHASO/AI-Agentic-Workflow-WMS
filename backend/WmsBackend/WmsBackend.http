@@ -1,0 +1,6 @@
+@WmsBackend_HostAddress = http://localhost:5167
+
+GET {{WmsBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

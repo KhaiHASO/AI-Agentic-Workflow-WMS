@@ -1,8 +1,42 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import authService from "../services/authService";
 
 const SignInLayer = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    rememberMe: false
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    
+    try {
+      await authService.login(formData.email, formData.password);
+      navigate("/");
+    } catch (err) {
+      setError(err.toString());
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className='auth bg-base d-flex flex-wrap'>
       <div className='auth-left d-lg-block d-none'>
@@ -21,15 +55,24 @@ const SignInLayer = () => {
               Welcome back! please enter your detail
             </p>
           </div>
-          <form action='#'>
+          {error && (
+            <div className="alert alert-danger radius-12 mb-16" role="alert">
+              {error}
+            </div>
+          )}
+          <form onSubmit={handleSubmit}>
             <div className='icon-field mb-16'>
               <span className='icon top-50 translate-middle-y'>
                 <Icon icon='mage:email' />
               </span>
               <input
                 type='email'
+                name='email'
+                value={formData.email}
+                onChange={handleChange}
                 className='form-control h-56-px bg-neutral-50 radius-12'
                 placeholder='Email'
+                required
               />
             </div>
             <div className='position-relative mb-20'>
@@ -38,15 +81,19 @@ const SignInLayer = () => {
                   <Icon icon='solar:lock-password-outline' />
                 </span>
                 <input
-                  type='password'
+                  type={showPassword ? 'text' : 'password'}
+                  name='password'
+                  value={formData.password}
+                  onChange={handleChange}
                   className='form-control h-56-px bg-neutral-50 radius-12'
                   id='your-password'
                   placeholder='Password'
+                  required
                 />
               </div>
               <span
-                className='toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light'
-                data-toggle='#your-password'
+                className={`toggle-password ${showPassword ? 'ri-eye-off-line' : 'ri-eye-line'} cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light`}
+                onClick={() => setShowPassword(!showPassword)}
               />
             </div>
             <div className=''>
@@ -55,24 +102,26 @@ const SignInLayer = () => {
                   <input
                     className='form-check-input border border-neutral-300'
                     type='checkbox'
-                    defaultValue=''
+                    name='rememberMe'
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
                     id='remeber'
                   />
                   <label className='form-check-label' htmlFor='remeber'>
                     Remember me{" "}
                   </label>
                 </div>
-                <Link to='#' className='text-primary-600 fw-medium'>
+                <Link to='/forgot-password' id='forgot-password-link' className='text-primary-600 fw-medium'>
                   Forgot Password?
                 </Link>
               </div>
             </div>
             <button
               type='submit'
+              disabled={loading}
               className='btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32'
             >
-              {" "}
-              Sign In
+              {loading ? "Signing In..." : "Sign In"}
             </button>
             <div className='mt-32 center-border-horizontal text-center'>
               <span className='bg-base z-1 px-4'>Or sign in with</span>
@@ -83,7 +132,7 @@ const SignInLayer = () => {
                 className='fw-semibold text-primary-light py-16 px-24 w-50 border radius-12 text-md d-flex align-items-center justify-content-center gap-12 line-height-1 bg-hover-primary-50'
               >
                 <Icon
-                  icon='ic:baseline-facebook'
+                  icon='logos:google-icon'
                   className='text-primary-600 text-xl line-height-1'
                 />
                 Google
@@ -93,10 +142,10 @@ const SignInLayer = () => {
                 className='fw-semibold text-primary-light py-16 px-24 w-50 border radius-12 text-md d-flex align-items-center justify-content-center gap-12 line-height-1 bg-hover-primary-50'
               >
                 <Icon
-                  icon='logos:google-icon'
+                  icon='ic:baseline-facebook'
                   className='text-primary-600 text-xl line-height-1'
                 />
-                Google
+                Facebook
               </button>
             </div>
             <div className='mt-32 text-center text-sm'>

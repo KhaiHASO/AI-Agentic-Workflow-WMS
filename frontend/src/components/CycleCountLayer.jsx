@@ -31,7 +31,7 @@ const CycleCountLayer = () => {
       setActiveSessionId(id);
       setViewMode("scanner");
       setCountStep("location");
-      toast.success(`Đã khởi tạo phiên ${id}. Bắt đầu quét vị trí!`);
+      setTimeout(() => toast.success(`Đã khởi tạo phiên ${id}. Bắt đầu quét vị trí!`), 0);
   };
 
   const handleOpenApproval = (session) => {
@@ -40,10 +40,10 @@ const CycleCountLayer = () => {
   };
 
   const handleApproveFinal = () => {
-      toast.info(`Đang phê duyệt và ghi sổ chênh lệch cho ${selectedSession.sessionId}...`);
+      setTimeout(() => toast.info(`Đang phê duyệt và ghi sổ chênh lệch cho ${selectedSession.sessionId}...`), 0);
       setTimeout(() => {
           approveCycleCount(selectedSession.sessionId);
-          toast.success(`Đã phê duyệt thành công. Ledger Adjustment đã được đẩy về ERP FAST.`);
+          setTimeout(() => toast.success(`Đã phê duyệt thành công. Ledger Adjustment đã được đẩy về ERP FAST.`), 0);
           setShowApprovalModal(false);
       }, 1500);
   };
@@ -55,28 +55,27 @@ const CycleCountLayer = () => {
 
     if (countStep === "location") {
         const loc = locations.find(l => l.locationCode === val);
-        if (!loc) return toast.error("Vị trí không tồn tại!");
+        if (!loc) return setTimeout(() => toast.error("Vị trí không tồn tại!"), 0);
         setCurrentLine({ ...currentLine, locationCode: val });
         setCountStep("item");
         setScanInput("");
     } else if (countStep === "item") {
         const item = items.find(i => i.erpItemCode === val || i.barcodes?.includes(val));
-        if (!item) return toast.error("Sản phẩm không xác định!");
+        if (!item) return setTimeout(() => toast.error("Sản phẩm không xác định!"), 0);
         setCurrentLine({ ...currentLine, itemCode: item.erpItemCode });
         setCountStep("qty");
         setScanInput("");
     } else if (countStep === "qty") {
         const qty = Number(val);
-        if (isNaN(qty)) return toast.error("Số lượng phải là số!");
-        
+        if (isNaN(qty)) return setTimeout(() => toast.error("Số lượng phải là số!"), 0);
+
         submitCountLine(activeSessionId, { ...currentLine, countedQty: qty });
-        toast.success(`Đã ghi nhận ${qty} ${currentLine.itemCode} tại ${currentLine.locationCode}`);
-        setCountStep("item"); 
+        setTimeout(() => toast.success(`Đã ghi nhận ${qty} ${currentLine.itemCode} tại ${currentLine.locationCode}`), 0);
+        setCountStep("item");
         setScanInput("");
         setCurrentLine({ ...currentLine, itemCode: "", lotNo: "", countedQty: 0 });
     }
   };
-
   const renderScanner = () => {
       const activeSession = cycleCounts.find(s => s.sessionId === activeSessionId);
       return (
@@ -122,7 +121,7 @@ const CycleCountLayer = () => {
                       </div>
                   </div>
 
-                  <button className="btn btn-primary-600 w-100 py-16 radius-16 mt-32 fw-bold shadow-primary h5" onClick={() => { setViewMode("manager"); toast.info("Đã nộp phiên kiểm kê. Chuyển sang chế độ Quản lý để phê duyệt."); }}>
+                  <button className="btn btn-primary-600 w-100 py-16 radius-16 mt-32 fw-bold shadow-primary h5" onClick={() => { setViewMode("manager"); setTimeout(() => toast.info("Đã nộp phiên kiểm kê. Chuyển sang chế độ Quản lý để phê duyệt."), 0); }}>
                       NỘP PHIẾU ĐỢT (FINISH SESSION)
                   </button>
               </div>
@@ -174,7 +173,7 @@ const CycleCountLayer = () => {
                 <div className='card-header d-flex justify-content-between align-items-center bg-base py-24 px-32 border-bottom-0'>
                     <h5 className='card-title mb-0 fw-bold uppercase'>PHÊ DUYỆT CHÊNH LỆCH KIỂM KÊ (VARIANCE APPROVAL)</h5>
                     <div className="d-flex gap-2">
-                        <button className="btn btn-outline-secondary btn-sm radius-8 px-16" onClick={() => toast.info("Đang in báo cáo chênh lệch...")}>
+                        <button className="btn btn-outline-secondary btn-sm radius-8 px-16" onClick={() => setTimeout(() => toast.info("Đang in báo cáo chênh lệch..."), 0)}>
                             <Icon icon="solar:printer-bold" className="me-2" /> In Báo Cáo
                         </button>
                     </div>

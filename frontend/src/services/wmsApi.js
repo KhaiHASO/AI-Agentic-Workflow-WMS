@@ -1,14 +1,27 @@
 /**
  * WMS API Service Layer
- * This service provides an adapter between the UI/Context and the real ERP/WMS Backend.
- * It includes a Mock Fallback mechanism to ensure the demo remains functional 
- * until real endpoints are provided.
  */
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || '';
-const USE_MOCK = !process.env.REACT_APP_API_URL;
+const API_BASE_URL = 'http://localhost:5167/api';
+
+const getHeaders = () => {
+    const token = localStorage.getItem('token');
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+};
 
 const handleResponse = async (response) => {
+    if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/sign-in';
+        throw new Error('Session expired. Please login again.');
+    }
     if (!response.ok) {
         const error = await response.json().catch(() => ({ message: 'Unknown Error' }));
         throw new Error(error.message || 'API Request Failed');
@@ -17,61 +30,49 @@ const handleResponse = async (response) => {
 };
 
 export const wmsApi = {
-    // 1. Master Data
-    fetchItems: async () => {
-        if (USE_MOCK) return null; // Context will use local JSON
-        return fetch(`${API_BASE_URL}/items`).then(handleResponse);
-    },
+    // 1. Auth & Management
+    fetchUsers: () => fetch(`${API_BASE_URL}/Management/users`, { headers: getHeaders() }).then(handleResponse),
+    fetchRoles: () => fetch(`${API_BASE_URL}/Management/roles`, { headers: getHeaders() }).then(handleResponse),
+    deleteUser: (id) => fetch(`${API_BASE_URL}/Management/user/${id}`, { method: 'DELETE', headers: getHeaders() }).then(handleResponse),
+    assignRole: (userId, roleName) => fetch(`${API_BASE_URL}/Management/assign-role?userId=${userId}&roleName=${roleName}`, { 
+        method: 'POST', 
+        headers: getHeaders() 
+    }).then(handleResponse),
 
-    syncFromErp: async (entityType) => {
-        console.log(`[API] Syncing ${entityType} from ERP...`);
-        if (USE_MOCK) {
-            return new Promise(resolve => setTimeout(() => resolve({ success: true, count: 5 }), 1500));
-        }
-        return fetch(`${API_BASE_URL}/integration/sync/${entityType}`, { method: 'POST' }).then(handleResponse);
-    },
+    // 2. Core / Master Data
+    fetchItems: () => fetch(`${API_BASE_URL}/Items`, { headers: getHeaders() }).then(handleResponse),
+    fetchLocations: () => fetch(`${API_BASE_URL}/Locations`, { headers: getHeaders() }).then(handleResponse),
+    fetchSuppliers: () => fetch(`${API_BASE_URL}/Suppliers`, { headers: getHeaders() }).then(handleResponse),
+    toggleLocationStatus: (id) => fetch(`${API_BASE_URL}/Locations/toggle-status/${id}`, { method: 'POST', headers: getHeaders() }).then(handleResponse),
+    printLocationLabel: (id) => fetch(`${API_BASE_URL}/Locations/print-label/${id}`, { headers: getHeaders() }).then(handleResponse),
 
-    // 2. Inbound
-    submitReceipt: async (receiptData) => {
-        console.log('[API] Submitting Receipt to ERP:', receiptData);
-        if (USE_MOCK) return { success: true, grnNumber: `GRN-${Date.now().toString().slice(-6)}` };
-        return fetch(`${API_BASE_URL}/inbound/receipt`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(receiptData)
-        }).then(handleResponse);
-    },
+    // 3. Inbound / Inventory
+    fetchInventory: () => fetch(`${API_BASE_URL}/Inventory`, { headers: getHeaders() }).then(handleResponse),
+    fetchPutawayTasks: () => fetch(`${API_BASE_URL}/PutawayTasks`, { headers: getHeaders() }).then(handleResponse),
+    fetchQualityOrders: () => fetch(`${API_BASE_URL}/QualityOrders`, { headers: getHeaders() }).then(handleResponse),
+    fetchInboundReceipts: () => fetch(`${API_BASE_URL}/InboundReceipts`, { headers: getHeaders() }).then(handleResponse),
+    createInboundReceipt: (data) => fetch(`${API_BASE_URL}/InboundReceipts`, { 
+        method: 'POST', 
+        headers: getHeaders(),
+        body: JSON.stringify(data)
+    }).then(handleResponse),
+    updateInboundReceipt: (id, data) => fetch(`${API_BASE_URL}/InboundReceipts/${id}`, { 
+        method: 'PUT', 
+        headers: getHeaders(),
+        body: JSON.stringify(data)
+    }).then(handleResponse),
+    fetchPurchaseOrders: () => fetch(`${API_BASE_URL}/PurchaseOrders`, { headers: getHeaders() }).then(handleResponse),
 
-    // 3. Outbound
-    releaseWave: async (orderIds) => {
-        console.log('[API] Releasing Wave for orders:', orderIds);
-        if (USE_MOCK) return { success: true, waveId: `WAVE-${Date.now().toString().slice(-4)}` };
-        return fetch(`${API_BASE_URL}/outbound/wave`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderIds })
-        }).then(handleResponse);
-    },
+    // 4. Outbound / Shipping
+    fetchShipments: () => fetch(`${API_BASE_URL}/Shipments`, { headers: getHeaders() }).then(handleResponse),
+    fetchPickTasks: () => fetch(`${API_BASE_URL}/PickTask`, { headers: getHeaders() }).then(handleResponse),
 
-    // 4. Inventory
-    postAdjustment: async (adjData) => {
-        console.log('[API] Posting Inventory Adjustment:', adjData);
-        if (USE_MOCK) return { success: true, txId: `ADJ-${Math.random().toString(36).substring(7)}` };
-        return fetch(`${API_BASE_URL}/inventory/adjust`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(adjData)
-        }).then(handleResponse);
-    },
-
-    // 5. Quality
-    updateQualityStatus: async (qoId, result) => {
-        console.log(`[API] Updating Quality Order ${qoId} to ${result.status}`);
-        if (USE_MOCK) return { success: true };
-        return fetch(`${API_BASE_URL}/quality/update/${qoId}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(result)
-        }).then(handleResponse);
-    }
+    // 5. Warehouse Operations
+    fetchLedger: () => fetch(`${API_BASE_URL}/Ledger`, { headers: getHeaders() }).then(handleResponse),
+    fetchCycleCounts: () => fetch(`${API_BASE_URL}/CycleCounts`, { headers: getHeaders() }).then(handleResponse),
+    fetchDashboardSummary: () => fetch(`${API_BASE_URL}/Dashboard/summary`, { headers: getHeaders() }).then(handleResponse),
+    
+    // 6. Integration & Logs
+    fetchSyncOutbox: () => fetch(`${API_BASE_URL}/SyncLogs/outbox`, { headers: getHeaders() }).then(handleResponse),
+    retrySync: (id) => fetch(`${API_BASE_URL}/SyncLogs/retry/${id}`, { method: 'POST', headers: getHeaders() }).then(handleResponse),
 };

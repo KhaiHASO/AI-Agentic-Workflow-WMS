@@ -100,7 +100,7 @@ const SalesOrdersLayer = () => {
                 <p className="text-sm text-secondary mb-0">Chọn các đơn hàng để gom vào một đợt lấy hàng (Wave).</p>
             </div>
             <div className="d-flex gap-2">
-                <button className={`btn ${selectedOrders.length > 0 ? 'btn-primary-600 animate__animated animate__pulse animate__infinite' : 'btn-outline-primary'} radius-12 px-24 fw-bold d-flex align-items-center gap-2`} onClick={handleCreateWave} disabled={isCreatingWave}>
+                <button className={`btn ${selectedOrders.length > 0 ? 'btn-primary-600' : 'btn-outline-primary'} radius-12 px-24 fw-bold d-flex align-items-center gap-2`} onClick={handleCreateWave} disabled={isCreatingWave}>
                     {isCreatingWave ? (
                         <span className="spinner-border spinner-border-sm"></span>
                     ) : (

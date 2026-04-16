@@ -947,7 +947,20 @@ const MasterLayout = ({ children }) => {
             </div>
           </div>
         </footer>
-        <ToastContainer />
+        <ToastContainer 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={true}
+          pauseOnHover={true}
+          theme="colored"
+          limit={3}
+          toastStyle={{ zIndex: 99999 }}
+        />
         </main>
         </section>
   );

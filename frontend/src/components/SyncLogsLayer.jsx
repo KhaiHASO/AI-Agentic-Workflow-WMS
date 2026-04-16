@@ -1,150 +1,172 @@
-import React, { useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { toast } from 'react-toastify';
-import { useWMS } from "../context/WMSContext";
+import React, { useEffect, useState } from "react";
+import { wmsApi } from "../services/wmsApi";
+import { toast } from "react-toastify";
 
 const SyncLogsLayer = () => {
-  const { syncLogs } = useWMS();
-  const [retryingIds, setRetryingIds] = useState(new Set());
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPayload, setSelectedPayload] = useState(null);
 
-  const handleRetry = (syncId) => {
-    setRetryingIds(prev => new Set(prev).add(syncId));
-    toast.info(`Đang phát lại bản tin ${syncId} về ERP FAST...`);
-    
-    // Simulate API call with Idempotency check
-    setTimeout(() => {
-        toast.success(`Đồng bộ lại thành công cho bản tin ${syncId}. Trạng thái ERP: UPDATED`);
-        setRetryingIds(prev => {
-            const next = new Set(prev);
-            next.delete(syncId);
-            return next;
-        });
-    }, 2000);
+  const loadLogs = async () => {
+    try {
+      setLoading(true);
+      const data = await wmsApi.fetchSyncOutbox();
+      setLogs(data);
+    } catch (error) {
+      toast.error("Lỗi khi tải lịch sử đồng bộ");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadLogs();
+  }, []);
+
+  const handleRetry = async (id) => {
+    try {
+      await wmsApi.retrySync(id);
+      toast.success("Đã đưa bản tin vào hàng chờ gửi lại!");
+      loadLogs();
+    } catch (error) {
+      toast.error("Thử lại thất bại");
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "Success": return "bg-success-focus text-success-600";
+      case "Failed": return "bg-danger-focus text-danger-600";
+      case "Pending": return "bg-warning-focus text-warning-600";
+      default: return "bg-info-focus text-info-600";
+    }
   };
 
   return (
-    <div className='row gy-4 animate__animated animate__fadeIn'>
-      {/* Visual Health Metrics */}
-      <div className="col-lg-12">
-          <div className="row gy-4">
-              <div className="col-xxl-3 col-sm-6">
-                  <div className="card p-24 border-0 shadow-sm bg-success-focus text-success-main h-100">
-                      <div className="d-flex align-items-center gap-3">
-                          <div className="w-48-px h-48-px bg-success-main text-white rounded-circle d-flex justify-content-center align-items-center h4 mb-0">
-                              <Icon icon="solar:check-read-bold" />
-                          </div>
-                          <div>
-                              <h6 className="mb-0 text-success-main fw-bold">98.5% THÀNH CÔNG</h6>
-                              <p className="text-xs mb-0 text-secondary">Tỉ lệ đẩy tin về ERP FAST</p>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div className="col-xxl-3 col-sm-6">
-                  <div className="card p-24 border-0 shadow-sm bg-danger-focus text-danger-main h-100 border-start border-4 border-danger-main">
-                      <div className="d-flex align-items-center gap-3">
-                          <div className="w-48-px h-48-px bg-danger-main text-white rounded-circle d-flex justify-content-center align-items-center h4 mb-0">
-                              <Icon icon="solar:shield-warning-bold" />
-                          </div>
-                          <div>
-                              <h6 className="mb-0 text-danger-main fw-bold">1 BẢN TIN LỖI</h6>
-                              <p className="text-xs mb-0 text-secondary">Cần "Retry" ngay lập tức</p>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+    <div className='row gy-4'>
+      <div className='col-12'>
+        <div className='card border-0 shadow-sm radius-12 p-24 bg-base'>
+          <div className='d-flex align-items-center justify-content-between flex-wrap gap-3'>
+            <div>
+              <h5 className='mb-8 fw-bold'>Lịch Sử Đồng Bộ ERP (Integration Audit)</h5>
+              <p className='text-sm text-secondary mb-0'>Giám sát các giao dịch giữa WMS Core và hệ thống ERP FAST.</p>
+            </div>
+            <button className='btn btn-outline-primary radius-8' onClick={loadLogs}>
+              <Icon icon='solar:refresh-bold' className='me-2' /> Làm mới danh sách
+            </button>
           </div>
+        </div>
       </div>
 
-      <div className='col-lg-12'>
-        <div className='card border-0 shadow-sm radius-16'>
-          <div className='card-header d-flex justify-content-between align-items-center bg-base py-20 px-24 border-bottom-0'>
-            <h5 className='card-title mb-0 fw-bold'>INTEGRATION INBOX / OUTBOX (WMS ⇄ ERP FAST)</h5>
-            <div className="d-flex gap-2">
-                <button className="btn btn-outline-secondary btn-sm radius-8" onClick={() => toast.info("Đang lọc bản tin lỗi...")}>Lọc bản tin lỗi</button>
-                <button className="btn btn-primary-600 btn-sm d-flex align-items-center gap-2 radius-8 fw-bold">
-                    <Icon icon="solar:refresh-bold" /> BUỘC ĐỒNG BỘ TOÀN BỘ
-                </button>
-            </div>
-          </div>
+      <div className='col-12'>
+        <div className='card border-0 shadow-sm radius-12 overflow-hidden'>
           <div className='card-body p-0'>
-            <div className='table-responsive'>
-              <table className='table mb-0 align-middle'>
-                <thead className="bg-light text-secondary text-xxs fw-black text-uppercase">
+            <div className='table-responsive scroll-sm'>
+              <table className='table bordered-table sm-table mb-0'>
+                <thead className='bg-light text-secondary-light'>
                   <tr>
-                    <th className="ps-24">Phiên / ID</th>
-                    <th>Đối Tượng</th>
-                    <th>Hướng</th>
-                    <th>Thời Gian</th>
-                    <th className="text-center">Số Bản Ghi</th>
-                    <th>Trạng Thái</th>
-                    <th>Nội Dung Lỗi / Log</th>
-                    <th className="pe-24 text-end">Thao Tác</th>
+                    <th className='ps-24'>MÃ ĐỊNH DANH (KEY)</th>
+                    <th>LOẠI BẢN TIN</th>
+                    <th>TRẠNG THÁI</th>
+                    <th>SỐ LẦN THỬ</th>
+                    <th>THỜI GIAN</th>
+                    <th className='text-center'>HÀNH ĐỘNG</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {syncLogs.map((log, idx) => (
-                    <tr key={idx} className={`hover-bg-primary-50 ${log.status === 'Failed' ? 'bg-danger-focus' : ''}`}>
-                      <td className="ps-24">
-                        <div className="d-flex align-items-center gap-2">
-                            <Icon icon="solar:link-bold" className="text-secondary" />
-                            <span className="fw-bold">{log.syncId}</span>
-                        </div>
-                      </td>
-                      <td><span className="badge bg-dark text-white px-12 py-4 radius-8">{log.entity}</span></td>
-                      <td>
-                        <span className={`text-xs fw-bold px-8 py-4 rounded-4 ${log.type === 'PULL' ? 'bg-info-focus text-info-main' : 'bg-warning-focus text-warning-main'}`}>
-                            {log.type === 'PULL' ? '← PULL (ERP-IN)' : '→ PUSH (ERP-OUT)'}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="d-flex flex-column">
-                            <span className="text-sm fw-medium">{new Date(log.startTime).toLocaleString()}</span>
-                            <small className="text-secondary text-xxs fw-bold uppercase">Xử lý: 1m 5s</small>
-                        </div>
-                      </td>
-                      <td className="text-center"><h6 className="mb-0 fw-black text-primary-600">{log.recordsProcessed}</h6></td>
-                      <td>
-                        <span className={`px-12 py-6 rounded-pill fw-bold text-xxs text-uppercase ${log.status === 'Success' ? 'bg-success-focus text-success-main' : 'bg-danger-focus text-danger-main'}`}>
-                            {log.status === 'Success' ? 'Khớp (Synced)' : 'Thất bại (Failed)'}
-                        </span>
-                      </td>
-                      <td style={{maxWidth: '250px'}}>
-                        {log.errorLog ? (
-                            <div className="alert alert-danger border-0 bg-white bg-opacity-50 p-8 rounded-8 mb-0 text-xs fw-bold text-danger-main">
-                                <Icon icon="solar:info-circle-bold" className="me-1" /> {log.errorLog}
-                            </div>
-                        ) : (
-                            <span className="text-secondary italic text-xs">Sẵn sàng (Clean)</span>
-                        )}
-                      </td>
-                      <td className="pe-24 text-end">
-                        {log.status === 'Failed' && (
+                  {loading ? (
+                    <tr><td colSpan='6' className='text-center py-40'>Đang quét dữ liệu Integration...</td></tr>
+                  ) : logs.length === 0 ? (
+                    <tr><td colSpan='6' className='text-center py-40 text-secondary'>Chưa có lịch sử đồng bộ nào.</td></tr>
+                  ) : (
+                    logs.map((log) => (
+                      <tr key={log.id} className='hover-bg-primary-50'>
+                        <td className='ps-24'>
+                          <span className='fw-bold text-dark'>{log.idempotencyKey}</span>
+                        </td>
+                        <td>
+                          <span className='badge bg-info-focus text-info-main px-12 py-4'>{log.messageType}</span>
+                        </td>
+                        <td>
+                          <span className={`px-12 py-4 rounded-pill fw-medium text-xs ${getStatusBadge(log.status)}`}>
+                            {log.status === "Success" ? "Thành Công" : log.status === "Failed" ? "Thất Bại" : "Đang Chờ"}
+                          </span>
+                        </td>
+                        <td className='text-center fw-bold'>{log.retryCount}</td>
+                        <td>{new Date(log.createdAt).toLocaleString()}</td>
+                        <td className='text-center'>
+                          <div className='d-flex align-items-center gap-2 justify-content-center'>
                             <button 
-                                className={`btn btn-danger-main btn-sm radius-8 px-16 fw-bold ${retryingIds.has(log.syncId) ? 'disabled' : ''}`}
-                                onClick={() => handleRetry(log.syncId)}
+                                className='btn btn-sm btn-outline-info p-4 radius-4' 
+                                title='Xem Payload'
+                                data-bs-toggle="modal" data-bs-target="#payloadModal"
+                                onClick={() => setSelectedPayload(log)}
                             >
-                                {retryingIds.has(log.syncId) ? <span className="spinner-border spinner-border-sm me-1"></span> : <Icon icon="solar:refresh-bold" className="me-1" />}
-                                RETRY (PHÁT LẠI)
+                              <Icon icon='solar:eye-bold' />
                             </button>
-                        )}
-                        {log.status === 'Success' && (
-                            <button className="btn btn-outline-secondary btn-sm radius-8" title="Xem XML/JSON" onClick={() => toast.info("Đang tải payload...")}>
-                                <Icon icon="solar:eye-bold" />
-                            </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                            {log.status === "Failed" && (
+                              <button 
+                                className='btn btn-sm btn-outline-danger p-4 radius-4' 
+                                title='Gửi lại'
+                                onClick={() => handleRetry(log.id)}
+                              >
+                                <Icon icon='solar:refresh-bold' />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
-          <div className="card-footer bg-base border-top p-24 text-center">
-             <p className="text-secondary text-sm mb-0">
-                <Icon icon="solar:info-circle-bold" className="me-1" />
-                Cơ chế <strong>Idempotency</strong> được kích hoạt: Trùng lặp mã UUID sẽ không tạo bản ghi mới trên ERP FAST.
-             </p>
+        </div>
+      </div>
+
+      {/* Modal View Payload */}
+      <div className="modal fade" id="payloadModal" tabIndex="-1" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-content radius-16 border-0 shadow-lg">
+            {selectedPayload && (
+              <>
+                <div className="modal-header py-16 px-24 border-bottom bg-info-600 text-white">
+                  <h5 className="modal-title d-flex align-items-center gap-2">
+                    <Icon icon="solar:code-bold" /> Chi tiết bản tin: {selectedPayload.messageType}
+                  </h5>
+                  <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div className="modal-body p-24 bg-dark">
+                  <div className="mb-16">
+                    <span className="text-secondary-light text-xs fw-bold uppercase">Idempotency Key:</span>
+                    <p className="text-info-main mb-0">{selectedPayload.idempotencyKey}</p>
+                  </div>
+                  <div className="mb-16">
+                    <span className="text-secondary-light text-xs fw-bold uppercase">Nội dung JSON:</span>
+                    <pre className="text-success-main mt-8 p-16 radius-8 bg-black border border-secondary" style={{maxHeight: '300px', overflow: 'auto'}}>
+                      {JSON.stringify(JSON.parse(selectedPayload.payload), null, 2)}
+                    </pre>
+                  </div>
+                  {selectedPayload.errorMessage && (
+                    <div className="p-16 radius-8 bg-danger-focus border border-danger-main">
+                      <span className="text-danger-600 text-xs fw-bold uppercase">Thông báo lỗi:</span>
+                      <p className="text-danger-main mb-0 mt-4">{selectedPayload.errorMessage}</p>
+                    </div>
+                  )}
+                </div>
+                <div className="modal-footer bg-base border-top p-24">
+                  <button className="btn btn-outline-secondary px-24 radius-8" data-bs-dismiss="modal">Đóng</button>
+                  <button className="btn btn-info px-32 radius-8" onClick={() => {
+                      navigator.clipboard.writeText(selectedPayload.payload);
+                      toast.success("Đã sao chép nội dung JSON!");
+                  }}>
+                    <Icon icon="solar:copy-bold" className="me-2" /> Sao chép JSON
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
