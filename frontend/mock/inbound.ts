@@ -35,11 +35,22 @@ export const mockMasterReceipts = [
 export const mockPutawayTasks = [
   { id: 'pt-1', taskNo: 'PT-24001', receiptId: 'mr-4', status: 'Open', assignee: null, overdue: true },
   { id: 'pt-2', taskNo: 'PT-24002', receiptId: 'mr-5', status: 'In Progress', assignee: 'usr-1', overdue: false },
-  // ... (more mock tasks as requested: 8 total)
   { id: 'pt-3', taskNo: 'PT-24003', receiptId: 'mr-5', status: 'Open', assignee: null, overdue: false },
   { id: 'pt-4', taskNo: 'PT-24004', receiptId: 'mr-5', status: 'Completed', assignee: 'usr-2', overdue: false },
   { id: 'pt-5', taskNo: 'PT-24005', receiptId: 'mr-5', status: 'Open', assignee: null, overdue: false },
   { id: 'pt-6', taskNo: 'PT-24006', receiptId: 'mr-5', status: 'Open', assignee: null, overdue: false },
   { id: 'pt-7', taskNo: 'PT-24007', receiptId: 'mr-5', status: 'Open', assignee: null, overdue: false },
   { id: 'pt-8', taskNo: 'PT-24008', receiptId: 'mr-5', status: 'Open', assignee: null, overdue: false },
+];
+
+export const mockInboundReceipts = [
+  { id: 'ir-1', irNo: 'IR-24001', mrId: 'mr-4', status: 'Received', supplier: 'P&G', receivedDate: '2024-05-10', pushStatus: 'Success' },
+  { id: 'ir-2', irNo: 'IR-24002', mrId: 'mr-5', status: 'Received', supplier: 'Nestle', receivedDate: '2024-05-11', pushStatus: 'Failed' },
+  { id: 'ir-3', irNo: 'IR-24003', mrId: 'mr-1', status: 'Draft', supplier: 'Vinamilk', receivedDate: '2024-05-12', pushStatus: 'Pending' },
+  { id: 'ir-4', irNo: 'IR-24004', mrId: 'mr-2', status: 'Draft', supplier: 'TH True Milk', receivedDate: '2024-05-13', pushStatus: 'Pending' },
+];
+
+export const mockDraftLines = [
+  { id: 'dl-1', mrId: 'mr-1', itemCode: 'ITM-01', itemName: 'Sữa tươi Vinamilk 180ml', expectedQty: 100, scannedQty: 0, acceptedQty: 0, rejectedQty: 0, status: 'Pending' },
+  { id: 'dl-2', mrId: 'mr-2', itemCode: 'ITM-02', itemName: 'Sữa chua TH True Milk', expectedQty: 50, scannedQty: 20, acceptedQty: 20, rejectedQty: 0, status: 'Scanning' },
 ];

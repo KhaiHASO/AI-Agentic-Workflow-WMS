@@ -82,7 +82,7 @@ const DashboardPage = () => {
             <CardTitle>Thao tác nhanh</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4">
-            <Button variant="soft" color="primary" onClick={() => router.push('/inbound/master-receipts')}>Quản lý Nhập kho</Button>
+            <Button variant="soft" color="primary" onClick={() => router.push('/en/inbound/drafts/mr-1')}>Mở Receiving Workbench</Button>
             <Button variant="soft" color="info" onClick={() => router.push('/outbound/pick-tasks')}>Mở Pick Task</Button>
             <Button variant="soft" color="success" onClick={() => router.push('/counting/sessions')}>Kiểm kê kho</Button>
             <Button variant="soft" color="warning" onClick={() => router.push('/integration/erp-sync')}>Đồng bộ ERP</Button>

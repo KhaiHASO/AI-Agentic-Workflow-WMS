@@ -13,7 +13,7 @@ import fs from 'fs';
   });
 
   console.log('Visiting login page...');
-  const res = await page.goto('http://localhost:3001/en/auth/login');
+  const res = await page.goto('http://localhost:3000/en/auth/login');
   if (!res || !res.ok()) {
     console.error(`Login page failed: ${res ? res.status() : 'Unknown'}`);
     await browser.close();
@@ -29,24 +29,33 @@ import fs from 'fs';
   await page.waitForTimeout(2000);
 
   const paths = [
-    '/counting/sessions',
     '/dashboard',
     '/dashboard/alerts',
     '/dashboard/integration-health',
-    '/inbound/master-receipts',
     '/inbound/purchase-orders',
+    '/inbound/master-receipts',
+    '/inbound/master-receipts/mr-1',
+    '/inbound/drafts/mr-1',
+    '/inbound/receipts/mr-1',
     '/inbound/putaway-tasks',
-    '/inventory/handling-units',
-    '/inventory/ledger',
-    '/inventory/on-hand',
-    '/master-data/items',
-    '/outbound/pick-tasks',
+    '/inbound/putaway-tasks/pt-1',
     '/outbound/sales-orders',
+    '/outbound/waves',
+    '/outbound/waves/wv-1',
+    '/outbound/pick-tasks',
+    '/outbound/pick-tasks/ptk-1',
     '/outbound/shipments',
-    '/outbound/waves'
+    '/outbound/backorders',
+    '/inventory/on-hand',
+    '/inventory/ledger',
+    '/inventory/handling-units',
+    '/counting/sessions',
+    '/counting/review',
+    '/quality/orders',
+    '/master-data/items'
   ];
 
-  const uniqueHrefs = paths.map(p => 'http://localhost:3001/en' + p);
+  const uniqueHrefs = paths.map(p => 'http://localhost:3000/en' + p);
   console.log(`Found ${uniqueHrefs.length} links to test:`, uniqueHrefs);
 
   let hasErrors = false;
@@ -54,7 +63,7 @@ import fs from 'fs';
   for (const href of uniqueHrefs) {
     console.log(`Testing ${href}...`);
     try {
-      const response = await page.goto(href, { waitUntil: 'load', timeout: 10000 });
+      const response = await page.goto(href, { waitUntil: 'load', timeout: 20000 });
       
       if (response && !response.ok()) {
         console.error(`=> ERROR: ${href} returned ${response.status()} (${response.statusText()})`);
@@ -64,19 +73,18 @@ import fs from 'fs';
       // Wait for React to render
       await page.waitForTimeout(1000);
 
-      // Check for Next.js generic error texts
       const pageText = await page.content();
       if (pageText.includes('Unhandled Runtime Error') || 
           pageText.includes('Application error: a client-side exception has occurred') ||
-          pageText.includes('An error occurred on the server') ||
-          pageText.includes('404')) { // Simple check, but could have false positives if a page renders '404' string. Let's check title or exact patterns.
-        
-        // Wait, '404' string might appear. Let's check if the page title contains 404
-        const title = await page.title();
-        if (title.includes('404')) {
-           console.error(`=> ERROR: 404 Not Found on ${href}`);
-           hasErrors = true;
-        }
+          pageText.includes('An error occurred on the server')) {
+        console.error(`=> ERROR: Runtime Error detected on ${href}`);
+        hasErrors = true;
+      }
+      
+      const title = await page.title();
+      if (title.includes('404')) {
+         console.error(`=> ERROR: 404 Not Found on ${href}`);
+         hasErrors = true;
       }
     } catch (e) {
       console.error(`=> ERROR: Failed to navigate to ${href}: ${e.message}`);
