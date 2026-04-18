@@ -112,6 +112,9 @@ namespace WmsBackend.Data
             modelBuilder.Entity<QualityOrder>().HasIndex(o => o.QualityOrderNo).IsUnique();
             modelBuilder.Entity<ReturnReceiptHeader>().HasIndex(h => h.ReturnNo).IsUnique();
 
+            modelBuilder.Entity<HandlingUnit>().HasIndex(h => h.HuBarcode).IsUnique();
+            modelBuilder.Entity<ItemBarcode>().HasIndex(b => b.Barcode).IsUnique();
+
             // 3. EXPLICIT RELATIONSHIPS (NO SHADOW COLUMNS)
             modelBuilder.Entity<ItemBarcode>()
                 .HasOne(b => b.Uom).WithMany().HasForeignKey(b => b.UomId);
@@ -119,6 +122,13 @@ namespace WmsBackend.Data
             modelBuilder.Entity<InboundReceiptLine>()
                 .HasOne(l => l.PoLine).WithMany().HasForeignKey(l => l.PoLineId);
             modelBuilder.Entity<InboundReceiptLine>()
+                .HasOne(l => l.Uom).WithMany().HasForeignKey(l => l.UomId);
+            modelBuilder.Entity<InboundReceiptLine>()
+                .HasOne(l => l.SubstituteItem).WithMany().HasForeignKey(l => l.SubstituteItemId);
+
+            modelBuilder.Entity<DraftLine>()
+                .HasOne(l => l.PoLine).WithMany().HasForeignKey(l => l.PoLineId);
+            modelBuilder.Entity<DraftLine>()
                 .HasOne(l => l.Uom).WithMany().HasForeignKey(l => l.UomId);
 
             modelBuilder.Entity<PickTask>()
@@ -136,16 +146,32 @@ namespace WmsBackend.Data
             modelBuilder.Entity<CountAdjustmentApproval>()
                 .HasOne(a => a.Approver).WithMany().HasForeignKey(a => a.ApproverId);
 
-            // 4. INVENTORY DIMENSION MASTER
+            modelBuilder.Entity<UserWarehouseMapping>()
+                .HasOne(uw => uw.User).WithMany().HasForeignKey(uw => uw.UserId);
+
+            // 4. INVENTORY DIMENSION MASTER (ROBUST UNIQUE)
             modelBuilder.Entity<InventoryOnHand>()
                 .HasIndex(i => new { i.WarehouseId, i.LocationId, i.ItemId, i.OwnerId, i.LotNo, i.SerialNumber, i.HandlingUnitId, i.InventoryStatusId })
                 .IsUnique()
+                .HasFilter(null)
                 .HasDatabaseName("UQ_Inventory_Dimension_Master");
 
-            // 5. IDENTITY MAPPINGS
+            // 5. IDEMPOTENCY KEYS
+            modelBuilder.Entity<InboundReceiptHeader>().HasIndex(h => h.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<ShipmentHeader>().HasIndex(h => h.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<InventoryAdjustment>().HasIndex(a => a.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<InternalTransfer>().HasIndex(t => t.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<PickTask>().HasIndex(t => t.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<PutawayTask>().HasIndex(t => t.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<WavePicking>().HasIndex(w => w.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<QualityOrder>().HasIndex(o => o.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<CycleCountSession>().HasIndex(s => s.IdempotencyKey).IsUnique().HasFilter("[IdempotencyKey] IS NOT NULL");
+            modelBuilder.Entity<MobileScanEvent>().HasIndex(e => e.ClientTxnId).IsUnique();
+
+            // 6. IDENTITY MAPPINGS
             modelBuilder.Entity<UserWarehouseMapping>().HasKey(uw => new { uw.UserId, uw.WarehouseId });
 
-            // 6. AUDIT & CONCURRENCY
+            // 7. AUDIT & CONCURRENCY
             var auditEntities = modelBuilder.Model.GetEntityTypes().Where(e => typeof(AuditEntity).IsAssignableFrom(e.ClrType));
             foreach (var entity in auditEntities)
                 modelBuilder.Entity(entity.ClrType).Property("RowVersion").IsRowVersion();

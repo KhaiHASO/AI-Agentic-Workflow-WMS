@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+Migrations/
+WmsDb_Schema_Full.sql
+Navicat_Connection_Info.txt
+appsettings.json
+appsettings.Development.json

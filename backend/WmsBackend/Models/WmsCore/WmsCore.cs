@@ -46,6 +46,7 @@ namespace WmsBackend.Models.WmsCore
     [Table("InventoryAdjustment", Schema = "wms_core")]
     public class InventoryAdjustment : AuditEntity {
         [Key] public int Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         public int ItemId { get; set; }
         public int LocationId { get; set; }
         public decimal AdjustedQty { get; set; }
@@ -61,6 +62,7 @@ namespace WmsBackend.Models.WmsCore
     [Table("InternalTransfer", Schema = "wms_core")]
     public class InternalTransfer : AuditEntity {
         [Key] public int Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string TransferNo { get; set; } = string.Empty;
         public int ItemId { get; set; }
         public int FromLocationId { get; set; }
@@ -78,6 +80,7 @@ namespace WmsBackend.Models.WmsCore
     [Table("InboundReceiptHeader", Schema = "wms_core")]
     public class InboundReceiptHeader : AuditEntity {
         [Key] public int Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string ReceiptNo { get; set; } = string.Empty;
         public int WarehouseId { get; set; }
         public int? SupplierId { get; set; }
@@ -107,6 +110,7 @@ namespace WmsBackend.Models.WmsCore
         public virtual ReasonCode? ReasonCode { get; set; }
         public virtual ErpPurchaseOrderLine? PoLine { get; set; }
         public virtual Uom? Uom { get; set; }
+        public virtual Item? SubstituteItem { get; set; }
     }
 
     [Table("DraftLine", Schema = "wms_core")]
@@ -124,6 +128,8 @@ namespace WmsBackend.Models.WmsCore
         public string? Status { get; set; }
         public virtual InboundReceiptHeader? ReceiptHeader { get; set; }
         public virtual Item? Item { get; set; }
+        public virtual ErpPurchaseOrderLine? PoLine { get; set; }
+        public virtual Uom? Uom { get; set; }
     }
 
     [Table("Reservation", Schema = "wms_core")]
@@ -151,6 +157,7 @@ namespace WmsBackend.Models.WmsCore
     [Table("PickTask", Schema = "wms_core")]
     public class PickTask : AuditEntity {
         [Key] public long Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string TaskNo { get; set; } = string.Empty;
         public int ItemId { get; set; }
         public int? SoLineId { get; set; }
@@ -171,6 +178,7 @@ namespace WmsBackend.Models.WmsCore
     [Table("PutawayTask", Schema = "wms_core")]
     public class PutawayTask : AuditEntity {
         [Key] public long Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string TaskNo { get; set; } = string.Empty;
         public int ItemId { get; set; }
         public int? ReceiptHeaderId { get; set; }
@@ -189,6 +197,7 @@ namespace WmsBackend.Models.WmsCore
     [Table("ShipmentHeader", Schema = "wms_core")]
     public class ShipmentHeader : AuditEntity {
         [Key] public int Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string ShipmentCode { get; set; } = string.Empty;
         public int WarehouseId { get; set; }
         public string Status { get; set; } = "New";
@@ -208,6 +217,7 @@ namespace WmsBackend.Models.WmsCore
     [Table("WavePicking", Schema = "wms_core")]
     public class WavePicking : AuditEntity {
         [Key] public int Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string WaveNo { get; set; } = string.Empty;
         public int WarehouseId { get; set; }
         public string Status { get; set; } = "New";

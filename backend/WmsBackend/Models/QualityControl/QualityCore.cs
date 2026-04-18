@@ -8,6 +8,7 @@ namespace WmsBackend.Models.QualityControl
     [Table("QualityOrder", Schema = "quality_control")]
     public class QualityOrder : AuditEntity {
         [Key] public int Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string QualityOrderNo { get; set; } = string.Empty;
         public int ItemId { get; set; }
         public int? DraftLineId { get; set; }
@@ -48,6 +49,7 @@ namespace WmsBackend.Models.QualityControl
     [Table("CycleCountSession", Schema = "quality_control")]
     public class CycleCountSession : AuditEntity {
         [Key] public int Id { get; set; }
+        [StringLength(100)] public string? IdempotencyKey { get; set; }
         [Required, StringLength(100)] public string SessionNo { get; set; } = string.Empty;
         public int? ZoneId { get; set; }
         public string Status { get; set; } = "Active";
