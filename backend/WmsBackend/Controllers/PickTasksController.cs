@@ -11,72 +11,43 @@ namespace WmsBackend.Controllers
     {
         private readonly WmsDbContext _context;
 
-        public PickTasksController(WmsDbContext context)
+        public PickTasksController(WmsDbContext context) => _context = context;
+
+        // GET: api/PickTasks/Pending?warehouseId=1
+        [HttpGet("Pending")]
+        public async Task<ActionResult> GetPendingTasks(int warehouseId)
         {
-            _context = context;
+            // Tận dụng Global Query Filter (Status != Deleted)
+            return Ok(await _context.PickTasks
+                .Include(t => t.Item)
+                .Include(t => t.SuggestedLocation)
+                .Where(t => t.Status == "Pending")
+                .ToListAsync());
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PickTask>>> GetPickTasks()
-        {
-            return await _context.PickTasks
-                .Include(p => p.SoLine)
-                .Include(p => p.SuggestedLocation)
-                .Include(p => p.Item)
-                .ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PickTask>> GetPickTask(long id)
-        {
-            var task = await _context.PickTasks
-                .Include(p => p.SoLine)
-                .Include(p => p.SuggestedLocation)
-                .Include(p => p.Item)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (task == null) return NotFound();
-            return task;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<PickTask>> PostPickTask(PickTask task)
-        {
-            _context.PickTasks.Add(task);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetPickTask), new { id = task.Id }, task);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPickTask(long id, PickTask task)
-        {
-            if (id != task.Id) return BadRequest();
-            _context.Entry(task).State = EntityState.Modified;
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PickTaskExists(id)) return NotFound();
-                throw;
-            }
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePickTask(long id)
+        // PUT: api/PickTasks/5/Confirm
+        [HttpPut("{id}/Confirm")]
+        public async Task<IActionResult> ConfirmPick(long id, [FromBody] decimal actualQty, int userId)
         {
             var task = await _context.PickTasks.FindAsync(id);
             if (task == null) return NotFound();
-            _context.PickTasks.Remove(task);
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
 
-        private bool PickTaskExists(long id)
-        {
-            return _context.PickTasks.Any(e => e.Id == id);
+            if (task.Status == "Completed") return BadRequest("Task đã hoàn thành trước đó.");
+
+            try 
+            {
+                task.PickedQty = actualQty;
+                task.Status = "Completed";
+                task.CompletedBy = userId;
+                task.CompletedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Xác nhận nhặt hàng thành công" });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict("Dữ liệu đã bị thay đổi bởi người khác. Vui lòng tải lại trang.");
+            }
         }
     }
 }

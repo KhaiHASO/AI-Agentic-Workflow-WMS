@@ -10,16 +10,32 @@ namespace WmsBackend.Controllers
     public class InventoryController : ControllerBase
     {
         private readonly WmsDbContext _context;
-        public InventoryController(WmsDbContext context) { _context = context; }
 
-        [HttpGet] 
-        public async Task<ActionResult<IEnumerable<InventoryOnHand>>> Get() => 
-            await _context.InventoryOnHands
+        public InventoryController(WmsDbContext context) => _context = context;
+
+        // GET: api/Inventory/OnHand?warehouseId=1&itemId=5
+        [HttpGet("OnHand")]
+        public async Task<ActionResult> GetOnHand(int warehouseId, int? itemId)
+        {
+            var query = _context.InventoryOnHands
                 .Include(i => i.Item)
-                .Include(i => i.InventoryStatus)
                 .Include(i => i.Location)
-                .ToListAsync();
+                .Where(i => i.WarehouseId == warehouseId);
 
-        [HttpPost] public async Task<ActionResult<InventoryOnHand>> Post(InventoryOnHand inventory) { _context.InventoryOnHands.Add(inventory); await _context.SaveChangesAsync(); return Ok(inventory); }
+            if (itemId.HasValue) query = query.Where(i => i.ItemId == itemId);
+
+            return Ok(await query.ToListAsync());
+        }
+
+        // GET: api/Inventory/Ledger?itemId=5
+        [HttpGet("Ledger")]
+        public async Task<ActionResult> GetLedger(int itemId)
+        {
+            return Ok(await _context.InventoryLedgers
+                .Where(l => l.ItemId == itemId)
+                .OrderByDescending(l => l.Timestamp)
+                .Take(100)
+                .ToListAsync());
+        }
     }
 }

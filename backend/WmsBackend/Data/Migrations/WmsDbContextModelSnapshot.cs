@@ -241,6 +241,50 @@ namespace WmsBackend.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpDocumentStatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DocumentNo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NewStatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OldStatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ErpDocumentStatusHistory", "erp_stage");
+                });
+
             modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpPurchaseOrderHeader", b =>
                 {
                     b.Property<int>("Id")
@@ -252,31 +296,39 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ErpStatus")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("ExpectedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ErpStatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PoNumber")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<int?>("SupplierId")
                         .HasColumnType("int");
 
-                    b.Property<string>("VersionHash")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ErpStatus");
-
-                    b.HasIndex("ExpectedDate");
+                    b.HasIndex("PoNumber")
+                        .IsUnique();
 
                     b.HasIndex("SupplierId");
 
@@ -293,10 +345,13 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ItemId")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("LineNo")
+                    b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("OpenQty")
@@ -310,7 +365,18 @@ namespace WmsBackend.Data.Migrations
                     b.Property<int>("PoHeaderId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -324,6 +390,51 @@ namespace WmsBackend.Data.Migrations
                     b.ToTable("ErpPurchaseOrderLine", "erp_stage");
                 });
 
+            modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpReferenceMap", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EntityType")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ErpSystem")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("LocalId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ErpReferenceMap", "erp_stage");
+                });
+
             modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpSalesOrderHeader", b =>
                 {
                     b.Property<int>("Id")
@@ -335,22 +446,31 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("ErpStatus")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("ExpectedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("SoNumber")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("VersionHash")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
@@ -359,9 +479,8 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("ErpStatus");
-
-                    b.HasIndex("ExpectedDate");
+                    b.HasIndex("SoNumber")
+                        .IsUnique();
 
                     b.HasIndex("WarehouseId");
 
@@ -376,10 +495,13 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ItemId")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("LineNo")
+                    b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("OpenQty")
@@ -390,10 +512,21 @@ namespace WmsBackend.Data.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<int>("SoHeaderId")
                         .HasColumnType("int");
 
                     b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -407,44 +540,89 @@ namespace WmsBackend.Data.Migrations
                     b.ToTable("ErpSalesOrderLine", "erp_stage");
                 });
 
-            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.ApiCallLog", b =>
+            modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpSyncError", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("CorrelationId")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Endpoint")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Method")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("RequestPayload")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResponsePayload")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StatusCode")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Timestamp")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RawPayload")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SyncRunId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApiCallLog", "integration_audit");
+                    b.HasIndex("SyncRunId");
+
+                    b.ToTable("ErpSyncError", "erp_stage");
                 });
 
-            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.IntegrationOutbox", b =>
+            modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpSyncRun", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ErpSyncRun", "erp_stage");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.ApiCallLog", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -455,8 +633,103 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ErrorMessage")
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Endpoint")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Method")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("StatusCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiCallLog", "integration_audit");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.AuditLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Action")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EntityId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EntityName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuditLog", "integration_audit");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.IntegrationInbox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("IdempotencyKey")
                         .IsRequired()
@@ -464,8 +737,52 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("MessageType")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Payload")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IntegrationInbox", "integration_audit");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.IntegrationOutbox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IdempotencyKey")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("MessageType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Payload")
                         .HasColumnType("nvarchar(max)");
@@ -473,18 +790,22 @@ namespace WmsBackend.Data.Migrations
                     b.Property<int>("RetryCount")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
-                    b.HasIndex("IdempotencyKey")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("IntegrationOutbox", "integration_audit");
                 });
@@ -499,16 +820,23 @@ namespace WmsBackend.Data.Migrations
 
                     b.Property<string>("Barcode")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClientTxnId")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("LocationCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<DateTime>("ScanTime")
                         .HasColumnType("datetime2");
@@ -517,13 +845,16 @@ namespace WmsBackend.Data.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientTxnId")
-                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -546,18 +877,71 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Customer", "mdm");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.Mdm.DispositionCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Customer", "mdm");
+                    b.ToTable("DispositionCode", "mdm");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.Mdm.InventoryStatus", b =>
@@ -568,15 +952,35 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsAllocatable")
                         .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("StatusCode")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StatusCode")
+                        .IsUnique();
 
                     b.ToTable("InventoryStatus", "mdm");
                 });
@@ -589,7 +993,13 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BaseUomId")
+                    b.Property<int>("BaseUomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsLotControlled")
@@ -604,28 +1014,29 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PickStrategy")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShelfLifeDays")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BaseUomId");
-
-                    b.HasIndex("ItemCode")
-                        .IsUnique();
 
                     b.ToTable("Item", "mdm");
                 });
@@ -640,17 +1051,30 @@ namespace WmsBackend.Data.Migrations
 
                     b.Property<string>("Barcode")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("BarcodeType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -662,6 +1086,54 @@ namespace WmsBackend.Data.Migrations
                     b.ToTable("ItemBarcode", "mdm");
                 });
 
+            modelBuilder.Entity("WmsBackend.Models.Mdm.ItemWarehousePolicy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MaxStock")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("MinStock")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("ItemWarehousePolicy", "mdm");
+                });
+
             modelBuilder.Entity("WmsBackend.Models.Mdm.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -671,33 +1143,45 @@ namespace WmsBackend.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Aisle")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Bin")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<string>("Level")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ProfileId")
                         .HasColumnType("int");
 
                     b.Property<string>("Rack")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
@@ -709,11 +1193,9 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.HasIndex("WarehouseId");
-
                     b.HasIndex("ZoneId");
 
-                    b.HasIndex("Code", "WarehouseId")
+                    b.HasIndex("WarehouseId", "Code")
                         .IsUnique();
 
                     b.ToTable("Location", "mdm");
@@ -727,28 +1209,75 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("AllowMixedItems")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("AllowMixedLots")
-                        .HasColumnType("bit");
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
 
-                    b.Property<decimal?>("MaxVolume")
+                    b.Property<decimal>("MaxVolume")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal?>("MaxWeight")
+                    b.Property<decimal>("MaxWeight")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<string>("ProfileCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("LocationProfile", "mdm");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.Mdm.Owner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Owner", "mdm");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.Mdm.ReasonCode", b =>
@@ -764,15 +1293,30 @@ namespace WmsBackend.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Type")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("ReasonCode", "mdm");
                 });
@@ -793,16 +1337,31 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Supplier", "mdm");
                 });
@@ -823,11 +1382,31 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Uom", "mdm");
                 });
@@ -844,24 +1423,79 @@ namespace WmsBackend.Data.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<int>("FromUomId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("ToUomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FromUomId");
 
-                    b.HasIndex("ItemId");
-
                     b.HasIndex("ToUomId");
 
                     b.ToTable("UomConversion", "mdm");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.Mdm.UserDevice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDevice", "mdm");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.Mdm.Warehouse", b =>
@@ -872,24 +1506,39 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Warehouse", "mdm");
                 });
@@ -902,6 +1551,23 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
 
@@ -911,17 +1577,56 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ZoneType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("WarehouseId");
 
-                    b.HasIndex("ZoneCode", "WarehouseId")
-                        .IsUnique();
-
                     b.ToTable("Zone", "mdm");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.CountAdjustmentApproval", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApproverId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("CountAdjustmentApproval", "quality_control");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountLine", b =>
@@ -936,27 +1641,39 @@ namespace WmsBackend.Data.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("LotNo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("SessionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("SystemQty")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Variance")
                         .ValueGeneratedOnAddOrUpdate()
@@ -975,6 +1692,96 @@ namespace WmsBackend.Data.Migrations
                     b.ToTable("CycleCountLine", "quality_control");
                 });
 
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlanName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("ScheduledDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("CycleCountPlan", "quality_control");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CycleCountLineId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CycleCountLineId");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("CycleCountReview", "quality_control");
+                });
+
             modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountSession", b =>
                 {
                     b.Property<int>("Id")
@@ -986,9 +1793,13 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("SessionNo")
                         .IsRequired()
@@ -997,17 +1808,64 @@ namespace WmsBackend.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ZoneId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SessionNo")
+                        .IsUnique();
+
                     b.HasIndex("ZoneId");
 
                     b.ToTable("CycleCountSession", "quality_control");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.QualityCheckResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QualityOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QualityOrderId");
+
+                    b.ToTable("QualityCheckResult", "quality_control");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.QualityControl.QualityOrder", b =>
@@ -1021,29 +1879,38 @@ namespace WmsBackend.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<int?>("DraftLineId")
                         .HasColumnType("int");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<string>("LotNo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<decimal>("Qty")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<string>("QualityOrderId")
+                    b.Property<string>("QualityOrderNo")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1051,7 +1918,185 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasIndex("ItemId");
 
+                    b.HasIndex("QualityOrderNo")
+                        .IsUnique();
+
                     b.ToTable("QualityOrder", "quality_control");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.QuarantineOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReasonCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReasonCodeId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("QuarantineOrder", "quality_control");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.Allocation", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<long>("ReservationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("Allocation", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.BackorderTracking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BackorderQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SoLineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SoLineId");
+
+                    b.ToTable("BackorderTracking", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.CrossDockingOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InboundReceiptId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OutboundShipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InboundReceiptId");
+
+                    b.HasIndex("OutboundShipmentId");
+
+                    b.ToTable("CrossDockingOrder", "wms_core");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.DraftLine", b =>
@@ -1066,18 +2111,220 @@ namespace WmsBackend.Data.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<int?>("AssignedTo")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CompletedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CompletedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<decimal>("ExpectedQty")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("HoldQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PoLineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceiptHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ReceivedQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<decimal>("RejectedQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("ReceiptHeaderId");
+
+                    b.ToTable("DraftLine", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.HandlingUnit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HuBarcode")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("HandlingUnit", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.HandlingUnitContent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HandlingUnitId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HandlingUnitId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("HandlingUnitContent", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.InboundReceiptHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiptNo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiptNo")
+                        .IsUnique();
+
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("InboundReceiptHeader", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.InboundReceiptLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AcceptedQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("HoldQty")
                         .HasPrecision(18, 4)
@@ -1109,12 +2356,19 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SubstituteItemId")
                         .HasColumnType("int");
 
                     b.Property<int?>("UomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1127,14 +2381,12 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasIndex("ReceiptHeaderId");
 
-                    b.HasIndex("SubstituteItemId");
-
                     b.HasIndex("UomId");
 
-                    b.ToTable("DraftLine", "wms_core");
+                    b.ToTable("InboundReceiptLine", "wms_core");
                 });
 
-            modelBuilder.Entity("WmsBackend.Models.WmsCore.HandlingUnit", b =>
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.InternalTransfer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1142,66 +2394,126 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("LicensePlate")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("LocationId")
+                    b.Property<int?>("ApprovedBy")
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("HandlingUnit", "wms_core");
-                });
-
-            modelBuilder.Entity("WmsBackend.Models.WmsCore.InboundReceiptHeader", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ReceiptNo")
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int?>("ReasonCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ToLocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TransferNo")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("SupplierId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VehicleNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("WarehouseId")
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedAt");
+                    b.HasIndex("FromLocationId");
 
-                    b.HasIndex("Status");
+                    b.HasIndex("ItemId");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("ReasonCodeId");
 
-                    b.HasIndex("WarehouseId");
+                    b.HasIndex("ToLocationId");
 
-                    b.ToTable("InboundReceiptHeader", "wms_core");
+                    b.HasIndex("TransferNo")
+                        .IsUnique();
+
+                    b.ToTable("InternalTransfer", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.InventoryAdjustment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AdjustedQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int?>("ApprovedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ApproverId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReasonCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApproverId");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("ReasonCodeId");
+
+                    b.ToTable("InventoryAdjustment", "wms_core");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.InventoryLedger", b =>
@@ -1212,9 +2524,11 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int?>("FromLocationId")
                         .HasColumnType("int");
@@ -1222,17 +2536,17 @@ namespace WmsBackend.Data.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<string>("LotNo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<decimal>("Qty")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("SourceDocId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -1242,8 +2556,13 @@ namespace WmsBackend.Data.Migrations
 
                     b.Property<string>("TransactionType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1264,9 +2583,19 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<decimal>("AllocatedQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<decimal>("AvailableQty")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int?>("HandlingUnitId")
                         .HasColumnType("int");
@@ -1281,9 +2610,10 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LotNo")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("ReservedQty")
                         .HasPrecision(18, 4)
@@ -1295,12 +2625,13 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("rowversion");
 
                     b.Property<string>("SerialNumber")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
@@ -1315,15 +2646,12 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("WarehouseId", "LocationId", "ItemId", "LotNo", "SerialNumber", "InventoryStatusId")
-                        .IsUnique()
-                        .HasDatabaseName("UQ_InventoryOnHand_NoHU")
-                        .HasFilter("[HandlingUnitId] IS NULL");
+                    b.HasIndex("OwnerId");
 
-                    b.HasIndex("WarehouseId", "LocationId", "ItemId", "LotNo", "SerialNumber", "HandlingUnitId", "InventoryStatusId")
+                    b.HasIndex("WarehouseId", "LocationId", "ItemId", "OwnerId", "LotNo", "SerialNumber", "HandlingUnitId", "InventoryStatusId")
                         .IsUnique()
-                        .HasDatabaseName("UQ_InventoryOnHand_WithHU")
-                        .HasFilter("[HandlingUnitId] IS NOT NULL");
+                        .HasDatabaseName("UQ_Inventory_Dimension_Master")
+                        .HasFilter("[OwnerId] IS NOT NULL AND [LotNo] IS NOT NULL AND [SerialNumber] IS NOT NULL AND [HandlingUnitId] IS NOT NULL");
 
                     b.ToTable("InventoryOnHand", "wms_core");
                 });
@@ -1339,10 +2667,19 @@ namespace WmsBackend.Data.Migrations
                     b.Property<int?>("AssignedTo")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AssignedUserId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("CompletedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<int>("ItemId")
@@ -1355,16 +2692,21 @@ namespace WmsBackend.Data.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal?>("RequestedQty")
+                    b.Property<decimal>("RequestedQty")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int?>("SoLineId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SuggestedLocationId")
                         .HasColumnType("int");
@@ -1374,19 +2716,24 @@ namespace WmsBackend.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedTo");
-
-                    b.HasIndex("CompletedBy");
+                    b.HasIndex("AssignedUserId");
 
                     b.HasIndex("ItemId");
 
                     b.HasIndex("SoLineId");
 
-                    b.HasIndex("Status");
-
                     b.HasIndex("SuggestedLocationId");
+
+                    b.HasIndex("TaskNo")
+                        .IsUnique();
 
                     b.ToTable("PickTask", "wms_core");
                 });
@@ -1402,10 +2749,13 @@ namespace WmsBackend.Data.Migrations
                     b.Property<int?>("AssignedTo")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CompletedAt")
+                    b.Property<int?>("AssignedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CompletedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<int?>("HandlingUnitId")
@@ -1414,16 +2764,21 @@ namespace WmsBackend.Data.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Quantity")
+                    b.Property<decimal>("Quantity")
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("ReceiptHeaderId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TargetLocationId")
                         .HasColumnType("int");
@@ -1433,11 +2788,15 @@ namespace WmsBackend.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedTo");
-
-                    b.HasIndex("CompletedBy");
+                    b.HasIndex("AssignedUserId");
 
                     b.HasIndex("HandlingUnitId");
 
@@ -1445,11 +2804,156 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasIndex("ReceiptHeaderId");
 
-                    b.HasIndex("Status");
-
                     b.HasIndex("TargetLocationId");
 
+                    b.HasIndex("TaskNo")
+                        .IsUnique();
+
                     b.ToTable("PutawayTask", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.Reservation", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DemandSourceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DemandSourceType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("InventoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventoryId");
+
+                    b.ToTable("Reservation", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.ReturnReceiptHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReturnNo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReturnNo")
+                        .IsUnique();
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("ReturnReceiptHeader", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.ReturnReceiptLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Qty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("ReturnHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("ReturnHeaderId");
+
+                    b.ToTable("ReturnReceiptLine", "wms_core");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.ShipmentHeader", b =>
@@ -1460,14 +2964,16 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Carrier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Dock")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("ShipmentCode")
                         .IsRequired()
@@ -1476,19 +2982,21 @@ namespace WmsBackend.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("VehicleNo")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedDate");
-
-                    b.HasIndex("Status");
+                    b.HasIndex("ShipmentCode")
+                        .IsUnique();
 
                     b.HasIndex("WarehouseId");
 
@@ -1503,8 +3011,19 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
                     b.Property<long?>("PickTaskId")
                         .HasColumnType("bigint");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("ShipmentHeaderId")
                         .HasColumnType("int");
@@ -1513,7 +3032,10 @@ namespace WmsBackend.Data.Migrations
                         .HasPrecision(18, 4)
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<int?>("SoLineId")
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1533,14 +3055,115 @@ namespace WmsBackend.Data.Migrations
                     b.Property<int>("WarehouseId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("AssignedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "WarehouseId");
 
                     b.HasIndex("WarehouseId");
 
                     b.ToTable("UserWarehouseMapping", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.WavePicking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WaveNo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.HasIndex("WaveNo")
+                        .IsUnique();
+
+                    b.ToTable("WavePicking", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.WavePickingLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<long>("PickTaskId")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WavePickingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PickTaskId");
+
+                    b.HasIndex("WavePickingId");
+
+                    b.ToTable("WavePickingLine", "wms_core");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -1620,7 +3243,7 @@ namespace WmsBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WmsBackend.Models.ErpStage.ErpPurchaseOrderHeader", "PoHeader")
+                    b.HasOne("WmsBackend.Models.ErpStage.ErpPurchaseOrderHeader", "Header")
                         .WithMany("Lines")
                         .HasForeignKey("PoHeaderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1631,9 +3254,9 @@ namespace WmsBackend.Data.Migrations
                         .HasForeignKey("UomId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Item");
+                    b.Navigation("Header");
 
-                    b.Navigation("PoHeader");
+                    b.Navigation("Item");
 
                     b.Navigation("Uom");
                 });
@@ -1664,7 +3287,7 @@ namespace WmsBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WmsBackend.Models.ErpStage.ErpSalesOrderHeader", "SoHeader")
+                    b.HasOne("WmsBackend.Models.ErpStage.ErpSalesOrderHeader", "Header")
                         .WithMany("Lines")
                         .HasForeignKey("SoHeaderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1675,11 +3298,33 @@ namespace WmsBackend.Data.Migrations
                         .HasForeignKey("UomId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.Navigation("Header");
+
                     b.Navigation("Item");
 
-                    b.Navigation("SoHeader");
-
                     b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpSyncError", b =>
+                {
+                    b.HasOne("WmsBackend.Models.ErpStage.ErpSyncRun", "SyncRun")
+                        .WithMany()
+                        .HasForeignKey("SyncRunId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SyncRun");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.AuditLog", b =>
+                {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.MobileScanEvent", b =>
@@ -1697,7 +3342,8 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "BaseUom")
                         .WithMany()
                         .HasForeignKey("BaseUomId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("BaseUom");
                 });
@@ -1718,6 +3364,25 @@ namespace WmsBackend.Data.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.Mdm.ItemWarehousePolicy", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.Mdm.Location", b =>
@@ -1753,11 +3418,6 @@ namespace WmsBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "ToUom")
                         .WithMany()
                         .HasForeignKey("ToUomId")
@@ -1766,9 +3426,18 @@ namespace WmsBackend.Data.Migrations
 
                     b.Navigation("FromUom");
 
-                    b.Navigation("Item");
-
                     b.Navigation("ToUom");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.Mdm.UserDevice", b =>
+                {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.Mdm.Zone", b =>
@@ -1780,6 +3449,25 @@ namespace WmsBackend.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.CountAdjustmentApproval", b =>
+                {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApproverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.QualityControl.CycleCountReview", "Review")
+                        .WithMany()
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Approver");
+
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountLine", b =>
@@ -1809,6 +3497,36 @@ namespace WmsBackend.Data.Migrations
                     b.Navigation("Session");
                 });
 
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountPlan", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountReview", b =>
+                {
+                    b.HasOne("WmsBackend.Models.QualityControl.CycleCountLine", "CycleCountLine")
+                        .WithMany()
+                        .HasForeignKey("CycleCountLineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "Reviewer")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CycleCountLine");
+
+                    b.Navigation("Reviewer");
+                });
+
             modelBuilder.Entity("WmsBackend.Models.QualityControl.CycleCountSession", b =>
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Zone", "Zone")
@@ -1817,6 +3535,17 @@ namespace WmsBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.QualityCheckResult", b =>
+                {
+                    b.HasOne("WmsBackend.Models.QualityControl.QualityOrder", "QualityOrder")
+                        .WithMany()
+                        .HasForeignKey("QualityOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("QualityOrder");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.QualityControl.QualityOrder", b =>
@@ -1837,6 +3566,73 @@ namespace WmsBackend.Data.Migrations
                     b.Navigation("Item");
                 });
 
+            modelBuilder.Entity("WmsBackend.Models.QualityControl.QuarantineOrder", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.ReasonCode", "ReasonCode")
+                        .WithMany()
+                        .HasForeignKey("ReasonCodeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ReasonCode");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.Allocation", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.WmsCore.Reservation", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.BackorderTracking", b =>
+                {
+                    b.HasOne("WmsBackend.Models.ErpStage.ErpSalesOrderLine", "SoLine")
+                        .WithMany()
+                        .HasForeignKey("SoLineId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SoLine");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.CrossDockingOrder", b =>
+                {
+                    b.HasOne("WmsBackend.Models.WmsCore.InboundReceiptHeader", "InboundReceipt")
+                        .WithMany()
+                        .HasForeignKey("InboundReceiptId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.WmsCore.ShipmentHeader", "OutboundShipment")
+                        .WithMany()
+                        .HasForeignKey("OutboundShipmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("InboundReceipt");
+
+                    b.Navigation("OutboundShipment");
+                });
+
             modelBuilder.Entity("WmsBackend.Models.WmsCore.DraftLine", b =>
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
@@ -1845,43 +3641,15 @@ namespace WmsBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WmsBackend.Models.ErpStage.ErpPurchaseOrderLine", "PoLine")
-                        .WithMany()
-                        .HasForeignKey("PoLineId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("WmsBackend.Models.Mdm.ReasonCode", "ReasonCode")
-                        .WithMany()
-                        .HasForeignKey("ReasonCodeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("WmsBackend.Models.WmsCore.InboundReceiptHeader", "ReceiptHeader")
                         .WithMany("Lines")
                         .HasForeignKey("ReceiptHeaderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WmsBackend.Models.Mdm.Item", "SubstituteItem")
-                        .WithMany()
-                        .HasForeignKey("SubstituteItemId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("WmsBackend.Models.Mdm.Uom", "Uom")
-                        .WithMany()
-                        .HasForeignKey("UomId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Item");
 
-                    b.Navigation("PoLine");
-
-                    b.Navigation("ReasonCode");
-
                     b.Navigation("ReceiptHeader");
-
-                    b.Navigation("SubstituteItem");
-
-                    b.Navigation("Uom");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.HandlingUnit", b =>
@@ -1892,6 +3660,25 @@ namespace WmsBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.HandlingUnitContent", b =>
+                {
+                    b.HasOne("WmsBackend.Models.WmsCore.HandlingUnit", "HandlingUnit")
+                        .WithMany()
+                        .HasForeignKey("HandlingUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("HandlingUnit");
+
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.InboundReceiptHeader", b =>
@@ -1910,6 +3697,113 @@ namespace WmsBackend.Data.Migrations
                     b.Navigation("Supplier");
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.InboundReceiptLine", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.ErpStage.ErpPurchaseOrderLine", "PoLine")
+                        .WithMany()
+                        .HasForeignKey("PoLineId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.Mdm.ReasonCode", "ReasonCode")
+                        .WithMany()
+                        .HasForeignKey("ReasonCodeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.WmsCore.InboundReceiptHeader", "ReceiptHeader")
+                        .WithMany("InboundLines")
+                        .HasForeignKey("ReceiptHeaderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.Uom", "Uom")
+                        .WithMany()
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Item");
+
+                    b.Navigation("PoLine");
+
+                    b.Navigation("ReasonCode");
+
+                    b.Navigation("ReceiptHeader");
+
+                    b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.InternalTransfer", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Location", "FromLocation")
+                        .WithMany()
+                        .HasForeignKey("FromLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.ReasonCode", "ReasonCode")
+                        .WithMany()
+                        .HasForeignKey("ReasonCodeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.Mdm.Location", "ToLocation")
+                        .WithMany()
+                        .HasForeignKey("ToLocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FromLocation");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("ReasonCode");
+
+                    b.Navigation("ToLocation");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.InventoryAdjustment", b =>
+                {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApproverId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.ReasonCode", "ReasonCode")
+                        .WithMany()
+                        .HasForeignKey("ReasonCodeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Approver");
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("ReasonCode");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.InventoryLedger", b =>
@@ -1962,6 +3856,11 @@ namespace WmsBackend.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("WmsBackend.Models.Mdm.Owner", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
@@ -1976,18 +3875,17 @@ namespace WmsBackend.Data.Migrations
 
                     b.Navigation("Location");
 
+                    b.Navigation("Owner");
+
                     b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.PickTask", b =>
                 {
-                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "AssignedUser")
                         .WithMany()
-                        .HasForeignKey("AssignedTo");
-
-                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("CompletedBy");
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
@@ -2005,6 +3903,8 @@ namespace WmsBackend.Data.Migrations
                         .HasForeignKey("SuggestedLocationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.Navigation("AssignedUser");
+
                     b.Navigation("Item");
 
                     b.Navigation("SoLine");
@@ -2014,13 +3914,10 @@ namespace WmsBackend.Data.Migrations
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.PutawayTask", b =>
                 {
-                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "AssignedUser")
                         .WithMany()
-                        .HasForeignKey("AssignedTo");
-
-                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("CompletedBy");
+                        .HasForeignKey("AssignedUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.WmsCore.HandlingUnit", "HandlingUnit")
                         .WithMany()
@@ -2043,6 +3940,8 @@ namespace WmsBackend.Data.Migrations
                         .HasForeignKey("TargetLocationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.Navigation("AssignedUser");
+
                     b.Navigation("HandlingUnit");
 
                     b.Navigation("Item");
@@ -2050,6 +3949,47 @@ namespace WmsBackend.Data.Migrations
                     b.Navigation("ReceiptHeader");
 
                     b.Navigation("TargetLocation");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.Reservation", b =>
+                {
+                    b.HasOne("WmsBackend.Models.WmsCore.InventoryOnHand", "Inventory")
+                        .WithMany()
+                        .HasForeignKey("InventoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Inventory");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.ReturnReceiptHeader", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.ReturnReceiptLine", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.WmsCore.ReturnReceiptHeader", "ReturnHeader")
+                        .WithMany()
+                        .HasForeignKey("ReturnHeaderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("ReturnHeader");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.ShipmentHeader", b =>
@@ -2083,6 +4023,25 @@ namespace WmsBackend.Data.Migrations
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.UserWarehouseMapping", b =>
                 {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.WavePicking", b =>
+                {
                     b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
@@ -2090,6 +4049,25 @@ namespace WmsBackend.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.WavePickingLine", b =>
+                {
+                    b.HasOne("WmsBackend.Models.WmsCore.PickTask", "PickTask")
+                        .WithMany()
+                        .HasForeignKey("PickTaskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WmsBackend.Models.WmsCore.WavePicking", "WavePicking")
+                        .WithMany()
+                        .HasForeignKey("WavePickingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PickTask");
+
+                    b.Navigation("WavePicking");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpPurchaseOrderHeader", b =>
@@ -2109,6 +4087,8 @@ namespace WmsBackend.Data.Migrations
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.InboundReceiptHeader", b =>
                 {
+                    b.Navigation("InboundLines");
+
                     b.Navigation("Lines");
                 });
 #pragma warning restore 612, 618

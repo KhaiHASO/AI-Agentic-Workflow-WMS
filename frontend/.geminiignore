@@ -1,0 +1,13 @@
+node_modules/
+.next/
+dist/
+build/
+public/images/
+public/assets/
+assets/images/
+assets/fonts/
+img/
+fonts/
+*.zip
+*.map
+package-lock.json
