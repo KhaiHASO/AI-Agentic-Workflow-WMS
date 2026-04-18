@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WmsBackend.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentityTables : Migration
+    public partial class WmsDb_V1_Final_Architect : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -154,33 +154,14 @@ namespace WmsBackend.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProfileCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    MaxWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    MaxVolume = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MaxWeight = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: true),
+                    MaxVolume = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: true),
                     AllowMixedItems = table.Column<bool>(type: "bit", nullable: false),
                     AllowMixedLots = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LocationProfile", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MobileScanEvent",
-                schema: "integration_audit",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ClientTxnId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Barcode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ScannedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    LocationCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ScanTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MobileScanEvent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -197,25 +178,6 @@ namespace WmsBackend.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReasonCode", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShipmentHeader",
-                schema: "wms_core",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ShipmentCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Carrier = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    VehicleNo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Dock = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShipmentHeader", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,7 +248,7 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,7 +269,7 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -327,7 +289,7 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -345,13 +307,13 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -371,81 +333,32 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ErpSalesOrderHeader",
-                schema: "erp_stage",
+                name: "MobileScanEvent",
+                schema: "integration_audit",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SoNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true),
-                    ExpectedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ErpStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    VersionHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ClientTxnId = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Barcode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ScannedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: true),
+                    LocationCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    ScanTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ErpSalesOrderHeader", x => x.Id);
+                    table.PrimaryKey("PK_MobileScanEvent", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ErpSalesOrderHeader_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "mdm",
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ErpPurchaseOrderHeader",
-                schema: "erp_stage",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PoNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: true),
-                    ExpectedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ErpStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    VersionHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ErpPurchaseOrderHeader", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ErpPurchaseOrderHeader_Supplier_SupplierId",
-                        column: x => x.SupplierId,
-                        principalSchema: "mdm",
-                        principalTable: "Supplier",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InboundReceiptHeader",
-                schema: "wms_core",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReceiptNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: true),
-                    VehicleNo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InboundReceiptHeader", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InboundReceiptHeader_Supplier_SupplierId",
-                        column: x => x.SupplierId,
-                        principalSchema: "mdm",
-                        principalTable: "Supplier",
-                        principalColumn: "Id");
+                        name: "FK_MobileScanEvent_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -472,7 +385,157 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.BaseUomId,
                         principalSchema: "mdm",
                         principalTable: "Uom",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ErpPurchaseOrderHeader",
+                schema: "erp_stage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PoNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SupplierId = table.Column<int>(type: "int", nullable: true),
+                    WarehouseId = table.Column<int>(type: "int", nullable: false),
+                    ExpectedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ErpStatus = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    VersionHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ErpPurchaseOrderHeader", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ErpPurchaseOrderHeader_Supplier_SupplierId",
+                        column: x => x.SupplierId,
+                        principalSchema: "mdm",
+                        principalTable: "Supplier",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ErpPurchaseOrderHeader_Warehouse_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalSchema: "mdm",
+                        principalTable: "Warehouse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ErpSalesOrderHeader",
+                schema: "erp_stage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SoNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    WarehouseId = table.Column<int>(type: "int", nullable: false),
+                    ExpectedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ErpStatus = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    VersionHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ErpSalesOrderHeader", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ErpSalesOrderHeader_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalSchema: "mdm",
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ErpSalesOrderHeader_Warehouse_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalSchema: "mdm",
+                        principalTable: "Warehouse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InboundReceiptHeader",
+                schema: "wms_core",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceiptNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SupplierId = table.Column<int>(type: "int", nullable: true),
+                    WarehouseId = table.Column<int>(type: "int", nullable: false),
+                    VehicleNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InboundReceiptHeader", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InboundReceiptHeader_Supplier_SupplierId",
+                        column: x => x.SupplierId,
+                        principalSchema: "mdm",
+                        principalTable: "Supplier",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_InboundReceiptHeader_Warehouse_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalSchema: "mdm",
+                        principalTable: "Warehouse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShipmentHeader",
+                schema: "wms_core",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShipmentCode = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    WarehouseId = table.Column<int>(type: "int", nullable: false),
+                    Carrier = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VehicleNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Dock = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShipmentHeader", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShipmentHeader_Warehouse_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalSchema: "mdm",
+                        principalTable: "Warehouse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserWarehouseMapping",
+                schema: "wms_core",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    WarehouseId = table.Column<int>(type: "int", nullable: false),
+                    AssignedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserWarehouseMapping", x => new { x.UserId, x.WarehouseId });
+                    table.ForeignKey(
+                        name: "FK_UserWarehouseMapping_Warehouse_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalSchema: "mdm",
+                        principalTable: "Warehouse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -495,85 +558,7 @@ namespace WmsBackend.Data.Migrations
                         principalSchema: "mdm",
                         principalTable: "Warehouse",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ErpPurchaseOrderLine",
-                schema: "erp_stage",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PoHeaderId = table.Column<int>(type: "int", nullable: false),
-                    LineNo = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    UomId = table.Column<int>(type: "int", nullable: true),
-                    OrderedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OpenQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ErpPurchaseOrderLine", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ErpPurchaseOrderLine_ErpPurchaseOrderHeader_PoHeaderId",
-                        column: x => x.PoHeaderId,
-                        principalSchema: "erp_stage",
-                        principalTable: "ErpPurchaseOrderHeader",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ErpPurchaseOrderLine_Item_ItemId",
-                        column: x => x.ItemId,
-                        principalSchema: "mdm",
-                        principalTable: "Item",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ErpPurchaseOrderLine_Uom_UomId",
-                        column: x => x.UomId,
-                        principalSchema: "mdm",
-                        principalTable: "Uom",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ErpSalesOrderLine",
-                schema: "erp_stage",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SoHeaderId = table.Column<int>(type: "int", nullable: false),
-                    LineNo = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
-                    UomId = table.Column<int>(type: "int", nullable: true),
-                    OrderedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OpenQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ErpSalesOrderLine", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ErpSalesOrderLine_ErpSalesOrderHeader_SoHeaderId",
-                        column: x => x.SoHeaderId,
-                        principalSchema: "erp_stage",
-                        principalTable: "ErpSalesOrderHeader",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ErpSalesOrderLine_Item_ItemId",
-                        column: x => x.ItemId,
-                        principalSchema: "mdm",
-                        principalTable: "Item",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ErpSalesOrderLine_Uom_UomId",
-                        column: x => x.UomId,
-                        principalSchema: "mdm",
-                        principalTable: "Uom",
-                        principalColumn: "Id");
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -597,13 +582,14 @@ namespace WmsBackend.Data.Migrations
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ItemBarcode_Uom_UomId",
                         column: x => x.UomId,
                         principalSchema: "mdm",
                         principalTable: "Uom",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -616,7 +602,7 @@ namespace WmsBackend.Data.Migrations
                     FromUomId = table.Column<int>(type: "int", nullable: false),
                     ToUomId = table.Column<int>(type: "int", nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: true),
-                    ConversionRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ConversionRate = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -626,21 +612,102 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.ItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_UomConversion_Uom_FromUomId",
                         column: x => x.FromUomId,
                         principalSchema: "mdm",
                         principalTable: "Uom",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_UomConversion_Uom_ToUomId",
                         column: x => x.ToUomId,
                         principalSchema: "mdm",
                         principalTable: "Uom",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ErpPurchaseOrderLine",
+                schema: "erp_stage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PoHeaderId = table.Column<int>(type: "int", nullable: false),
+                    LineNo = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    UomId = table.Column<int>(type: "int", nullable: true),
+                    OrderedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    OpenQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ErpPurchaseOrderLine", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ErpPurchaseOrderLine_ErpPurchaseOrderHeader_PoHeaderId",
+                        column: x => x.PoHeaderId,
+                        principalSchema: "erp_stage",
+                        principalTable: "ErpPurchaseOrderHeader",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ErpPurchaseOrderLine_Item_ItemId",
+                        column: x => x.ItemId,
+                        principalSchema: "mdm",
+                        principalTable: "Item",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ErpPurchaseOrderLine_Uom_UomId",
+                        column: x => x.UomId,
+                        principalSchema: "mdm",
+                        principalTable: "Uom",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ErpSalesOrderLine",
+                schema: "erp_stage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SoHeaderId = table.Column<int>(type: "int", nullable: false),
+                    LineNo = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    UomId = table.Column<int>(type: "int", nullable: true),
+                    OrderedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    OpenQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ErpSalesOrderLine", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ErpSalesOrderLine_ErpSalesOrderHeader_SoHeaderId",
+                        column: x => x.SoHeaderId,
+                        principalSchema: "erp_stage",
+                        principalTable: "ErpSalesOrderHeader",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ErpSalesOrderLine_Item_ItemId",
+                        column: x => x.ItemId,
+                        principalSchema: "mdm",
+                        principalTable: "Item",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ErpSalesOrderLine_Uom_UomId",
+                        column: x => x.UomId,
+                        principalSchema: "mdm",
+                        principalTable: "Uom",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -664,7 +731,8 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.ZoneId,
                         principalSchema: "mdm",
                         principalTable: "Zone",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -692,20 +760,22 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.ProfileId,
                         principalSchema: "mdm",
                         principalTable: "LocationProfile",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Location_Warehouse_WarehouseId",
                         column: x => x.WarehouseId,
                         principalSchema: "mdm",
                         principalTable: "Warehouse",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Location_Zone_ZoneId",
                         column: x => x.ZoneId,
                         principalSchema: "mdm",
                         principalTable: "Zone",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -719,14 +789,18 @@ namespace WmsBackend.Data.Migrations
                     PoLineId = table.Column<int>(type: "int", nullable: true),
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     UomId = table.Column<int>(type: "int", nullable: true),
-                    ExpectedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ReceivedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AcceptedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    RejectedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    HoldQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ExpectedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    ReceivedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    AcceptedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    RejectedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    HoldQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
                     SubstituteItemId = table.Column<int>(type: "int", nullable: true),
                     ReasonCodeId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssignedTo = table.Column<int>(type: "int", nullable: true),
+                    CompletedBy = table.Column<int>(type: "int", nullable: true),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -736,39 +810,43 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.PoLineId,
                         principalSchema: "erp_stage",
                         principalTable: "ErpPurchaseOrderLine",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DraftLine_InboundReceiptHeader_ReceiptHeaderId",
                         column: x => x.ReceiptHeaderId,
                         principalSchema: "wms_core",
                         principalTable: "InboundReceiptHeader",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DraftLine_Item_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DraftLine_Item_SubstituteItemId",
                         column: x => x.SubstituteItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DraftLine_ReasonCode_ReasonCodeId",
                         column: x => x.ReasonCodeId,
                         principalSchema: "mdm",
                         principalTable: "ReasonCode",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DraftLine_Uom_UomId",
                         column: x => x.UomId,
                         principalSchema: "mdm",
                         principalTable: "Uom",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -782,9 +860,9 @@ namespace WmsBackend.Data.Migrations
                     LocationId = table.Column<int>(type: "int", nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     LotNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    SystemQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CountedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Variance = table.Column<decimal>(type: "decimal(18,2)", nullable: false, computedColumnSql: "[CountedQty] - [SystemQty]"),
+                    SystemQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    CountedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    Variance = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false, computedColumnSql: "[CountedQty] - [SystemQty]"),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -796,21 +874,21 @@ namespace WmsBackend.Data.Migrations
                         principalSchema: "quality_control",
                         principalTable: "CycleCountSession",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CycleCountLine_Item_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CycleCountLine_Location_LocationId",
                         column: x => x.LocationId,
                         principalSchema: "mdm",
                         principalTable: "Location",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -832,7 +910,8 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.LocationId,
                         principalSchema: "mdm",
                         principalTable: "Location",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -845,7 +924,7 @@ namespace WmsBackend.Data.Migrations
                     TransactionType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     LotNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Qty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Qty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
                     FromLocationId = table.Column<int>(type: "int", nullable: true),
                     ToLocationId = table.Column<int>(type: "int", nullable: true),
                     SourceDocId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -861,19 +940,21 @@ namespace WmsBackend.Data.Migrations
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InventoryLedger_Location_FromLocationId",
                         column: x => x.FromLocationId,
                         principalSchema: "mdm",
                         principalTable: "Location",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InventoryLedger_Location_ToLocationId",
                         column: x => x.ToLocationId,
                         principalSchema: "mdm",
                         principalTable: "Location",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -887,33 +968,48 @@ namespace WmsBackend.Data.Migrations
                     SoLineId = table.Column<int>(type: "int", nullable: true),
                     SuggestedLocationId = table.Column<int>(type: "int", nullable: true),
                     ItemId = table.Column<int>(type: "int", nullable: false),
-                    LotNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    RequestedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    PickedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    LotNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RequestedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: true),
+                    PickedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssignedTo = table.Column<int>(type: "int", nullable: true),
+                    CompletedBy = table.Column<int>(type: "int", nullable: true),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PickTask", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_PickTask_AspNetUsers_AssignedTo",
+                        column: x => x.AssignedTo,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PickTask_AspNetUsers_CompletedBy",
+                        column: x => x.CompletedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_PickTask_ErpSalesOrderLine_SoLineId",
                         column: x => x.SoLineId,
                         principalSchema: "erp_stage",
                         principalTable: "ErpSalesOrderLine",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PickTask_Item_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PickTask_Location_SuggestedLocationId",
                         column: x => x.SuggestedLocationId,
                         principalSchema: "mdm",
                         principalTable: "Location",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -927,7 +1023,7 @@ namespace WmsBackend.Data.Migrations
                     DraftLineId = table.Column<int>(type: "int", nullable: true),
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     LotNo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Qty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Qty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -939,14 +1035,15 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.DraftLineId,
                         principalSchema: "wms_core",
                         principalTable: "DraftLine",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_QualityOrder_Item_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -963,9 +1060,10 @@ namespace WmsBackend.Data.Migrations
                     SerialNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     HandlingUnitId = table.Column<int>(type: "int", nullable: true),
                     InventoryStatusId = table.Column<int>(type: "int", nullable: false),
-                    AvailableQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ReservedQty = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    AvailableQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    ReservedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -975,35 +1073,36 @@ namespace WmsBackend.Data.Migrations
                         column: x => x.HandlingUnitId,
                         principalSchema: "wms_core",
                         principalTable: "HandlingUnit",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InventoryOnHand_InventoryStatus_InventoryStatusId",
                         column: x => x.InventoryStatusId,
                         principalSchema: "mdm",
                         principalTable: "InventoryStatus",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InventoryOnHand_Item_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InventoryOnHand_Location_LocationId",
                         column: x => x.LocationId,
                         principalSchema: "mdm",
                         principalTable: "Location",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InventoryOnHand_Warehouse_WarehouseId",
                         column: x => x.WarehouseId,
                         principalSchema: "mdm",
                         principalTable: "Warehouse",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1018,37 +1117,84 @@ namespace WmsBackend.Data.Migrations
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     HandlingUnitId = table.Column<int>(type: "int", nullable: true),
                     TargetLocationId = table.Column<int>(type: "int", nullable: true),
-                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Quantity = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssignedTo = table.Column<int>(type: "int", nullable: true),
+                    CompletedBy = table.Column<int>(type: "int", nullable: true),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PutawayTask", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_PutawayTask_AspNetUsers_AssignedTo",
+                        column: x => x.AssignedTo,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PutawayTask_AspNetUsers_CompletedBy",
+                        column: x => x.CompletedBy,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_PutawayTask_HandlingUnit_HandlingUnitId",
                         column: x => x.HandlingUnitId,
                         principalSchema: "wms_core",
                         principalTable: "HandlingUnit",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PutawayTask_InboundReceiptHeader_ReceiptHeaderId",
                         column: x => x.ReceiptHeaderId,
                         principalSchema: "wms_core",
                         principalTable: "InboundReceiptHeader",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PutawayTask_Item_ItemId",
                         column: x => x.ItemId,
                         principalSchema: "mdm",
                         principalTable: "Item",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PutawayTask_Location_TargetLocationId",
                         column: x => x.TargetLocationId,
                         principalSchema: "mdm",
                         principalTable: "Location",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShipmentLine",
+                schema: "wms_core",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShipmentHeaderId = table.Column<int>(type: "int", nullable: false),
+                    PickTaskId = table.Column<long>(type: "bigint", nullable: true),
+                    SoLineId = table.Column<int>(type: "int", nullable: true),
+                    ShippedQty = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShipmentLine", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShipmentLine_PickTask_PickTaskId",
+                        column: x => x.PickTaskId,
+                        principalSchema: "wms_core",
+                        principalTable: "PickTask",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ShipmentLine_ShipmentHeader_ShipmentHeaderId",
+                        column: x => x.ShipmentHeaderId,
+                        principalSchema: "wms_core",
+                        principalTable: "ShipmentHeader",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -1151,10 +1297,28 @@ namespace WmsBackend.Data.Migrations
                 column: "UomId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ErpPurchaseOrderHeader_ErpStatus",
+                schema: "erp_stage",
+                table: "ErpPurchaseOrderHeader",
+                column: "ErpStatus");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ErpPurchaseOrderHeader_ExpectedDate",
+                schema: "erp_stage",
+                table: "ErpPurchaseOrderHeader",
+                column: "ExpectedDate");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ErpPurchaseOrderHeader_SupplierId",
                 schema: "erp_stage",
                 table: "ErpPurchaseOrderHeader",
                 column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ErpPurchaseOrderHeader_WarehouseId",
+                schema: "erp_stage",
+                table: "ErpPurchaseOrderHeader",
+                column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ErpPurchaseOrderLine_ItemId",
@@ -1181,6 +1345,24 @@ namespace WmsBackend.Data.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ErpSalesOrderHeader_ErpStatus",
+                schema: "erp_stage",
+                table: "ErpSalesOrderHeader",
+                column: "ErpStatus");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ErpSalesOrderHeader_ExpectedDate",
+                schema: "erp_stage",
+                table: "ErpSalesOrderHeader",
+                column: "ExpectedDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ErpSalesOrderHeader_WarehouseId",
+                schema: "erp_stage",
+                table: "ErpSalesOrderHeader",
+                column: "WarehouseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ErpSalesOrderLine_ItemId",
                 schema: "erp_stage",
                 table: "ErpSalesOrderLine",
@@ -1205,10 +1387,35 @@ namespace WmsBackend.Data.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InboundReceiptHeader_CreatedAt",
+                schema: "wms_core",
+                table: "InboundReceiptHeader",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InboundReceiptHeader_Status",
+                schema: "wms_core",
+                table: "InboundReceiptHeader",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InboundReceiptHeader_SupplierId",
                 schema: "wms_core",
                 table: "InboundReceiptHeader",
                 column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InboundReceiptHeader_WarehouseId",
+                schema: "wms_core",
+                table: "InboundReceiptHeader",
+                column: "WarehouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IntegrationOutbox_IdempotencyKey",
+                schema: "integration_audit",
+                table: "IntegrationOutbox",
+                column: "IdempotencyKey",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_InventoryLedger_FromLocationId",
@@ -1253,7 +1460,15 @@ namespace WmsBackend.Data.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "UQ_InventoryOnHand",
+                name: "UQ_InventoryOnHand_NoHU",
+                schema: "wms_core",
+                table: "InventoryOnHand",
+                columns: new[] { "WarehouseId", "LocationId", "ItemId", "LotNo", "SerialNumber", "InventoryStatusId" },
+                unique: true,
+                filter: "[HandlingUnitId] IS NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "UQ_InventoryOnHand_WithHU",
                 schema: "wms_core",
                 table: "InventoryOnHand",
                 columns: new[] { "WarehouseId", "LocationId", "ItemId", "LotNo", "SerialNumber", "HandlingUnitId", "InventoryStatusId" },
@@ -1311,6 +1526,31 @@ namespace WmsBackend.Data.Migrations
                 column: "ZoneId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MobileScanEvent_ClientTxnId",
+                schema: "integration_audit",
+                table: "MobileScanEvent",
+                column: "ClientTxnId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MobileScanEvent_UserId",
+                schema: "integration_audit",
+                table: "MobileScanEvent",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PickTask_AssignedTo",
+                schema: "wms_core",
+                table: "PickTask",
+                column: "AssignedTo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PickTask_CompletedBy",
+                schema: "wms_core",
+                table: "PickTask",
+                column: "CompletedBy");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PickTask_ItemId",
                 schema: "wms_core",
                 table: "PickTask",
@@ -1323,10 +1563,28 @@ namespace WmsBackend.Data.Migrations
                 column: "SoLineId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PickTask_Status",
+                schema: "wms_core",
+                table: "PickTask",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PickTask_SuggestedLocationId",
                 schema: "wms_core",
                 table: "PickTask",
                 column: "SuggestedLocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PutawayTask_AssignedTo",
+                schema: "wms_core",
+                table: "PutawayTask",
+                column: "AssignedTo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PutawayTask_CompletedBy",
+                schema: "wms_core",
+                table: "PutawayTask",
+                column: "CompletedBy");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PutawayTask_HandlingUnitId",
@@ -1347,6 +1605,12 @@ namespace WmsBackend.Data.Migrations
                 column: "ReceiptHeaderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PutawayTask_Status",
+                schema: "wms_core",
+                table: "PutawayTask",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PutawayTask_TargetLocationId",
                 schema: "wms_core",
                 table: "PutawayTask",
@@ -1365,6 +1629,36 @@ namespace WmsBackend.Data.Migrations
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShipmentHeader_CreatedDate",
+                schema: "wms_core",
+                table: "ShipmentHeader",
+                column: "CreatedDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentHeader_Status",
+                schema: "wms_core",
+                table: "ShipmentHeader",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentHeader_WarehouseId",
+                schema: "wms_core",
+                table: "ShipmentHeader",
+                column: "WarehouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentLine_PickTaskId",
+                schema: "wms_core",
+                table: "ShipmentLine",
+                column: "PickTaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShipmentLine_ShipmentHeaderId",
+                schema: "wms_core",
+                table: "ShipmentLine",
+                column: "ShipmentHeaderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UomConversion_FromUomId",
                 schema: "mdm",
                 table: "UomConversion",
@@ -1381,6 +1675,12 @@ namespace WmsBackend.Data.Migrations
                 schema: "mdm",
                 table: "UomConversion",
                 column: "ToUomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserWarehouseMapping_WarehouseId",
+                schema: "wms_core",
+                table: "UserWarehouseMapping",
+                column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Zone_WarehouseId",
@@ -1443,10 +1743,6 @@ namespace WmsBackend.Data.Migrations
                 schema: "integration_audit");
 
             migrationBuilder.DropTable(
-                name: "PickTask",
-                schema: "wms_core");
-
-            migrationBuilder.DropTable(
                 name: "PutawayTask",
                 schema: "wms_core");
 
@@ -1455,7 +1751,7 @@ namespace WmsBackend.Data.Migrations
                 schema: "quality_control");
 
             migrationBuilder.DropTable(
-                name: "ShipmentHeader",
+                name: "ShipmentLine",
                 schema: "wms_core");
 
             migrationBuilder.DropTable(
@@ -1463,10 +1759,11 @@ namespace WmsBackend.Data.Migrations
                 schema: "mdm");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "UserWarehouseMapping",
+                schema: "wms_core");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "CycleCountSession",
@@ -1477,10 +1774,6 @@ namespace WmsBackend.Data.Migrations
                 schema: "mdm");
 
             migrationBuilder.DropTable(
-                name: "ErpSalesOrderLine",
-                schema: "erp_stage");
-
-            migrationBuilder.DropTable(
                 name: "HandlingUnit",
                 schema: "wms_core");
 
@@ -1489,12 +1782,12 @@ namespace WmsBackend.Data.Migrations
                 schema: "wms_core");
 
             migrationBuilder.DropTable(
-                name: "ErpSalesOrderHeader",
-                schema: "erp_stage");
+                name: "PickTask",
+                schema: "wms_core");
 
             migrationBuilder.DropTable(
-                name: "Location",
-                schema: "mdm");
+                name: "ShipmentHeader",
+                schema: "wms_core");
 
             migrationBuilder.DropTable(
                 name: "ErpPurchaseOrderLine",
@@ -1509,7 +1802,26 @@ namespace WmsBackend.Data.Migrations
                 schema: "mdm");
 
             migrationBuilder.DropTable(
-                name: "Customer",
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ErpSalesOrderLine",
+                schema: "erp_stage");
+
+            migrationBuilder.DropTable(
+                name: "Location",
+                schema: "mdm");
+
+            migrationBuilder.DropTable(
+                name: "ErpPurchaseOrderHeader",
+                schema: "erp_stage");
+
+            migrationBuilder.DropTable(
+                name: "ErpSalesOrderHeader",
+                schema: "erp_stage");
+
+            migrationBuilder.DropTable(
+                name: "Item",
                 schema: "mdm");
 
             migrationBuilder.DropTable(
@@ -1521,23 +1833,19 @@ namespace WmsBackend.Data.Migrations
                 schema: "mdm");
 
             migrationBuilder.DropTable(
-                name: "ErpPurchaseOrderHeader",
-                schema: "erp_stage");
-
-            migrationBuilder.DropTable(
-                name: "Item",
-                schema: "mdm");
-
-            migrationBuilder.DropTable(
-                name: "Warehouse",
-                schema: "mdm");
-
-            migrationBuilder.DropTable(
                 name: "Supplier",
                 schema: "mdm");
 
             migrationBuilder.DropTable(
+                name: "Customer",
+                schema: "mdm");
+
+            migrationBuilder.DropTable(
                 name: "Uom",
+                schema: "mdm");
+
+            migrationBuilder.DropTable(
+                name: "Warehouse",
                 schema: "mdm");
         }
     }

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WmsBackend.Models.Mdm;
 
 namespace WmsBackend.Models.WmsCore
 {
@@ -9,22 +10,18 @@ namespace WmsBackend.Models.WmsCore
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required, StringLength(100)]
         public string ShipmentCode { get; set; } = string.Empty;
 
-        [StringLength(100)]
+        // Bổ sung WarehouseId cho Multi-Warehouse
+        public int WarehouseId { get; set; }
+        [ForeignKey("WarehouseId")]
+        public Warehouse? Warehouse { get; set; }
+
         public string? Carrier { get; set; }
-
-        [StringLength(50)]
         public string? VehicleNo { get; set; }
-
-        [StringLength(50)]
         public string? Dock { get; set; }
-
-        [StringLength(50)]
-        public string Status { get; set; } = "Pending";
-
+        public string Status { get; set; } = "New"; // New, Picking, Packed, Shipped
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }

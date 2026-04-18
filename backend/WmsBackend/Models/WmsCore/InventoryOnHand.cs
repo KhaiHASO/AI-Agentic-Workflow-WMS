@@ -40,5 +40,8 @@ namespace WmsBackend.Models.WmsCore
         public decimal ReservedQty { get; set; } = 0;
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }
     }
 }

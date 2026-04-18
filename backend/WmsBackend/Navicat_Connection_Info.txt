@@ -1,0 +1,25 @@
+---------------------------------------------------------
+THÔNG TIN KẾT NỐI NAVICAT - WMS PROJECT (DOCKER)
+---------------------------------------------------------
+Ngày tạo: 18/04/2026
+
+1. Thông số kết nối (Connection Details):
+   - Connection Type: Microsoft SQL Server
+   - Host: localhost
+   - Port: 1433
+   - Authentication: SQL Server Authentication
+   - User: sa
+   - Password: SqlStrongPassword123!
+
+2. Cơ sở dữ liệu (Database):
+   - Database Name: WmsDb
+
+3. Các Schema chính trong hệ thống:
+   - mdm: Dữ liệu danh mục (Items, Locations, Warehouses...)
+   - wms_core: Dữ liệu vận hành (Inventory, Receipts, Tasks...)
+   - erp_stage: Dữ liệu đồng bộ từ ERP (Purchase/Sales Orders)
+   - quality_control: Dữ liệu kiểm kê và kiểm tra chất lượng
+   - integration_audit: Nhật ký API và tích hợp
+
+Lưu ý: Đảm bảo Docker container 'sqlserver' đang chạy trước khi kết nối.
+---------------------------------------------------------

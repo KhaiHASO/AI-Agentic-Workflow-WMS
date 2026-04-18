@@ -9,21 +9,19 @@ namespace WmsBackend.Models.IntegrationAudit
         [Key]
         public long Id { get; set; }
 
-        [Required]
-        [StringLength(255)]
+        [Required, StringLength(255)]
         public string ClientTxnId { get; set; } = string.Empty;
 
-        [Required]
-        [StringLength(255)]
+        [Required, StringLength(255)]
         public string Barcode { get; set; } = string.Empty;
 
         public decimal? ScannedQty { get; set; }
-
-        [StringLength(100)]
         public string? LocationCode { get; set; }
 
-        [StringLength(100)]
-        public string? UserId { get; set; }
+        // Chuẩn hóa sang int để JOIN với AspNetUsers.Id
+        public int? UserId { get; set; }
+        [ForeignKey("UserId")]
+        public ApplicationUser? User { get; set; }
 
         public DateTime ScanTime { get; set; } = DateTime.UtcNow;
     }

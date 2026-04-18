@@ -12,8 +12,8 @@ using WmsBackend.Data;
 namespace WmsBackend.Data.Migrations
 {
     [DbContext(typeof(WmsDbContext))]
-    [Migration("20260416171904_AddIdentityTables")]
-    partial class AddIdentityTables
+    [Migration("20260418055532_WmsDb_V1_Final_Architect")]
+    partial class WmsDb_V1_Final_Architect
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -256,8 +256,7 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ErpStatus")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ExpectedDate")
                         .HasColumnType("datetime2");
@@ -271,12 +270,20 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("VersionHash")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ErpStatus");
+
+                    b.HasIndex("ExpectedDate");
+
                     b.HasIndex("SupplierId");
+
+                    b.HasIndex("WarehouseId");
 
                     b.ToTable("ErpPurchaseOrderHeader", "erp_stage");
                 });
@@ -296,10 +303,12 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("OpenQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("OrderedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("PoHeaderId")
                         .HasColumnType("int");
@@ -333,8 +342,7 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ErpStatus")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ExpectedDate")
                         .HasColumnType("datetime2");
@@ -345,12 +353,20 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("VersionHash")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("ErpStatus");
+
+                    b.HasIndex("ExpectedDate");
+
+                    b.HasIndex("WarehouseId");
 
                     b.ToTable("ErpSalesOrderHeader", "erp_stage");
                 });
@@ -370,10 +386,12 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("OpenQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("OrderedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("SoHeaderId")
                         .HasColumnType("int");
@@ -468,6 +486,9 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdempotencyKey")
+                        .IsUnique();
+
                     b.ToTable("IntegrationOutbox", "integration_audit");
                 });
 
@@ -490,20 +511,24 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("LocationCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ScanTime")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("ScannedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<string>("UserId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientTxnId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("MobileScanEvent", "integration_audit");
                 });
@@ -712,10 +737,12 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal?>("MaxVolume")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal?>("MaxWeight")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("ProfileCode")
                         .IsRequired()
@@ -817,7 +844,8 @@ namespace WmsBackend.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("ConversionRate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("FromUomId")
                         .HasColumnType("int");
@@ -908,7 +936,8 @@ namespace WmsBackend.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<decimal>("CountedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -929,11 +958,13 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("SystemQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("Variance")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("decimal(18,2)")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)")
                         .HasComputedColumnSql("[CountedQty] - [SystemQty]");
 
                     b.HasKey("Id");
@@ -1004,7 +1035,8 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Qty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("QualityOrderId")
                         .IsRequired()
@@ -1034,13 +1066,25 @@ namespace WmsBackend.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AcceptedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int?>("AssignedTo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CompletedBy")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("ExpectedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("HoldQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -1055,14 +1099,20 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("ReceivedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("RejectedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Status")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SubstituteItemId")
                         .HasColumnType("int");
@@ -1133,19 +1183,26 @@ namespace WmsBackend.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("SupplierId")
                         .HasColumnType("int");
 
                     b.Property<string>("VehicleNo")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Status");
+
                     b.HasIndex("SupplierId");
+
+                    b.HasIndex("WarehouseId");
 
                     b.ToTable("InboundReceiptHeader", "wms_core");
                 });
@@ -1173,7 +1230,8 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Qty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("SourceDocId")
                         .HasMaxLength(100)
@@ -1210,7 +1268,8 @@ namespace WmsBackend.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<decimal>("AvailableQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("HandlingUnitId")
                         .HasColumnType("int");
@@ -1230,7 +1289,13 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("ReservedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("SerialNumber")
                         .IsRequired()
@@ -1253,9 +1318,14 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasIndex("LocationId");
 
+                    b.HasIndex("WarehouseId", "LocationId", "ItemId", "LotNo", "SerialNumber", "InventoryStatusId")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_InventoryOnHand_NoHU")
+                        .HasFilter("[HandlingUnitId] IS NULL");
+
                     b.HasIndex("WarehouseId", "LocationId", "ItemId", "LotNo", "SerialNumber", "HandlingUnitId", "InventoryStatusId")
                         .IsUnique()
-                        .HasDatabaseName("UQ_InventoryOnHand")
+                        .HasDatabaseName("UQ_InventoryOnHand_WithHU")
                         .HasFilter("[HandlingUnitId] IS NOT NULL");
 
                     b.ToTable("InventoryOnHand", "wms_core");
@@ -1269,26 +1339,35 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<int?>("AssignedTo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CompletedBy")
+                        .HasColumnType("int");
+
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<string>("LotNo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PickedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal?>("RequestedQty")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("SoLineId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("SuggestedLocationId")
                         .HasColumnType("int");
@@ -1300,9 +1379,15 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignedTo");
+
+                    b.HasIndex("CompletedBy");
+
                     b.HasIndex("ItemId");
 
                     b.HasIndex("SoLineId");
+
+                    b.HasIndex("Status");
 
                     b.HasIndex("SuggestedLocationId");
 
@@ -1317,6 +1402,15 @@ namespace WmsBackend.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<int?>("AssignedTo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CompletedBy")
+                        .HasColumnType("int");
+
                     b.Property<int?>("HandlingUnitId")
                         .HasColumnType("int");
 
@@ -1324,15 +1418,15 @@ namespace WmsBackend.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Quantity")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int?>("ReceiptHeaderId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("TargetLocationId")
                         .HasColumnType("int");
@@ -1344,11 +1438,17 @@ namespace WmsBackend.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignedTo");
+
+                    b.HasIndex("CompletedBy");
+
                     b.HasIndex("HandlingUnitId");
 
                     b.HasIndex("ItemId");
 
                     b.HasIndex("ReceiptHeaderId");
+
+                    b.HasIndex("Status");
 
                     b.HasIndex("TargetLocationId");
 
@@ -1364,15 +1464,13 @@ namespace WmsBackend.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Carrier")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Dock")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShipmentCode")
                         .IsRequired()
@@ -1381,16 +1479,71 @@ namespace WmsBackend.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("VehicleNo")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedDate");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("WarehouseId");
+
                     b.ToTable("ShipmentHeader", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.ShipmentLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long?>("PickTaskId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShipmentHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ShippedQty")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int?>("SoLineId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PickTaskId");
+
+                    b.HasIndex("ShipmentHeaderId");
+
+                    b.ToTable("ShipmentLine", "wms_core");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.UserWarehouseMapping", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("AssignedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "WarehouseId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("UserWarehouseMapping", "wms_core");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -1398,7 +1551,7 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1407,7 +1560,7 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1416,7 +1569,7 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1425,13 +1578,13 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1440,7 +1593,7 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -1448,9 +1601,18 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Supplier", "Supplier")
                         .WithMany()
-                        .HasForeignKey("SupplierId");
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Supplier");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpPurchaseOrderLine", b =>
@@ -1458,18 +1620,19 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.ErpStage.ErpPurchaseOrderHeader", "PoHeader")
                         .WithMany("Lines")
                         .HasForeignKey("PoHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "Uom")
                         .WithMany()
-                        .HasForeignKey("UomId");
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Item");
 
@@ -1482,9 +1645,18 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpSalesOrderLine", b =>
@@ -1492,18 +1664,19 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.ErpStage.ErpSalesOrderHeader", "SoHeader")
                         .WithMany("Lines")
                         .HasForeignKey("SoHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "Uom")
                         .WithMany()
-                        .HasForeignKey("UomId");
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Item");
 
@@ -1512,11 +1685,22 @@ namespace WmsBackend.Data.Migrations
                     b.Navigation("Uom");
                 });
 
+            modelBuilder.Entity("WmsBackend.Models.IntegrationAudit.MobileScanEvent", b =>
+                {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WmsBackend.Models.Mdm.Item", b =>
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "BaseUom")
                         .WithMany()
-                        .HasForeignKey("BaseUomId");
+                        .HasForeignKey("BaseUomId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("BaseUom");
                 });
@@ -1526,12 +1710,13 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "Uom")
                         .WithMany()
-                        .HasForeignKey("UomId");
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Item");
 
@@ -1542,17 +1727,19 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.Mdm.LocationProfile", "Profile")
                         .WithMany()
-                        .HasForeignKey("ProfileId");
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Zone", "Zone")
                         .WithMany()
-                        .HasForeignKey("ZoneId");
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Profile");
 
@@ -1566,17 +1753,18 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "FromUom")
                         .WithMany()
                         .HasForeignKey("FromUomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "ToUom")
                         .WithMany()
                         .HasForeignKey("ToUomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("FromUom");
@@ -1591,7 +1779,7 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Warehouse");
@@ -1602,19 +1790,19 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.QualityControl.CycleCountSession", "Session")
                         .WithMany("Lines")
                         .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Item");
@@ -1628,7 +1816,8 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Zone", "Zone")
                         .WithMany()
-                        .HasForeignKey("ZoneId");
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Zone");
                 });
@@ -1637,12 +1826,13 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.WmsCore.DraftLine", "DraftLine")
                         .WithMany()
-                        .HasForeignKey("DraftLineId");
+                        .HasForeignKey("DraftLineId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DraftLine");
@@ -1655,30 +1845,34 @@ namespace WmsBackend.Data.Migrations
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.ErpStage.ErpPurchaseOrderLine", "PoLine")
                         .WithMany()
-                        .HasForeignKey("PoLineId");
+                        .HasForeignKey("PoLineId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.ReasonCode", "ReasonCode")
                         .WithMany()
-                        .HasForeignKey("ReasonCodeId");
+                        .HasForeignKey("ReasonCodeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.WmsCore.InboundReceiptHeader", "ReceiptHeader")
                         .WithMany("Lines")
                         .HasForeignKey("ReceiptHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Item", "SubstituteItem")
                         .WithMany()
-                        .HasForeignKey("SubstituteItemId");
+                        .HasForeignKey("SubstituteItemId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Uom", "Uom")
                         .WithMany()
-                        .HasForeignKey("UomId");
+                        .HasForeignKey("UomId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Item");
 
@@ -1697,7 +1891,8 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Location");
                 });
@@ -1706,26 +1901,37 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Supplier", "Supplier")
                         .WithMany()
-                        .HasForeignKey("SupplierId");
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Supplier");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.InventoryLedger", b =>
                 {
                     b.HasOne("WmsBackend.Models.Mdm.Location", "FromLocation")
                         .WithMany()
-                        .HasForeignKey("FromLocationId");
+                        .HasForeignKey("FromLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Location", "ToLocation")
                         .WithMany()
-                        .HasForeignKey("ToLocationId");
+                        .HasForeignKey("ToLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("FromLocation");
 
@@ -1738,30 +1944,31 @@ namespace WmsBackend.Data.Migrations
                 {
                     b.HasOne("WmsBackend.Models.WmsCore.HandlingUnit", "HandlingUnit")
                         .WithMany()
-                        .HasForeignKey("HandlingUnitId");
+                        .HasForeignKey("HandlingUnitId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.InventoryStatus", "InventoryStatus")
                         .WithMany()
                         .HasForeignKey("InventoryStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("HandlingUnit");
@@ -1777,19 +1984,29 @@ namespace WmsBackend.Data.Migrations
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.PickTask", b =>
                 {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("AssignedTo");
+
+                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CompletedBy");
+
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.ErpStage.ErpSalesOrderLine", "SoLine")
                         .WithMany()
-                        .HasForeignKey("SoLineId");
+                        .HasForeignKey("SoLineId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Location", "SuggestedLocation")
                         .WithMany()
-                        .HasForeignKey("SuggestedLocationId");
+                        .HasForeignKey("SuggestedLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Item");
 
@@ -1800,23 +2017,34 @@ namespace WmsBackend.Data.Migrations
 
             modelBuilder.Entity("WmsBackend.Models.WmsCore.PutawayTask", b =>
                 {
+                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("AssignedTo");
+
+                    b.HasOne("WmsBackend.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CompletedBy");
+
                     b.HasOne("WmsBackend.Models.WmsCore.HandlingUnit", "HandlingUnit")
                         .WithMany()
-                        .HasForeignKey("HandlingUnitId");
+                        .HasForeignKey("HandlingUnitId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WmsBackend.Models.WmsCore.InboundReceiptHeader", "ReceiptHeader")
                         .WithMany()
-                        .HasForeignKey("ReceiptHeaderId");
+                        .HasForeignKey("ReceiptHeaderId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WmsBackend.Models.Mdm.Location", "TargetLocation")
                         .WithMany()
-                        .HasForeignKey("TargetLocationId");
+                        .HasForeignKey("TargetLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("HandlingUnit");
 
@@ -1825,6 +2053,46 @@ namespace WmsBackend.Data.Migrations
                     b.Navigation("ReceiptHeader");
 
                     b.Navigation("TargetLocation");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.ShipmentHeader", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.ShipmentLine", b =>
+                {
+                    b.HasOne("WmsBackend.Models.WmsCore.PickTask", "PickTask")
+                        .WithMany()
+                        .HasForeignKey("PickTaskId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("WmsBackend.Models.WmsCore.ShipmentHeader", "ShipmentHeader")
+                        .WithMany()
+                        .HasForeignKey("ShipmentHeaderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PickTask");
+
+                    b.Navigation("ShipmentHeader");
+                });
+
+            modelBuilder.Entity("WmsBackend.Models.WmsCore.UserWarehouseMapping", b =>
+                {
+                    b.HasOne("WmsBackend.Models.Mdm.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("WmsBackend.Models.ErpStage.ErpPurchaseOrderHeader", b =>

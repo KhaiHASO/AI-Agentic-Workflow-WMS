@@ -10,24 +10,23 @@ namespace WmsBackend.Models.ErpStage
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required, StringLength(100)]
         public string SoNumber { get; set; } = string.Empty;
 
         public int? CustomerId { get; set; }
         [ForeignKey("CustomerId")]
-        public virtual Customer? Customer { get; set; }
+        public Customer? Customer { get; set; }
+
+        // Bổ sung WarehouseId cho Multi-Warehouse
+        public int WarehouseId { get; set; }
+        [ForeignKey("WarehouseId")]
+        public Warehouse? Warehouse { get; set; }
 
         public DateTime? ExpectedDate { get; set; }
-
-        [StringLength(50)]
         public string? ErpStatus { get; set; }
-
-        [StringLength(255)]
         public string? VersionHash { get; set; }
-
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public virtual ICollection<ErpSalesOrderLine> Lines { get; set; } = new List<ErpSalesOrderLine>();
+        public ICollection<ErpSalesOrderLine> Lines { get; set; } = new List<ErpSalesOrderLine>();
     }
 }

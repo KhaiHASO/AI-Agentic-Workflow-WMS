@@ -10,22 +10,22 @@ namespace WmsBackend.Models.WmsCore
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required, StringLength(100)]
         public string ReceiptNo { get; set; } = string.Empty;
 
         public int? SupplierId { get; set; }
         [ForeignKey("SupplierId")]
-        public virtual Supplier? Supplier { get; set; }
+        public Supplier? Supplier { get; set; }
 
-        [StringLength(50)]
+        // Bổ sung WarehouseId cho Multi-Warehouse
+        public int WarehouseId { get; set; }
+        [ForeignKey("WarehouseId")]
+        public Warehouse? Warehouse { get; set; }
+
         public string? VehicleNo { get; set; }
-
-        [StringLength(50)]
-        public string Status { get; set; } = "Open"; // Open, Draft, Submitted, Closed
-
+        public string Status { get; set; } = "Draft"; // Draft, Receiving, Completed, Cancelled
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public virtual ICollection<DraftLine> Lines { get; set; } = new List<DraftLine>();
+        public ICollection<DraftLine> Lines { get; set; } = new List<DraftLine>();
     }
 }

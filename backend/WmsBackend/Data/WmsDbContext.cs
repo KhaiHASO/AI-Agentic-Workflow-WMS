@@ -42,6 +42,8 @@ namespace WmsBackend.Data
         public DbSet<PutawayTask> PutawayTasks { get; set; }
         public DbSet<PickTask> PickTasks { get; set; }
         public DbSet<ShipmentHeader> ShipmentHeaders { get; set; }
+        public DbSet<ShipmentLine> ShipmentLines { get; set; }
+        public DbSet<UserWarehouseMapping> UserWarehouseMappings { get; set; }
 
         // Quality Control
         public DbSet<CycleCountSession> CycleCountSessions { get; set; }
@@ -57,7 +59,43 @@ namespace WmsBackend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // MDM Constraints
+            // RULE 1 & 2: NO CASCADE DELETE (GLOBAL RESTRICT)
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            // RULE 3: DECIMAL PRECISION (18, 4) GLOBAL
+            var decimalProperties = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetProperties())
+                .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?));
+
+            foreach (var property in decimalProperties)
+            {
+                property.SetPrecision(18);
+                property.SetScale(4);
+            }
+
+            // RULE 4: UNIQUE INDEX FOR InventoryOnHand (Handling NULL)
+            modelBuilder.Entity<InventoryOnHand>()
+                .HasIndex(i => new { 
+                    i.WarehouseId, i.LocationId, i.ItemId, 
+                    i.LotNo, i.SerialNumber, i.HandlingUnitId, i.InventoryStatusId 
+                })
+                .IsUnique()
+                .HasFilter("[HandlingUnitId] IS NOT NULL")
+                .HasDatabaseName("UQ_InventoryOnHand_WithHU");
+
+            modelBuilder.Entity<InventoryOnHand>()
+                .HasIndex(i => new { 
+                    i.WarehouseId, i.LocationId, i.ItemId, 
+                    i.LotNo, i.SerialNumber, i.InventoryStatusId 
+                })
+                .IsUnique()
+                .HasFilter("[HandlingUnitId] IS NULL")
+                .HasDatabaseName("UQ_InventoryOnHand_NoHU");
+
+            // Additional Uniques
             modelBuilder.Entity<Zone>()
                 .HasIndex(z => new { z.ZoneCode, z.WarehouseId })
                 .IsUnique();
@@ -70,24 +108,70 @@ namespace WmsBackend.Data
                 .HasIndex(i => i.ItemCode)
                 .IsUnique();
 
-            // Inventory OnHand Unique Constraint
-            modelBuilder.Entity<InventoryOnHand>()
-                .HasIndex(i => new { 
-                    i.WarehouseId, 
-                    i.LocationId, 
-                    i.ItemId, 
-                    i.LotNo, 
-                    i.SerialNumber, 
-                    i.HandlingUnitId, 
-                    i.InventoryStatusId 
-                })
-                .IsUnique()
-                .HasDatabaseName("UQ_InventoryOnHand");
+            modelBuilder.Entity<MobileScanEvent>()
+                .HasIndex(m => m.ClientTxnId).IsUnique();
+            
+            modelBuilder.Entity<IntegrationOutbox>()
+                .HasIndex(o => o.IdempotencyKey).IsUnique();
 
-            // Quality Control Computed Column
+            // Composite Keys
+            modelBuilder.Entity<UserWarehouseMapping>()
+                .HasKey(uw => new { uw.UserId, uw.WarehouseId });
+
+            // Audit Trail Relationships (Fluent API mapping if needed for explicit control)
+            modelBuilder.Entity<PickTask>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(p => p.AssignedTo);
+
+            modelBuilder.Entity<PickTask>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(p => p.CompletedBy);
+
+            modelBuilder.Entity<PutawayTask>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(p => p.AssignedTo);
+
+            modelBuilder.Entity<PutawayTask>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(p => p.CompletedBy);
+
+            // Computed Column
             modelBuilder.Entity<CycleCountLine>()
                 .Property(p => p.Variance)
                 .HasComputedColumnSql("[CountedQty] - [SystemQty]");
+
+            // PERFORMANCE INDEXES (Chiến lược tăng tốc truy vấn Task & Header)
+            modelBuilder.Entity<PickTask>().HasIndex(t => t.Status);
+            modelBuilder.Entity<PutawayTask>().HasIndex(t => t.Status);
+            
+            modelBuilder.Entity<InboundReceiptHeader>().HasIndex(h => h.Status);
+            modelBuilder.Entity<InboundReceiptHeader>().HasIndex(h => h.CreatedAt);
+            
+            modelBuilder.Entity<ShipmentHeader>().HasIndex(h => h.Status);
+            modelBuilder.Entity<ShipmentHeader>().HasIndex(h => h.CreatedDate);
+            
+            modelBuilder.Entity<ErpPurchaseOrderHeader>().HasIndex(h => h.ErpStatus);
+            modelBuilder.Entity<ErpPurchaseOrderHeader>().HasIndex(h => h.ExpectedDate);
+            
+            modelBuilder.Entity<ErpSalesOrderHeader>().HasIndex(h => h.ErpStatus);
+            modelBuilder.Entity<ErpSalesOrderHeader>().HasIndex(h => h.ExpectedDate);
+
+            // GLOBAL QUERY FILTERS (Cơ chế Soft-Delete thông minh)
+            // Tự động loại bỏ các bản ghi bị đánh dấu "Deleted" hoặc "Cancelled" nếu cần thiết
+            modelBuilder.Entity<Warehouse>().HasQueryFilter(w => w.Status != "Deleted");
+            modelBuilder.Entity<Item>().HasQueryFilter(i => i.Status != "Deleted");
+            modelBuilder.Entity<Location>().HasQueryFilter(l => l.Status != "Deleted");
+            
+            modelBuilder.Entity<PickTask>().HasQueryFilter(t => t.Status != "Deleted");
+            modelBuilder.Entity<PutawayTask>().HasQueryFilter(t => t.Status != "Deleted");
+            
+            // CONCURRENCY TOKEN CONFIGURATION (RowVersion)
+            modelBuilder.Entity<InventoryOnHand>().Property(p => p.RowVersion).IsRowVersion();
+            modelBuilder.Entity<DraftLine>().Property(p => p.RowVersion).IsRowVersion();
         }
     }
 }
