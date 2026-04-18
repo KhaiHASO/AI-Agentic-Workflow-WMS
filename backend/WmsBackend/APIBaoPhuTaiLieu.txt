@@ -1,0 +1,208 @@
+Để **bao phủ toàn bộ tài liệu BRD/SRS + Use Case + API/UAT**, mình đề xuất bộ endpoint theo 4 nhóm prefix:
+
+* `/erp/v1/*` → pull/push với ERP FAST
+* `/wms/v1/*` → API nghiệp vụ nội bộ WMS
+* `/integration/v1/*` → retry, outbox, đồng bộ, log
+* `/reports/v1/*` → dashboard, báo cáo
+
+## 1) 16 API lõi theo tài liệu UAT/API
+
+Đây là bộ **must-have** bám sát tài liệu:
+
+1. `GET /erp/v1/items`
+2. `GET /erp/v1/suppliers`
+3. `GET /erp/v1/purchase-orders/open`
+4. `POST /wms/v1/master-receipts`
+5. `POST /wms/v1/drafts/{draftId}/scan-events`
+6. `PATCH /wms/v1/draft-lines/{lineId}/exceptions`
+7. `POST /wms/v1/draft-lines/{lineId}/substitutions`
+8. `POST /wms/v1/drafts/{draftId}/submit`
+9. `POST /integration/v1/grn/push`
+10. `POST /wms/v1/putaway-tasks/{taskId}/confirm`
+11. `GET /erp/v1/sales-orders/open`
+12. `POST /wms/v1/waves`
+13. `POST /wms/v1/pick-tasks/{taskId}/scan-events`
+14. `POST /wms/v1/shipments/{shipmentId}/confirm`
+15. `POST /wms/v1/cycle-count-sessions/{sessionId}/submit`
+16. `POST /integration/v1/messages/{messageId}/retry`
+
+---
+
+## 2) Bộ endpoint đầy đủ để bao phủ toàn bộ nghiệp vụ
+
+### A. Auth / người dùng / thiết bị scan
+
+1. `POST /auth/v1/login`
+2. `POST /auth/v1/refresh`
+3. `POST /auth/v1/logout`
+4. `GET /auth/v1/me`
+5. `GET /wms/v1/users/me/warehouses`
+6. `POST /wms/v1/devices/register`
+7. `POST /wms/v1/devices/heartbeat`
+8. `GET /wms/v1/devices/{deviceId}`
+
+### B. Master data & cấu hình kho
+
+9. `GET /wms/v1/items`
+10. `GET /wms/v1/items/{itemId}`
+11. `GET /wms/v1/items/{itemId}/barcodes`
+12. `POST /wms/v1/items/{itemId}/barcodes`
+13. `GET /wms/v1/uoms`
+14. `GET /wms/v1/uom-conversions`
+15. `GET /wms/v1/suppliers`
+16. `GET /wms/v1/customers`
+17. `GET /wms/v1/warehouses`
+18. `GET /wms/v1/warehouses/{warehouseId}/zones`
+19. `GET /wms/v1/warehouses/{warehouseId}/locations`
+20. `GET /wms/v1/location-profiles`
+21. `GET /wms/v1/inventory-statuses`
+22. `GET /wms/v1/reason-codes`
+23. `GET /wms/v1/user-warehouse-mappings`
+
+### C. Đồng bộ ERP FAST
+
+24. `GET /erp/v1/items`
+25. `GET /erp/v1/suppliers`
+26. `GET /erp/v1/purchase-orders/open`
+27. `GET /erp/v1/purchase-orders/{poNumber}`
+28. `GET /erp/v1/sales-orders/open`
+29. `GET /erp/v1/sales-orders/{soNumber}`
+30. `POST /integration/v1/sync/items`
+31. `POST /integration/v1/sync/suppliers`
+32. `POST /integration/v1/sync/purchase-orders`
+33. `POST /integration/v1/sync/sales-orders`
+
+### D. Inbound – Master Receipt / Draft / scan-to-draft
+
+34. `POST /wms/v1/master-receipts`
+35. `GET /wms/v1/master-receipts`
+36. `GET /wms/v1/master-receipts/{masterReceiptId}`
+37. `POST /wms/v1/master-receipts/{masterReceiptId}/draft-lines/import-open-po`
+38. `GET /wms/v1/master-receipts/{masterReceiptId}/draft-lines`
+39. `POST /wms/v1/drafts/{draftId}/scan-events`
+40. `POST /wms/v1/drafts/{draftId}/scan-events/batch`
+41. `PATCH /wms/v1/draft-lines/{lineId}/exceptions`
+42. `POST /wms/v1/draft-lines/{lineId}/substitutions`
+43. `POST /wms/v1/drafts/{draftId}/validate`
+44. `POST /wms/v1/drafts/{draftId}/submit`
+45. `GET /wms/v1/inbound-receipts/{receiptId}`
+
+### E. Putaway / cross-dock / handling unit
+
+46. `POST /wms/v1/putaway-tasks/generate`
+47. `GET /wms/v1/putaway-tasks`
+48. `GET /wms/v1/putaway-tasks/{taskId}`
+49. `POST /wms/v1/putaway-tasks/{taskId}/confirm`
+50. `POST /wms/v1/cross-dock-orders`
+51. `GET /wms/v1/cross-dock-orders`
+52. `POST /wms/v1/cross-dock-orders/{orderId}/confirm`
+53. `POST /wms/v1/handling-units`
+54. `GET /wms/v1/handling-units/{huId}`
+55. `POST /wms/v1/handling-units/{huId}/move`
+
+### F. Outbound – wave / pick / shipment / goods issue
+
+56. `GET /wms/v1/sales-orders`
+57. `POST /wms/v1/waves`
+58. `GET /wms/v1/waves`
+59. `GET /wms/v1/waves/{waveId}`
+60. `POST /wms/v1/waves/{waveId}/release`
+61. `GET /wms/v1/pick-tasks`
+62. `GET /wms/v1/pick-tasks/{taskId}`
+63. `POST /wms/v1/pick-tasks/{taskId}/scan-events`
+64. `POST /wms/v1/pick-tasks/{taskId}/confirm`
+65. `POST /wms/v1/shipments`
+66. `GET /wms/v1/shipments`
+67. `GET /wms/v1/shipments/{shipmentId}`
+68. `POST /wms/v1/shipments/{shipmentId}/pack`
+69. `POST /wms/v1/shipments/{shipmentId}/confirm`
+70. `POST /integration/v1/goods-issue/push`
+71. `GET /wms/v1/backorders`
+72. `POST /wms/v1/backorders/{backorderId}/resolve`
+
+### G. Inventory / ledger / adjustment / transfer
+
+73. `GET /wms/v1/inventory/on-hand`
+74. `GET /wms/v1/inventory/on-hand/by-location`
+75. `GET /wms/v1/inventory/on-hand/by-item`
+76. `GET /wms/v1/inventory/ledger`
+77. `POST /wms/v1/inventory/adjustments`
+78. `GET /wms/v1/inventory/adjustments`
+79. `POST /wms/v1/internal-transfers`
+80. `GET /wms/v1/internal-transfers`
+81. `POST /wms/v1/internal-transfers/{transferId}/confirm`
+
+### H. Cycle count / review / approval
+
+82. `POST /wms/v1/cycle-count-sessions`
+83. `GET /wms/v1/cycle-count-sessions`
+84. `GET /wms/v1/cycle-count-sessions/{sessionId}`
+85. `GET /wms/v1/cycle-count-sessions/{sessionId}/lines`
+86. `POST /wms/v1/cycle-count-sessions/{sessionId}/submit`
+87. `GET /wms/v1/cycle-count-sessions/{sessionId}/variances`
+88. `POST /wms/v1/cycle-count-sessions/{sessionId}/review`
+89. `POST /wms/v1/cycle-count-sessions/{sessionId}/approve-adjustment`
+
+### I. Quality / quarantine / return
+
+90. `POST /wms/v1/quality-orders`
+91. `GET /wms/v1/quality-orders`
+92. `GET /wms/v1/quality-orders/{qualityOrderId}`
+93. `POST /wms/v1/quality-orders/{qualityOrderId}/result`
+94. `POST /wms/v1/quarantine-orders`
+95. `GET /wms/v1/quarantine-orders`
+96. `POST /wms/v1/quarantine-orders/{quarantineOrderId}/release`
+97. `POST /wms/v1/returns`
+98. `GET /wms/v1/returns`
+99. `POST /wms/v1/returns/{returnId}/receive`
+100. `POST /wms/v1/returns/{returnId}/decision`
+
+### J. Mobile scan / lookup barcode
+
+101. `POST /mobile/v1/scan-events`
+102. `POST /mobile/v1/scan-events/batch`
+103. `GET /mobile/v1/tasks/next`
+104. `GET /mobile/v1/barcodes/{barcode}/resolve`
+105. `GET /mobile/v1/lookup/item-by-barcode/{barcode}`
+
+### K. Integration / outbox / retry / audit
+
+106. `GET /integration/v1/outbox`
+107. `GET /integration/v1/messages/{messageId}`
+108. `POST /integration/v1/messages/{messageId}/retry`
+109. `GET /integration/v1/api-call-logs`
+110. `GET /integration/v1/mobile-scan-events`
+111. `GET /integration/v1/health`
+112. `POST /integration/v1/reprocess-dead-letter`
+
+### L. Dashboard & báo cáo
+
+113. `GET /reports/v1/inbound-summary`
+114. `GET /reports/v1/outbound-summary`
+115. `GET /reports/v1/inventory-aging`
+116. `GET /reports/v1/inventory-by-location`
+117. `GET /reports/v1/pick-performance`
+118. `GET /reports/v1/putaway-productivity`
+119. `GET /reports/v1/cycle-count-accuracy`
+120. `GET /reports/v1/quarantine-status`
+121. `GET /reports/v1/order-fulfillment`
+122. `GET /reports/v1/integration-status`
+
+## 3) Bộ tối thiểu nên chốt
+
+Nếu bạn muốn chốt nhanh cho tài liệu, mình khuyên chia thành 3 lớp:
+
+* **Lớp 1 – bắt buộc theo UAT:** 16 API lõi
+* **Lớp 2 – bắt buộc để cover BRD/SRS:** các endpoint từ mục B đến K
+* **Lớp 3 – nice to have:** dashboard/reporting
+
+## 4) Gợi ý chuẩn tên endpoint
+
+Để tài liệu đẹp và nhất quán, nên dùng:
+
+* danh từ số nhiều cho resource: `/items`, `/shipments`, `/putaway-tasks`
+* action cho nghiệp vụ đặc biệt: `/submit`, `/confirm`, `/review`, `/retry`, `/push`
+* phân tách rõ inbound/outbound/integration/report
+
+Mình có thể làm tiếp cho bạn **bảng mapping “Use Case / Module / Endpoint / Method / Request chính / Response chính”** để bạn đưa thẳng vào tài liệu.
+

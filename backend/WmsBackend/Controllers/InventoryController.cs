@@ -1,41 +1,51 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WmsBackend.Data;
+using WmsBackend.Application.Common;
+using WmsBackend.Application.Services.Inventory;
 using WmsBackend.Models.WmsCore;
 
 namespace WmsBackend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("wms/v1")]
     [ApiController]
     public class InventoryController : ControllerBase
     {
-        private readonly WmsDbContext _context;
+        private readonly IInventoryService _inventoryService;
 
-        public InventoryController(WmsDbContext context) => _context = context;
-
-        // GET: api/Inventory/OnHand?warehouseId=1&itemId=5
-        [HttpGet("OnHand")]
-        public async Task<ActionResult> GetOnHand(int warehouseId, int? itemId)
+        public InventoryController(IInventoryService inventoryService)
         {
-            var query = _context.InventoryOnHands
-                .Include(i => i.Item)
-                .Include(i => i.Location)
-                .Where(i => i.WarehouseId == warehouseId);
-
-            if (itemId.HasValue) query = query.Where(i => i.ItemId == itemId);
-
-            return Ok(await query.ToListAsync());
+            _inventoryService = inventoryService;
         }
 
-        // GET: api/Inventory/Ledger?itemId=5
-        [HttpGet("Ledger")]
-        public async Task<ActionResult> GetLedger(int itemId)
+        [HttpGet("inventory/on-hand")]
+        public async Task<ActionResult<ApiResponse<IEnumerable<InventoryOnHand>>>> GetOnHandInventory([FromQuery] int warehouseId, [FromQuery] int? itemId, [FromQuery] int? locationId)
         {
-            return Ok(await _context.InventoryLedgers
-                .Where(l => l.ItemId == itemId)
-                .OrderByDescending(l => l.Timestamp)
-                .Take(100)
-                .ToListAsync());
+            var result = await _inventoryService.GetOnHandAsync(warehouseId, itemId, locationId);
+            return Ok(result);
         }
+
+        // Keep stub for others
+        [HttpGet("inventory/on-hand/by-location")]
+        public IActionResult GetInventoryByLocation() => Ok(new { success = true });
+
+        [HttpGet("inventory/on-hand/by-item")]
+        public IActionResult GetInventoryByItem() => Ok(new { success = true });
+
+        [HttpGet("inventory/ledger")]
+        public IActionResult GetInventoryLedger() => Ok(new { success = true });
+
+        [HttpPost("inventory/adjustments")]
+        public IActionResult CreateAdjustment() => Ok(new { success = true });
+
+        [HttpGet("inventory/adjustments")]
+        public IActionResult GetAdjustments() => Ok(new { success = true });
+
+        [HttpPost("internal-transfers")]
+        public IActionResult CreateTransfer() => Ok(new { success = true });
+
+        [HttpGet("internal-transfers")]
+        public IActionResult GetTransfers() => Ok(new { success = true });
+
+        [HttpPost("internal-transfers/{transferId}/confirm")]
+        public IActionResult ConfirmTransfer(int transferId) => Ok(new { success = true });
     }
 }

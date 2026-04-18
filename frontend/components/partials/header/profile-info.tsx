@@ -26,8 +26,8 @@ const ProfileInfo = async () => {
           <div className=" flex items-center gap-3  text-default-800 ">
 
             <Image
-              src={session?.user?.image as string}
-              alt={session?.user?.name?.charAt(0) as string}
+              src={session?.user?.image as string || '/images/all-img/user.png'}
+              alt={(session?.user?.name?.charAt(0) as string) || 'User'}
               width={36}
               height={36}
               className="rounded-full"
@@ -45,8 +45,8 @@ const ProfileInfo = async () => {
           <DropdownMenuLabel className="flex gap-2 items-center mb-1 p-3">
 
             <Image
-              src={session?.user?.image as string}
-              alt={session?.user?.name?.charAt(0) as string}
+              src={session?.user?.image as string || '/images/all-img/user.png'}
+              alt={(session?.user?.name?.charAt(0) as string) || 'User'}
               width={36}
               height={36}
               className="rounded-full"

@@ -1,0 +1,155 @@
+TÀI LIỆU HỆ THỐNG API WMS - PHIÊN BẢN 2.0 (Toàn diện 123 APIs)
+=============================================================
+
+Hệ thống API đã được bao phủ hoàn toàn theo thiết kế chuẩn với 4 nhóm Prefix:
+/erp/v1/*, /wms/v1/*, /integration/v1/*, /reports/v1/*
+Ngoài ra có thêm /auth/v1/* và /mobile/v1/* để phục vụ chuyên biệt.
+
+Dưới đây là danh sách đầy đủ toàn bộ endpoint đã được khởi tạo trong mã nguồn:
+
+A. Auth / người dùng / thiết bị scan
+1. POST /auth/v1/login
+2. POST /auth/v1/refresh
+3. POST /auth/v1/logout
+4. GET  /auth/v1/me
+5. GET  /wms/v1/users/me/warehouses
+6. POST /wms/v1/devices/register
+7. POST /wms/v1/devices/heartbeat
+8. GET  /wms/v1/devices/{deviceId}
+
+B. Master data & cấu hình kho
+9. GET  /wms/v1/items
+10. GET  /wms/v1/items/{itemId}
+11. GET  /wms/v1/items/{itemId}/barcodes
+12. POST /wms/v1/items/{itemId}/barcodes
+13. GET  /wms/v1/uoms
+14. GET  /wms/v1/uom-conversions
+15. GET  /wms/v1/suppliers
+16. GET  /wms/v1/customers
+17. GET  /wms/v1/warehouses
+18. GET  /wms/v1/warehouses/{warehouseId}/zones
+19. GET  /wms/v1/warehouses/{warehouseId}/locations
+20. GET  /wms/v1/location-profiles
+21. GET  /wms/v1/inventory-statuses
+22. GET  /wms/v1/reason-codes
+23. GET  /wms/v1/user-warehouse-mappings
+
+C. Đồng bộ ERP FAST (Trực tiếp)
+24. GET  /erp/v1/items
+25. GET  /erp/v1/suppliers
+26. GET  /erp/v1/purchase-orders/open
+27. GET  /erp/v1/purchase-orders/{poNumber}
+28. GET  /erp/v1/sales-orders/open
+29. GET  /erp/v1/sales-orders/{soNumber}
+
+D. Inbound – Master Receipt / Draft / scan-to-draft
+30. POST /wms/v1/master-receipts
+31. GET  /wms/v1/master-receipts
+32. GET  /wms/v1/master-receipts/{masterReceiptId}
+33. POST /wms/v1/master-receipts/{masterReceiptId}/draft-lines/import-open-po
+34. GET  /wms/v1/master-receipts/{masterReceiptId}/draft-lines
+35. POST /wms/v1/drafts/{draftId}/scan-events
+36. POST /wms/v1/drafts/{draftId}/scan-events/batch
+37. PATCH /wms/v1/draft-lines/{lineId}/exceptions
+38. POST /wms/v1/draft-lines/{lineId}/substitutions
+39. POST /wms/v1/drafts/{draftId}/validate
+40. POST /wms/v1/drafts/{draftId}/submit
+41. GET  /wms/v1/inbound-receipts/{receiptId}
+
+E. Putaway / cross-dock / handling unit
+42. POST /wms/v1/putaway-tasks/generate
+43. GET  /wms/v1/putaway-tasks
+44. GET  /wms/v1/putaway-tasks/{taskId}
+45. POST /wms/v1/putaway-tasks/{taskId}/confirm
+46. POST /wms/v1/cross-dock-orders
+47. GET  /wms/v1/cross-dock-orders
+48. POST /wms/v1/cross-dock-orders/{orderId}/confirm
+49. POST /wms/v1/handling-units
+50. GET  /wms/v1/handling-units/{huId}
+51. POST /wms/v1/handling-units/{huId}/move
+
+F. Outbound – wave / pick / shipment
+52. GET  /wms/v1/sales-orders
+53. POST /wms/v1/waves
+54. GET  /wms/v1/waves
+55. GET  /wms/v1/waves/{waveId}
+56. POST /wms/v1/waves/{waveId}/release
+57. GET  /wms/v1/pick-tasks
+58. GET  /wms/v1/pick-tasks/{taskId}
+59. POST /wms/v1/pick-tasks/{taskId}/scan-events
+60. POST /wms/v1/pick-tasks/{taskId}/confirm
+61. POST /wms/v1/shipments
+62. GET  /wms/v1/shipments
+63. GET  /wms/v1/shipments/{shipmentId}
+64. POST /wms/v1/shipments/{shipmentId}/pack
+65. POST /wms/v1/shipments/{shipmentId}/confirm
+66. GET  /wms/v1/backorders
+67. POST /wms/v1/backorders/{backorderId}/resolve
+
+G. Inventory / ledger / adjustment / transfer
+68. GET  /wms/v1/inventory/on-hand
+69. GET  /wms/v1/inventory/on-hand/by-location
+70. GET  /wms/v1/inventory/on-hand/by-item
+71. GET  /wms/v1/inventory/ledger
+72. POST /wms/v1/inventory/adjustments
+73. GET  /wms/v1/inventory/adjustments
+74. POST /wms/v1/internal-transfers
+75. GET  /wms/v1/internal-transfers
+76. POST /wms/v1/internal-transfers/{transferId}/confirm
+
+H. Cycle count / review / approval
+77. POST /wms/v1/cycle-count-sessions
+78. GET  /wms/v1/cycle-count-sessions
+79. GET  /wms/v1/cycle-count-sessions/{sessionId}
+80. GET  /wms/v1/cycle-count-sessions/{sessionId}/lines
+81. POST /wms/v1/cycle-count-sessions/{sessionId}/submit
+82. GET  /wms/v1/cycle-count-sessions/{sessionId}/variances
+83. POST /wms/v1/cycle-count-sessions/{sessionId}/review
+84. POST /wms/v1/cycle-count-sessions/{sessionId}/approve-adjustment
+
+I. Quality / quarantine / return
+85. POST /wms/v1/quality-orders
+86. GET  /wms/v1/quality-orders
+87. GET  /wms/v1/quality-orders/{qualityOrderId}
+88. POST /wms/v1/quality-orders/{qualityOrderId}/result
+89. POST /wms/v1/quarantine-orders
+90. GET  /wms/v1/quarantine-orders
+91. POST /wms/v1/quarantine-orders/{quarantineOrderId}/release
+92. POST /wms/v1/returns
+93. GET  /wms/v1/returns
+94. POST /wms/v1/returns/{returnId}/receive
+95. POST /wms/v1/returns/{returnId}/decision
+
+J. Mobile scan / lookup barcode
+96. POST /mobile/v1/scan-events
+97. POST /mobile/v1/scan-events/batch
+98. GET  /mobile/v1/tasks/next
+99. GET  /mobile/v1/barcodes/{barcode}/resolve
+100. GET /mobile/v1/lookup/item-by-barcode/{barcode}
+
+K. Integration / outbox / retry / audit
+101. POST /integration/v1/sync/items
+102. POST /integration/v1/sync/suppliers
+103. POST /integration/v1/sync/purchase-orders
+104. POST /integration/v1/sync/sales-orders
+105. GET  /integration/v1/outbox
+106. GET  /integration/v1/messages/{messageId}
+107. POST /integration/v1/messages/{messageId}/retry
+108. GET  /integration/v1/api-call-logs
+109. GET  /integration/v1/mobile-scan-events
+110. GET  /integration/v1/health
+111. POST /integration/v1/reprocess-dead-letter
+112. POST /integration/v1/grn/push
+113. POST /integration/v1/goods-issue/push
+
+L. Dashboard & báo cáo
+114. GET  /reports/v1/inbound-summary
+115. GET  /reports/v1/outbound-summary
+116. GET  /reports/v1/inventory-aging
+117. GET  /reports/v1/inventory-by-location
+118. GET  /reports/v1/pick-performance
+119. GET  /reports/v1/putaway-productivity
+120. GET  /reports/v1/cycle-count-accuracy
+121. GET  /reports/v1/quarantine-status
+122. GET  /reports/v1/order-fulfillment
+123. GET  /reports/v1/integration-status

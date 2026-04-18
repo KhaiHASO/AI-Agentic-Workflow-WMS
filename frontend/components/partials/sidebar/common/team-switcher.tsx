@@ -117,7 +117,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                                 <AvatarImage
                                     height={24}
                                     width={24}
-                                    src={session?.user?.image as any}
+                                    src={(session?.user?.image as any) || '/images/all-img/user.png'}
                                     alt={selectedTeam.label}
                                     className="grayscale"
                                 />
@@ -138,7 +138,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                                     <AvatarImage
                                         height={38}
                                         width={38}
-                                        src={session?.user?.image as any}
+                                        src={(session?.user?.image as any) || '/images/all-img/user.png'}
                                         alt={selectedTeam.label}
                                         className="grayscale"
                                     />

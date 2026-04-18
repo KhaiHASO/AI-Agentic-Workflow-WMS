@@ -1,0 +1,204 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WmsBackend</name>
+    </assembly>
+    <members>
+        <member name="T:WmsBackend.Application.DTOs.Inbound.CreateMasterReceiptDto">
+            <summary>
+            Thông tin để khởi tạo một bản nháp chứng từ nhập kho (Master Receipt).
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.CreateMasterReceiptDto.WarehouseId">
+            <summary>
+            ID của kho thực hiện nhập hàng. Ví dụ: 1 (Kho chính)
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.CreateMasterReceiptDto.SupplierId">
+            <summary>
+            ID nhà cung cấp (tùy chọn).
+            </summary>
+            <example>5</example>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.CreateMasterReceiptDto.ReceiptNo">
+            <summary>
+            Số chứng từ nhập (nếu để trống hệ thống sẽ tự sinh định dạng RECV-yyyyMMdd-XXXX).
+            </summary>
+            <example>RECV-20260418-001</example>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.CreateMasterReceiptDto.ExternalRefNo">
+            <summary>
+            Số tham chiếu từ hệ thống ERP hoặc Bill of Lading.
+            </summary>
+            <example>BL-998877</example>
+        </member>
+        <member name="T:WmsBackend.Application.DTOs.Inbound.MasterReceiptDto">
+            <summary>
+            Thông tin chi tiết của Master Receipt hiển thị trên giao diện.
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.MasterReceiptDto.Status">
+            <summary>
+            Trạng thái: Draft, Submitted, PutawayPending, Closed
+            </summary>
+        </member>
+        <member name="T:WmsBackend.Application.DTOs.Inbound.DraftLineDto">
+            <summary>
+            Chi tiết từng dòng hàng trong bản nháp nhập kho.
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.DraftLineDto.ExpectedQty">
+            <summary>
+            Số lượng dự kiến nhập theo PO.
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.DraftLineDto.ReceivedQty">
+            <summary>
+            Số lượng thực tế đã quét được.
+            </summary>
+        </member>
+        <member name="T:WmsBackend.Application.DTOs.Inbound.ScanEventDto">
+            <summary>
+            Dữ liệu gửi lên khi PDA quét một mã vạch.
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.ScanEventDto.Barcode">
+            <summary>
+            Mã vạch đã quét (Item Barcode hoặc Handling Unit Barcode).
+            </summary>
+            <example>DELLXPS001</example>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.ScanEventDto.Qty">
+            <summary>
+            Số lượng quét. Mặc định là 1.
+            </summary>
+            <example>10.5</example>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.ScanEventDto.LocationId">
+            <summary>
+            ID vị trí quét (nếu cần chỉ định vị trí staging cụ thể).
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.ScanEventDto.UserId">
+            <summary>
+            ID người thực hiện quét.
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.ScanEventDto.ClientTxnId">
+            <summary>
+            Mã giao dịch duy nhất từ Client để tránh trùng lặp khi retry mạng yếu.
+            </summary>
+            <example>UUID-123-456-789</example>
+        </member>
+        <member name="T:WmsBackend.Application.DTOs.Inbound.SubmitDraftResultDto">
+            <summary>
+            Kết quả sau khi chốt (Submit) bản nháp nhập kho.
+            </summary>
+        </member>
+        <member name="P:WmsBackend.Application.DTOs.Inbound.SubmitDraftResultDto.PutawayTaskCount">
+            <summary>
+            Số lượng nhiệm vụ cất hàng đã được tự động khởi tạo.
+            </summary>
+        </member>
+        <member name="T:WmsBackend.Controllers.InboundController">
+            <summary>
+            Quản lý nghiệp vụ Nhập kho (Inbound).
+            Hỗ trợ luồng: Tạo chứng từ nháp -> Quét hàng (PDA) -> Chốt số liệu -> Sinh nhiệm vụ cất hàng.
+            </summary>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.CreateMasterReceipt(WmsBackend.Application.DTOs.Inbound.CreateMasterReceiptDto)">
+            <summary>
+            Khởi tạo một Master Receipt mới.
+            </summary>
+            <param name="dto">Thông tin kho và nhà cung cấp.</param>
+            <returns>Thông tin chứng từ vừa tạo.</returns>
+            <response code="200">Tạo thành công.</response>
+            <response code="400">Dữ liệu đầu vào không hợp lệ.</response>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.ImportOpenPo(System.Int32,System.Int32)">
+            <summary>
+            Đổ dữ liệu từ đơn mua hàng (Purchase Order) của ERP vào chứng từ nhập kho.
+            </summary>
+            <param name="masterReceiptId">ID của Master Receipt.</param>
+            <param name="poHeaderId">ID của PO từ ERP.</param>
+            <returns>Trạng thái thực hiện.</returns>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.RecordDraftScanEvent(System.Int32,WmsBackend.Application.DTOs.Inbound.ScanEventDto)">
+            <summary>
+            Ghi nhận một sự kiện quét mã vạch hàng hóa từ thiết bị PDA.
+            </summary>
+            <remarks>
+            PDA sẽ gửi mã vạch quét được lên, hệ thống tự động tìm dòng hàng tương ứng trong Draft để cộng dồn số lượng.
+            </remarks>
+            <param name="masterReceiptId">ID của Master Receipt đang thực hiện quét.</param>
+            <param name="dto">Dữ liệu quét mã vạch.</param>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.SubmitDraft(System.Int32)">
+            <summary>
+            Chốt số liệu nhập kho (Submit Draft).
+            </summary>
+            <remarks>
+            Hành động này sẽ:
+            1. Khóa chứng từ nháp.
+            2. Ghi tăng tồn kho tại vị trí Staging.
+            3. Tự động sinh các nhiệm vụ cất hàng (Putaway Tasks).
+            </remarks>
+            <param name="masterReceiptId">ID của Master Receipt.</param>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.GetMasterReceipts">
+            <summary>
+            Lấy danh sách toàn bộ Master Receipts.
+            </summary>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.GetMasterReceipt(System.Int32)">
+            <summary>
+            Chi tiết một Master Receipt theo ID.
+            </summary>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.GetDraftLines(System.Int32)">
+            <summary>
+            Lấy danh sách các dòng hàng đang quét dở (Draft Lines).
+            </summary>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.ReportDraftLineException(System.Int32)">
+            <summary>
+            Báo cáo ngoại lệ (Thiếu hàng, hàng hỏng) cho một dòng hàng.
+            </summary>
+        </member>
+        <member name="M:WmsBackend.Controllers.InboundController.RecordSubstitution(System.Int32)">
+            <summary>
+            Ghi nhận hàng thay thế (Substitution) khi hàng về không đúng mã trong PO.
+            </summary>
+        </member>
+        <member name="T:WmsBackend.Data.Migrations.WmsDb_Standard_Enterprise_Final_V6_Clean">
+            <inheritdoc />
+        </member>
+        <member name="M:WmsBackend.Data.Migrations.WmsDb_Standard_Enterprise_Final_V6_Clean.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WmsBackend.Data.Migrations.WmsDb_Standard_Enterprise_Final_V6_Clean.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WmsBackend.Data.Migrations.WmsDb_Standard_Enterprise_Final_V6_Clean.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:WmsBackend.Data.Migrations.AddConstraintsAndIdempotency_V7">
+            <inheritdoc />
+        </member>
+        <member name="M:WmsBackend.Data.Migrations.AddConstraintsAndIdempotency_V7.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WmsBackend.Data.Migrations.AddConstraintsAndIdempotency_V7.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:WmsBackend.Data.Migrations.AddConstraintsAndIdempotency_V7.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+    </members>
+</doc>

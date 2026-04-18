@@ -4,14 +4,8 @@ import DashCodeSidebar from '@/components/partials/sidebar'
 import DashCodeFooter from '@/components/partials/footer'
 import ThemeCustomize from '@/components/partials/customizer'
 import DashCodeHeader from '@/components/partials/header'
-import { auth } from "@/lib/auth";
-import { redirect } from "@/components/navigation";
-const layout = async ({ children }: { children: React.ReactNode }) => {
-    const session = await auth();
 
-    if (!session) {
-        redirect({ href: '/', locale: 'en' })
-    }
+const layout = async ({ children }: { children: React.ReactNode }) => {
     return (
         <LayoutProvider >
             <ThemeCustomize />
@@ -23,8 +17,6 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
             <DashCodeFooter />
         </LayoutProvider>
     )
-
-
 };
 
 export default layout;
