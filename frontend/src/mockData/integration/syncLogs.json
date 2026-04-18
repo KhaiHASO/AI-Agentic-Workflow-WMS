@@ -1,7 +1,0 @@
-[
-  { "syncId": "SYNC-001", "entity": "ITEM", "type": "PULL", "status": "Success", "startTime": "2026-04-12T00:00:00Z", "endTime": "2026-04-12T00:01:00Z", "recordsProcessed": 500, "errorLog": null },
-  { "syncId": "SYNC-002", "entity": "PO", "type": "PULL", "status": "Success", "startTime": "2026-04-12T08:00:00Z", "endTime": "2026-04-12T08:00:15Z", "recordsProcessed": 10, "errorLog": null },
-  { "syncId": "SYNC-003", "entity": "GRN", "type": "PUSH", "status": "Failed", "startTime": "2026-04-12T09:05:00Z", "endTime": "2026-04-12T09:05:05Z", "recordsProcessed": 1, "errorLog": "ERP_TIMEOUT: ERP did not respond in time" },
-  { "syncId": "SYNC-004", "entity": "SO", "type": "PULL", "status": "Success", "startTime": "2026-04-13T07:00:00Z", "endTime": "2026-04-13T07:00:10Z", "recordsProcessed": 5, "errorLog": null },
-  { "syncId": "SYNC-005", "entity": "LOCATION", "type": "PULL", "status": "Success", "startTime": "2026-04-13T08:30:00Z", "endTime": "2026-04-13T08:30:45Z", "recordsProcessed": 150, "errorLog": null }
-]

@@ -1,5 +1,0 @@
-[
-  { "warehouseCode": "WH-A", "warehouseName": "Kho Tổng Miền Nam", "status": "Active" },
-  { "warehouseCode": "WH-B", "warehouseName": "Kho Chi Nhánh Miền Bắc", "status": "Active" },
-  { "warehouseCode": "WH-QC", "warehouseName": "Kho Kiểm Định Tập Trung", "status": "Active" }
-]

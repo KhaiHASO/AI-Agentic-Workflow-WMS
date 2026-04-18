@@ -1,8 +1,0 @@
-[
-  { "locationCode": "WH-A-REC-01", "zoneCode": "WH-A-REC", "warehouseCode": "WH-A", "type": "RECEIVING", "maxPallets": 100, "canReceive": true, "canPick": false, "isQuarantine": false, "status": "Active" },
-  { "locationCode": "WH-A-STG-01-01-L1", "zoneCode": "WH-A-STG", "warehouseCode": "WH-A", "type": "STORAGE", "maxPallets": 2, "canReceive": true, "canPick": true, "isQuarantine": false, "status": "Active" },
-  { "locationCode": "WH-A-STG-01-01-L2", "zoneCode": "WH-A-STG", "warehouseCode": "WH-A", "type": "STORAGE", "maxPallets": 2, "canReceive": true, "canPick": true, "isQuarantine": false, "status": "Active" },
-  { "locationCode": "WH-A-PCK-01-01-L1", "zoneCode": "WH-A-PCK", "warehouseCode": "WH-A", "type": "PICKING", "maxPallets": 5, "canReceive": false, "canPick": true, "isQuarantine": false, "status": "Active" },
-  { "locationCode": "WH-A-QUA-01", "zoneCode": "WH-A-QUA", "warehouseCode": "WH-A", "type": "QUARANTINE", "maxPallets": 20, "canReceive": true, "canPick": false, "isQuarantine": true, "status": "Active" },
-  { "locationCode": "WH-B-STG-01-01-L1", "zoneCode": "WH-B-STG", "warehouseCode": "WH-B", "type": "STORAGE", "maxPallets": 5, "canReceive": true, "canPick": true, "isQuarantine": false, "status": "Active" }
-]
