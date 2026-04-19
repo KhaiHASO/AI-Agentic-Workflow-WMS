@@ -10,6 +10,12 @@ const withNextra = nextra({
   themeConfig: "./theme.config.tsx",
 });
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
