@@ -7,10 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { UnknownBarcodeModal } from "./modals/unknown-barcode-modal";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 export const ReceivingScanArea = () => {
   const [barcode, setBarcode] = useState("");
   const [unknownBarcode, setUnknownBarcode] = useState<string | null>(null);
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState("");
   const { processScan, scanResult, undoLastScan, lines } = useReceivingStore();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,11 +35,27 @@ export const ReceivingScanArea = () => {
   };
 
   useEffect(() => {
+    if (scanResult?.message.includes("Cần mã Quản lý")) {
+      setShowPinModal(true);
+    }
+  }, [scanResult]);
+
+  useEffect(() => {
     inputRef.current?.focus();
   }, [scanResult, unknownBarcode]);
 
   return (
     <div className="space-y-4">
+      {scanResult?.message.includes("CROSS-DOCK") && (
+        <div className="bg-destructive text-white p-4 rounded-lg flex items-center gap-4 animate-pulse shadow-lg border-4 border-yellow-400">
+           <Icon icon="heroicons:exclamation-triangle" className="w-12 h-12" />
+           <div className="flex-1">
+              <div className="text-xl font-black uppercase tracking-tighter">🔥 CẢNH BÁO GIAO THẲNG (CROSS-DOCK)</div>
+              <div className="font-bold text-lg leading-tight">{scanResult.message}</div>
+           </div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="flex gap-2">
         <div className="relative flex-1">
           <Icon 
@@ -88,6 +108,31 @@ export const ReceivingScanArea = () => {
         onClose={() => setUnknownBarcode(null)}
         barcode={unknownBarcode || ""}
       />
+
+      <Dialog open={showPinModal} onOpenChange={setShowPinModal}>
+        <DialogContent className="sm:max-w-[400px]">
+          <div className="text-center p-4 space-y-4">
+            <div className="w-16 h-16 bg-destructive/10 text-destructive rounded-full flex items-center justify-center mx-auto">
+               <Icon icon="heroicons:lock-closed" className="w-8 h-8" />
+            </div>
+            <h2 className="text-xl font-black uppercase">Xác nhận của Quản lý</h2>
+            <p className="text-sm text-default-500 font-medium">Việc nhận hàng vượt ngưỡng cho phép cần mã PIN phê duyệt để tiếp tục.</p>
+            <Input 
+              type="password" 
+              placeholder="Nhập mã PIN 4 số..." 
+              className="text-center text-3xl font-black h-16 tracking-[1em]"
+              maxLength={4}
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+            />
+            <div className="grid grid-cols-2 gap-2">
+               <Button variant="outline" onClick={() => setShowPinModal(false)}>HỦY BỎ</Button>
+               <Button color="primary" onClick={() => { toast.success("Đã phê duyệt nhận dư"); setShowPinModal(false); setPin(""); }}>PHÊ DUYỆT</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
+

@@ -31,184 +31,129 @@ export type Group = {
 export function getMenuList(pathname: string, t: any): Group[] {
   return [
     {
-      groupLabel: "ĐIỀU HÀNH",
-      id: "dashboard-group",
+      groupLabel: "LUỒNG 0 & 5: GIÁM SÁT & TÍCH HỢP",
+      id: "control-tower-group",
       menus: [
         {
           id: "dashboard",
           href: "/dashboard",
-          label: "Dashboard",
+          label: "Control Tower",
           active: pathname.includes("/dashboard"),
-          icon: "heroicons-outline:home",
+          icon: "heroicons-outline:chart-bar",
           submenus: [
-            {
-              href: "/dashboard",
-              label: "Tổng quan",
-              active: pathname === "/dashboard",
-              children: [],
-            },
-            {
-              href: "/dashboard/alerts",
-              label: "Cảnh báo (Alerts)",
-              active: pathname === "/dashboard/alerts",
-              children: [],
-            },
+            { href: "/dashboard", label: "Dashboard Quản trị", active: pathname === "/dashboard", children: [] },
+            { href: "/dashboard/alerts", label: "Cảnh báo Vận hành", active: pathname === "/dashboard/alerts", children: [] },
+          ],
+        },
+        {
+          id: "integration",
+          href: "/integration/messages",
+          label: "ERP Integration",
+          active: pathname.includes("/integration"),
+          icon: "heroicons-outline:arrows-right-left",
+          submenus: [
+            { href: "/integration/messages", label: "Nhật ký Đồng bộ", active: pathname === "/integration/messages", children: [] },
+            { href: "/integration/erp-sync", label: "Đồng bộ Master Data", active: pathname === "/integration/erp-sync", children: [] },
           ],
         },
       ],
     },
     {
-      groupLabel: "VẬN HÀNH (OPERATIONS)",
-      id: "operations-group",
+      groupLabel: "LUỒNG 1 & 2: NHẬP KHO (INBOUND)",
+      id: "inbound-group",
       menus: [
         {
           id: "inbound",
           href: "/inbound/purchase-orders",
-          label: "Inbound (Nhập kho)",
+          label: "Nhận hàng & Cất hàng",
           active: pathname.includes("/inbound"),
           icon: "heroicons-outline:login",
           submenus: [
-            {
-              href: "/inbound/purchase-orders",
-              label: "Purchase Orders (PO)",
-              active: pathname === "/inbound/purchase-orders",
-              children: [],
-            },
-            {
-              href: "/inbound/master-receipts",
-              label: "Master Receipts",
-              active: pathname.includes("/inbound/master-receipts") || pathname.includes("/inbound/drafts") || pathname.includes("/inbound/receipts"),
-              children: [],
-            },
-            {
-              href: "/inbound/putaway-tasks",
-              label: "Putaway Tasks",
-              active: pathname.includes("/inbound/putaway-tasks"),
-              children: [],
-            },
-          ],
-        },
-        {
-          id: "outbound",
-          href: "/outbound/sales-orders",
-          label: "Outbound (Xuất kho)",
-          active: pathname.includes("/outbound"),
-          icon: "heroicons-outline:logout",
-          submenus: [
-            {
-              href: "/outbound/sales-orders",
-              label: "Sales Orders (SO)",
-              active: pathname === "/outbound/sales-orders",
-              children: [],
-            },
-            {
-              href: "/outbound/waves",
-              label: "Waves",
-              active: pathname.includes("/outbound/waves"),
-              children: [],
-            },
-            {
-              href: "/outbound/pick-tasks",
-              label: "Pick Tasks",
-              active: pathname.includes("/outbound/pick-tasks"),
-              children: [],
-            },
-            {
-              href: "/outbound/shipments",
-              label: "Shipments",
-              active: pathname.includes("/outbound/shipments"),
-              children: [],
-            },
+            { href: "/inbound/purchase-orders", label: "Đơn mua hàng (PO)", active: pathname === "/inbound/purchase-orders", children: [] },
+            { href: "/inbound/master-receipts", label: "Master Receipt (Gom PO)", active: pathname.includes("/inbound/master-receipts"), children: [] },
+            { href: "/inbound/drafts/mr-1", label: "Receiving Workbench (Draft)", active: pathname.includes("/inbound/drafts"), children: [] },
+            { href: "/inbound/putaway-tasks", label: "Putaway Tasks (Cất hàng)", active: pathname.includes("/inbound/putaway-tasks"), children: [] },
           ],
         },
       ],
     },
     {
-      groupLabel: "TỒN KHO & CHẤT LƯỢNG",
+      groupLabel: "LUỒNG 3: XUẤT KHO (OUTBOUND)",
+      id: "outbound-group",
+      menus: [
+        {
+          id: "outbound",
+          href: "/outbound/waves",
+          label: "Xuất kho Thực thi",
+          active: pathname.includes("/outbound"),
+          icon: "heroicons-outline:logout",
+          submenus: [
+            { href: "/outbound/sales-orders", label: "Đơn bán hàng (SO)", active: pathname === "/outbound/sales-orders", children: [] },
+            { href: "/outbound/waves", label: "Wave Planning (Đợt xuất)", active: pathname.includes("/outbound/waves"), children: [] },
+            { href: "/outbound/pick-tasks", label: "Picking Workbench", active: pathname.includes("/outbound/pick-tasks"), children: [] },
+            { href: "/outbound/shipments", label: "Shipment Packing", active: pathname.includes("/outbound/shipments"), children: [] },
+          ],
+        },
+      ],
+    },
+    {
+      groupLabel: "LUỒNG 4: TỒN KHO & CHẤT LƯỢNG",
       id: "inventory-group",
       menus: [
         {
           id: "inventory",
           href: "/inventory/on-hand",
-          label: "Quản lý tồn kho",
-          active: pathname.includes("/inventory"),
+          label: "Inventory & QC",
+          active: pathname.includes("/inventory") || pathname.includes("/quality") || pathname.includes("/counting"),
           icon: "heroicons-outline:cube",
           submenus: [
-            {
-              href: "/inventory/on-hand",
-              label: "Tồn kho hiện tại",
-              active: pathname === "/inventory/on-hand",
-              children: [],
-            },
-            {
-              href: "/inventory/ledger",
-              label: "Sổ kho (Ledger)",
-              active: pathname === "/inventory/ledger",
-              children: [],
-            },
-            {
-              href: "/inventory/handling-units",
-              label: "Handling Units (HU)",
-              active: pathname.includes("/inventory/handling-units"),
-              children: [],
-            },
-          ],
-        },
-        {
-          id: "counting",
-          href: "/counting/sessions",
-          label: "Kiểm kê (Counting)",
-          active: pathname.includes("/counting"),
-          icon: "heroicons-outline:clipboard-list",
-          submenus: [
-            {
-              href: "/counting/sessions",
-              label: "Phiên kiểm kê",
-              active: pathname.includes("/counting/sessions"),
-              children: [],
-            },
+            { href: "/inventory/on-hand", label: "Inventory Console (Tồn kho)", active: pathname === "/inventory/on-hand", children: [] },
+            { href: "/quality/orders", label: "QC & Quarantine", active: pathname.includes("/quality"), children: [] },
+            { href: "/counting/sessions", label: "Cycle Count (Kiểm kê)", active: pathname.includes("/counting"), children: [] },
+            { href: "/inventory/ledger", label: "Thẻ kho (Ledger)", active: pathname === "/inventory/ledger", children: [] },
           ],
         },
       ],
     },
     {
-      groupLabel: "HỆ THỐNG",
+      groupLabel: "LUỒNG 6: QUẢN TRỊ HỆ THỐNG",
       id: "system-group",
       menus: [
         {
-          id: "integration",
-          href: "/integration/messages",
-          label: "Tích hợp (ERP)",
-          active: pathname.includes("/integration"),
-          icon: "heroicons-outline:link",
+          id: "admin",
+          href: "/admin/users",
+          label: "System Admin",
+          active: pathname.includes("/admin") || pathname.includes("/master-data"),
+          icon: "heroicons-outline:cog",
           submenus: [
-            {
-              href: "/integration/messages",
-              label: "Hàng đợi thông điệp",
-              active: pathname === "/integration/messages",
-              children: [],
-            },
+            { href: "/admin/users", label: "User & Role Management", active: pathname.includes("/admin/users"), children: [] },
+            { href: "/admin/devices", label: "Device Management", active: pathname.includes("/admin/devices"), children: [] },
+            { href: "/admin/erp-config", label: "ERP Connectivity Config", active: pathname.includes("/admin/erp-config"), children: [] },
+            { href: "/master-data/items", label: "Dữ liệu nền (Master Data)", active: pathname.includes("/master-data"), children: [] },
           ],
         },
+      ],
+    },
+    {
+      groupLabel: "LUỒNG 7: CÔNG CỤ GIẢ LẬP",
+      id: "dev-tools-group",
+      menus: [
         {
-          id: "master-data",
-          href: "/master-data/items",
-          label: "Dữ liệu nền",
-          active: pathname.includes("/master-data"),
-          icon: "heroicons-outline:database",
+          id: "dev-tools",
+          href: "/dev-tools/erp-mock",
+          label: "Developer Tools",
+          active: pathname.includes("/dev-tools"),
+          icon: "heroicons-outline:beaker",
           submenus: [
-            {
-              href: "/master-data/items",
-              label: "Hàng hóa (Items)",
-              active: pathname.includes("/master-data/items"),
-              children: [],
-            },
+            { href: "/dev-tools/erp-mock", label: "ERP Mock Panel", active: pathname === "/dev-tools/erp-mock", children: [] },
+            { href: "/dev-tools/scanner-widget", label: "Virtual Scanner Settings", active: pathname === "/dev-tools/scanner-widget", children: [] },
           ],
         },
       ],
     },
   ];
 }
+
 
 export function getHorizontalMenuList(pathname: string, t: any): Group[] {
   return getMenuList(pathname, t);

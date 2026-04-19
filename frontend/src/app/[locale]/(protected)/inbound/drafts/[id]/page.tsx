@@ -7,12 +7,14 @@ import { ReceivingScanArea } from "@/components/features/receiving/receiving-sca
 import { ReceivingLineTable } from "@/components/features/receiving/receiving-line-table";
 import { ReceivingControlPanel } from "@/components/features/receiving/receiving-control-panel";
 import { ReceivingFooter } from "@/components/features/receiving/receiving-footer";
+import { VirtualScannerWidget } from "@/components/features/receiving/virtual-scanner-widget";
 
 export default function ReceivingWorkbenchPage() {
   const { activeLineId, setActiveLine } = useReceivingStore();
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-100px)] -m-6">
+      <VirtualScannerWidget />
       <ReceivingHeader />
       
       <div className="flex flex-1 overflow-hidden">

@@ -1,7 +1,16 @@
 "use client"
 
-import { InventoryConsole } from "@/components/features/inventory/inventory-console";
+import { InventoryControlConsole } from "@/components/features/inventory/inventory-control-console";
+import { PageHeader } from "@/components/wms/page-header";
 
-export default function InventoryPage() {
-  return <InventoryConsole />;
+export default function InventoryOnHandPage() {
+  return (
+    <div className="space-y-6">
+      <PageHeader 
+        title="Inventory Control Console"
+        subtitle="Quản lý tồn kho, điều chuyển và điều chỉnh số lượng"
+      />
+      <InventoryControlConsole />
+    </div>
+  );
 }

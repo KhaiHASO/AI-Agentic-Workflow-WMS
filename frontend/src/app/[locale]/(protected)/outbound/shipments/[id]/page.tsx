@@ -1,10 +1,15 @@
 "use client"
 
-import { useParams } from "next/navigation";
 import { ShipmentPacking } from "@/components/features/shipment/shipment-packing";
+import { useParams } from "next/navigation";
 
-export default function Page() {
-  const { id } = useParams();
-  
-  return <ShipmentPacking shipmentId={id as string} />;
+export default function ShipmentPackingPage() {
+  const params = useParams();
+  const id = params.id as string;
+
+  return (
+    <div className="space-y-6">
+      <ShipmentPacking />
+    </div>
+  );
 }

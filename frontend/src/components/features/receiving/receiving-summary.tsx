@@ -34,7 +34,9 @@ export const ReceivingSummary = () => {
              </div>
              <div className="bg-white p-2 rounded border border-default-100">
                 <div className="text-[10px] text-default-400 uppercase">Hỏng/QC</div>
-                <div className="text-lg font-bold text-destructive">0</div>
+                <div className="text-lg font-bold text-destructive">
+                  {lines.reduce((acc, curr) => acc + curr.damagedQty + curr.qcQty, 0)}
+                </div>
              </div>
           </div>
         </CardContent>

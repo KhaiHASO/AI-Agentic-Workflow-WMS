@@ -8,12 +8,20 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react";
 import { ManualQtyModal } from "./modals/manual-qty-modal";
 import { QualitySplitModal } from "./modals/quality-split-modal";
+import { LotExpiryModal } from "./modals/lot-expiry-modal";
+import { SerialEntryModal } from "./modals/serial-entry-modal";
+import { SubstituteModal } from "./modals/substitute-modal";
+import { CloseShortModal } from "./modals/close-short-modal";
 import { toast } from "sonner";
 
 export const ReceivingLineTable = () => {
-  const { lines, activeLineId, setActiveLine, updateLineQty } = useReceivingStore();
+  const { lines, activeLineId, setActiveLine, updateLineQty, addLotInfo, addSerial, recordQualitySplit, handleSubstitution, closeShort } = useReceivingStore();
   const [editingLine, setEditingLine] = useState<any>(null);
   const [qcLine, setQcLine] = useState<any>(null);
+  const [lotLine, setLotLine] = useState<any>(null);
+  const [serialLine, setSerialLine] = useState<any>(null);
+  const [subLine, setSubLine] = useState<any>(null);
+  const [shortLine, setShortLine] = useState<any>(null);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -21,6 +29,7 @@ export const ReceivingLineTable = () => {
       case 'Partial': return 'info';
       case 'Exception': return 'destructive';
       case 'QC Pending': return 'warning';
+      case 'Closed Short': return 'secondary';
       default: return 'default';
     }
   };
@@ -35,11 +44,40 @@ export const ReceivingLineTable = () => {
 
   const handleConfirmQC = (data: any) => {
     if (qcLine) {
-      updateLineQty(qcLine.id, 'acceptedQty', data.accepted);
-      updateLineQty(qcLine.id, 'damagedQty', data.damaged);
-      updateLineQty(qcLine.id, 'qcQty', data.qc);
+      recordQualitySplit(qcLine.id, data);
       setQcLine(null);
       toast.success(`Đã phân loại chất lượng cho ${qcLine.itemName}`);
+    }
+  };
+
+  const handleConfirmLot = (lot: any) => {
+    if (lotLine) {
+      addLotInfo(lotLine.id, lot);
+      setLotLine(null);
+      toast.success(`Đã thêm số Lot ${lot.lotNo}`);
+    }
+  };
+
+  const handleConfirmSerial = (serial: string) => {
+    if (serialLine) {
+      addSerial(serialLine.id, serial);
+      toast.success(`Đã thêm Serial ${serial}`);
+    }
+  };
+
+  const handleConfirmSub = (sub: any) => {
+    if (subLine) {
+      handleSubstitution(subLine.id, sub);
+      setSubLine(null);
+      toast.success(`Đã thay thế bằng ${sub.itemName}`);
+    }
+  };
+
+  const handleConfirmShort = (reason: string) => {
+    if (shortLine) {
+      closeShort(shortLine.id, reason);
+      setShortLine(null);
+      toast.success(`Đã đóng thiếu cho ${shortLine.itemName}`);
     }
   };
 
@@ -85,6 +123,7 @@ export const ReceivingLineTable = () => {
                     size="icon" 
                     variant="ghost" 
                     className="h-8 w-8 text-default-500"
+                    title="Chỉnh sửa số lượng"
                     onClick={(e) => {
                       e.stopPropagation();
                       setEditingLine(line);
@@ -92,10 +131,42 @@ export const ReceivingLineTable = () => {
                    >
                      <Icon icon="heroicons:pencil-square" />
                    </Button>
+
+                   {line.requiresLot && (
+                     <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      className="h-8 w-8 text-info"
+                      title="Nhập Lot/Expiry"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLotLine(line);
+                      }}
+                     >
+                       <Icon icon="heroicons:tag" />
+                     </Button>
+                   )}
+
+                   {line.requiresSerial && (
+                     <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      className="h-8 w-8 text-info"
+                      title="Nhập Serial"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSerialLine(line);
+                      }}
+                     >
+                       <Icon icon="heroicons:qr-code" />
+                     </Button>
+                   )}
+
                    <Button 
                     size="icon" 
                     variant="ghost" 
                     className="h-8 w-8 text-warning"
+                    title="Phân loại chất lượng"
                     onClick={(e) => {
                       e.stopPropagation();
                       setQcLine(line);
@@ -103,8 +174,33 @@ export const ReceivingLineTable = () => {
                    >
                      <Icon icon="heroicons:beaker" />
                    </Button>
-                   <Button size="icon" variant="ghost" className="h-8 w-8 text-destructive">
-                     <Icon icon="heroicons:exclamation-triangle" />
+
+                   {line.allowsSubstitution && (
+                     <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      className="h-8 w-8 text-purple-500"
+                      title="Sử dụng hàng thay thế"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSubLine(line);
+                      }}
+                     >
+                       <Icon icon="heroicons:arrows-right-left" />
+                     </Button>
+                   )}
+
+                   <Button 
+                    size="icon" 
+                    variant="ghost" 
+                    className="h-8 w-8 text-destructive"
+                    title="Đóng thiếu (Close Short)"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShortLine(line);
+                    }}
+                   >
+                     <Icon icon="heroicons:x-circle" />
                    </Button>
                 </div>
               </TableCell>
@@ -132,6 +228,47 @@ export const ReceivingLineTable = () => {
           totalQty={qcLine.receivedQty}
         />
       )}
+
+      {lotLine && (
+        <LotExpiryModal
+          open={!!lotLine}
+          onClose={() => setLotLine(null)}
+          onConfirm={handleConfirmLot}
+          itemName={lotLine.itemName}
+        />
+      )}
+
+      {serialLine && (
+        <SerialEntryModal
+          open={!!serialLine}
+          onClose={() => setSerialLine(null)}
+          onConfirm={handleConfirmSerial}
+          itemName={serialLine.itemName}
+          existingSerials={serialLine.serials || []}
+          requiredQty={serialLine.receivedQty}
+        />
+      )}
+
+      {subLine && (
+        <SubstituteModal
+          open={!!subLine}
+          onClose={() => setSubLine(null)}
+          onConfirm={handleConfirmSub}
+          itemName={subLine.itemName}
+          candidates={subLine.substitutionCandidates || []}
+        />
+      )}
+
+      {shortLine && (
+        <CloseShortModal
+          open={!!shortLine}
+          onClose={() => setShortLine(null)}
+          onConfirm={handleConfirmShort}
+          itemName={shortLine.itemName}
+          shortQty={shortLine.expectedQty - shortLine.receivedQty}
+        />
+      )}
     </div>
+
   );
 };
