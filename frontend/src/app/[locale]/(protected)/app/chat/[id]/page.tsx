@@ -160,7 +160,7 @@ const ChatPageSingle = async ({ params: { id } }: { params: { id: string }; }) =
 
                 <div className='flex flex-col items-center px-6'>
                     <Avatar className="h-24 w-24 border-none shadow-none bg-transparent hover:bg-transparent">
-                        <AvatarImage src={contact?.avatar?.src || ""} alt="" />
+                        <AvatarImage src={contact?.avatar || ""} alt="" />
                         <AvatarFallback>{contact?.fullName?.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <div className="text-center mt-4 ">

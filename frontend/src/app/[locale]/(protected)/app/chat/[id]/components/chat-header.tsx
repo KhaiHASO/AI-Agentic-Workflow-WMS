@@ -33,7 +33,7 @@ const ChatHeader = ({ contact }: { contact: any }) => {
                 )}
                 <div className="relative inline-block">
                     <Avatar className="border-none shadow-none bg-transparent hover:bg-transparent">
-                        <AvatarImage src={contact?.avatar?.src} alt="" />
+                        <AvatarImage src={contact?.avatar} alt="" />
                         <AvatarFallback>{contact?.fullName?.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <Badge

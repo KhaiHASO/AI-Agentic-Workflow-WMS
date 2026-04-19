@@ -35,7 +35,7 @@ const ContactList = ({ contact }: {
             <div className="flex-1 flex items-center  gap-3 ">
                 <div className="relative inline-block ">
                     <Avatar className="border-none bg-transparent hover:bg-transparent">
-                        <AvatarImage src={avatar.src} />
+                        <AvatarImage src={avatar} />
                         <AvatarFallback className="uppercase">
                             {fullName.slice(0, 2)}
                         </AvatarFallback>
