@@ -139,7 +139,7 @@ export default function ErpSyncPage() {
               <CardHeader><CardTitle className="text-xs font-bold uppercase text-default-400">Lưu ý Luồng 0</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                  <p className="text-xs text-default-500 leading-relaxed italic">
-                    "Hệ thống tự động thực hiện Pull dữ liệu mỗi 15 phút. Người dùng chỉ nên bấm đồng bộ thủ công khi có yêu cầu khẩn cấp từ kho hoặc vừa cập nhật danh mục bên ERP FAST."
+                    &quot;Hệ thống tự động thực hiện Pull dữ liệu mỗi 15 phút. Người dùng chỉ nên bấm đồng bộ thủ công khi có yêu cầu khẩn cấp từ kho hoặc vừa cập nhật danh mục bên ERP FAST.&quot;
                  </p>
                  <div className="p-3 bg-warning/5 rounded-lg border border-warning/10 text-[10px] font-medium text-warning-700 flex gap-2">
                     <Icon icon="heroicons:information-circle" className="w-4 h-4 shrink-0" />

@@ -60,7 +60,7 @@ const DashboardPage = () => {
                 </TableRow>
                 <TableRow className="hover:bg-default-50/50">
                   <TableCell className="ps-6"><Badge color="warning" variant="soft">Warning</Badge></TableCell>
-                  <TableCell className="font-medium">Putaway task PT-001 overdue (> 2h)</TableCell>
+                  <TableCell className="font-medium">Putaway task PT-001 overdue (&gt; 2h)</TableCell>
                   <TableCell className="pe-6 text-right text-xs text-default-400">1 giờ trước</TableCell>
                 </TableRow>
                 <TableRow className="hover:bg-default-50/50 border-none">
