@@ -4,7 +4,7 @@ export const data: DataProps[] = [
     id: 1,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -22,7 +22,7 @@ export const data: DataProps[] = [
     id: 2,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -40,7 +40,7 @@ export const data: DataProps[] = [
     id: 3,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -58,7 +58,7 @@ export const data: DataProps[] = [
     id: 4,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -76,7 +76,7 @@ export const data: DataProps[] = [
     id: 5,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -94,7 +94,7 @@ export const data: DataProps[] = [
     id: 6,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -112,7 +112,7 @@ export const data: DataProps[] = [
     id: 7,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -130,7 +130,7 @@ export const data: DataProps[] = [
     id: 8,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -148,7 +148,7 @@ export const data: DataProps[] = [
     id: 9,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -166,7 +166,7 @@ export const data: DataProps[] = [
     id: 10,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -184,7 +184,7 @@ export const data: DataProps[] = [
     id: 11,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -202,7 +202,7 @@ export const data: DataProps[] = [
     id: 12,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -220,7 +220,7 @@ export const data: DataProps[] = [
     id: 13,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -238,7 +238,7 @@ export const data: DataProps[] = [
     id: 14,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -256,7 +256,7 @@ export const data: DataProps[] = [
     id: 15,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -274,7 +274,7 @@ export const data: DataProps[] = [
     id: 16,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -292,7 +292,7 @@ export const data: DataProps[] = [
     id: 17,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -310,7 +310,7 @@ export const data: DataProps[] = [
     id: 18,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -328,7 +328,7 @@ export const data: DataProps[] = [
     id: 19,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -346,7 +346,7 @@ export const data: DataProps[] = [
     id: 20,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -364,7 +364,7 @@ export const data: DataProps[] = [
     id: 21,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -382,7 +382,7 @@ export const data: DataProps[] = [
     id: 22,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -400,7 +400,7 @@ export const data: DataProps[] = [
     id: 23,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -418,7 +418,7 @@ export const data: DataProps[] = [
     id: 24,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -436,7 +436,7 @@ export const data: DataProps[] = [
     id: 25,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -454,7 +454,7 @@ export const data: DataProps[] = [
     id: 26,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -472,7 +472,7 @@ export const data: DataProps[] = [
     id: 27,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -490,7 +490,7 @@ export const data: DataProps[] = [
     id: 28,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -508,7 +508,7 @@ export const data: DataProps[] = [
     id: 29,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -526,7 +526,7 @@ export const data: DataProps[] = [
     id: 30,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -544,7 +544,7 @@ export const data: DataProps[] = [
     id: 31,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -562,7 +562,7 @@ export const data: DataProps[] = [
     id: 32,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -580,7 +580,7 @@ export const data: DataProps[] = [
     id: 33,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -598,7 +598,7 @@ export const data: DataProps[] = [
     id: 34,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -616,7 +616,7 @@ export const data: DataProps[] = [
     id: 35,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -634,7 +634,7 @@ export const data: DataProps[] = [
     id: 36,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -652,7 +652,7 @@ export const data: DataProps[] = [
     id: 37,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -670,7 +670,7 @@ export const data: DataProps[] = [
     id: 38,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -688,7 +688,7 @@ export const data: DataProps[] = [
     id: 39,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -706,7 +706,7 @@ export const data: DataProps[] = [
     id: 40,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -724,7 +724,7 @@ export const data: DataProps[] = [
     id: 41,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -742,7 +742,7 @@ export const data: DataProps[] = [
     id: 42,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -760,7 +760,7 @@ export const data: DataProps[] = [
     id: 43,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -778,7 +778,7 @@ export const data: DataProps[] = [
     id: 44,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -796,7 +796,7 @@ export const data: DataProps[] = [
     id: 45,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -814,7 +814,7 @@ export const data: DataProps[] = [
     id: 46,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -832,7 +832,7 @@ export const data: DataProps[] = [
     id: 47,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -850,7 +850,7 @@ export const data: DataProps[] = [
     id: 48,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -868,7 +868,7 @@ export const data: DataProps[] = [
     id: 49,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',
@@ -886,7 +886,7 @@ export const data: DataProps[] = [
     id: 50,
     product: {
       name: "Classical Black Export Quality Fabrics Half Hand T-Shirt for Man",
-      image: "/images/e-commerce/product-card/classical-black-tshirt.png",
+      image: "",
       
     },
     seller: 'Codeshaper.ltd',

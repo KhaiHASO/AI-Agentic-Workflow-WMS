@@ -19,7 +19,7 @@ const Login3 = () => {
             <div className="flex justify-center items-center min-h-screen">
               <Link href="/" className="">
                 <Image
-                  src="/images/logo/logo-white.svg"
+                  src=""
                   alt=""
                   width={300}
                   height={300}

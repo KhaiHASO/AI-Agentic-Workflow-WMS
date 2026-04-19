@@ -18,27 +18,27 @@ export function Cart() {
     const cartProducts = [
         {
             id: 1,
-            productImage: "/images/e-commerce/product-card/classical-black-tshirt.png"
+            productImage: ""
         },
         {
             id: 2,
-            productImage: "/images/e-commerce/product-card/black-t-shirt.png"
+            productImage: ""
         },
         {
             id: 3,
-            productImage: "/images/e-commerce/product-card/check-shirt.png"
+            productImage: ""
         },
         {
             id: 4,
-            productImage: "/images/e-commerce/product-card/gray-jumper.png"
+            productImage: ""
         },
         {
             id: 5,
-            productImage: "/images/e-commerce/product-card/gray-t-shirt.png"
+            productImage: ""
         },
         {
             id: 6,
-            productImage: "/images/e-commerce/product-card/pink-blazer.png"
+            productImage: ""
         }
     ]
     return (

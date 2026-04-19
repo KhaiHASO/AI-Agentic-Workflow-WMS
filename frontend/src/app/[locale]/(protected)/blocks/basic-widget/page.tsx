@@ -24,7 +24,7 @@ const WidgetPage = () => {
             </div>
             <BlockBadge>Now</BlockBadge>
             <Image
-              src="/images/all-img/widget-bg-3.png"
+              src=""
               width={400}
               height={150}
               priority
@@ -44,7 +44,7 @@ const WidgetPage = () => {
             </div>
             <BlockBadge>Now</BlockBadge>
             <Image
-              src="/images/all-img/widget-bg-1.png"
+              src=""
               width={400}
               height={150}
               alt="Description of the image"
@@ -63,7 +63,7 @@ const WidgetPage = () => {
             </div>
             <BlockBadge>Now</BlockBadge>
             <Image
-              src="/images/all-img/widget-bg-3-1.png"
+              src=""
               width={400}
               height={150}
               alt="Description of the image"
@@ -82,7 +82,7 @@ const WidgetPage = () => {
               </p>
             </div>
             <Image
-              src="/images/all-img/widget-bg-2.png"
+              src=""
               width={400}
               height={150}
               alt="Description of the image"
@@ -104,7 +104,7 @@ const WidgetPage = () => {
             </div>
             <div className="flex-none relative w-[120px] z-10">
               <Image
-                src="/images/all-img/widgetvector.png"
+                src=""
                 alt=""
                 width={220}
                 height={100}
@@ -112,7 +112,7 @@ const WidgetPage = () => {
               />
             </div>
             <Image
-              src="/images/all-img/widget-bg-4.png"
+              src=""
               width={400}
               height={150}
               alt="Description of the image"
@@ -135,14 +135,14 @@ const WidgetPage = () => {
             <div className="flex-none relative z-10">
               <Image
                 alt=""
-                src="/images/all-img/widgetvector2.png"
+                src=""
                 className="ms-auto w-[100px] h-[80px]"
                 width={120}
                 height={100}
               />
             </div>
             <Image
-              src="/images/all-img/widget-bg-5.png"
+              src=""
               width={400}
               height={150}
               priority
@@ -207,7 +207,7 @@ const WidgetPage = () => {
               </Button>
             </div>
             <Image
-              src="/images/all-img/widget-bg-6.png"
+              src=""
               width={400}
               height={150}
               alt="Description of the image"
@@ -234,7 +234,7 @@ const WidgetPage = () => {
               </Button>
             </div>
             <Image
-              src="/images/all-img/widget-bg-7.png"
+              src=""
               width={400}
               height={150}
               priority
@@ -262,7 +262,7 @@ const WidgetPage = () => {
               </Button>
             </div>
             <Image
-              src="/images/all-img/widget-bg-8.png"
+              src=""
               width={400}
               height={150}
               priority
@@ -290,7 +290,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute bottom-0 start-0 z-10 w-full">
               <Image
-                src="/images/svg/line.svg"
+                src=""
                 width={500}
                 height={200}
                 alt="Line Image"
@@ -299,7 +299,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute -bottom-4 end-5">
               <Image
-                src="/images/svg/rabit.svg"
+                src=""
                 width={96}
                 height={96}
                 alt="Rabbit"
@@ -325,7 +325,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute bottom-0 start-0 z-10 w-full">
               <Image
-                src="/images/svg/line.svg"
+                src=""
                 width={500}
                 height={200}
                 alt="Line Image"
@@ -334,7 +334,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute -bottom-4 end-5">
               <Image
-                src="/images/svg/rabit.svg"
+                src=""
                 width={96}
                 height={96}
                 alt="Rabbit"
@@ -360,7 +360,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute bottom-0 start-0 z-10 w-full">
               <Image
-                src="/images/svg/line.svg"
+                src=""
                 width={500}
                 height={200}
                 alt="Line Image"
@@ -369,7 +369,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute -bottom-4 end-5">
               <Image
-                src="/images/svg/rabit.svg"
+                src=""
                 width={96}
                 height={96}
                 alt="Rabbit"
@@ -395,7 +395,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute bottom-0 start-0 z-10 w-full">
               <Image
-                src="/images/svg/line.svg"
+                src=""
                 width={500}
                 height={200}
                 alt="Line Image"
@@ -404,7 +404,7 @@ const WidgetPage = () => {
             </div>
             <div className="absolute -bottom-4 end-5">
               <Image
-                src="/images/svg/rabit.svg"
+                src=""
                 width={96}
                 height={96}
                 alt="Rabbit"
@@ -422,7 +422,7 @@ const WidgetPage = () => {
             className="bg-default dark:bg-default-200 mt-14">
             <div className="absolute start-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
               <Image
-                src="/images/svg/gift.svg"
+                src=""
                 alt="image"
                 height={72}
                 width={72}
@@ -449,7 +449,7 @@ const WidgetPage = () => {
                 className={`bg-${item} mt-14`}>
                 <div className="absolute start-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
                   <Image
-                    src="/images/svg/gift.svg"
+                    src=""
                     alt="image"
                     height={72}
                     width={72}
@@ -477,7 +477,7 @@ const WidgetPage = () => {
             className="bg-default dark:bg-default-200 mt-14">
             <div className="absolute start-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
               <Image
-                src="/images/svg/rabit.svg"
+                src=""
                 alt="image"
                 height={100}
                 width={100}
@@ -501,7 +501,7 @@ const WidgetPage = () => {
               <UpgradeBlock key={index} className={`bg-${item} mt-14`}>
                 <div className="absolute start-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
                   <Image
-                    src="/images/svg/rabit.svg"
+                    src=""
                     alt="image"
                     height={100}
                     width={100}

@@ -10,6 +10,7 @@ import { LotExpiryModal } from "./modals/lot-expiry-modal";
 import { SerialEntryModal } from "./modals/serial-entry-modal";
 import { SubstituteModal } from "./modals/substitute-modal";
 import { CloseShortModal } from "./modals/close-short-modal";
+import { AuditLogDrawer } from "./modals/audit-log-drawer";
 import { toast } from "sonner";
 
 export const ReceivingControlPanel = () => {
@@ -20,6 +21,7 @@ export const ReceivingControlPanel = () => {
   const [serialOpen, setSerialOpen] = useState(false);
   const [subOpen, setSubOpen] = useState(false);
   const [shortOpen, setShortOpen] = useState(false);
+  const [auditOpen, setAuditOpen] = useState(false);
 
   const handleConfirmLot = (lot: any) => {
     if (activeLine) {
@@ -203,10 +205,19 @@ export const ReceivingControlPanel = () => {
               <div className="text-center py-8 text-xs text-default-400 italic">Chưa có lượt quét nào</div>
             )}
          </div>
-         {scanHistory.length > 5 && (
-           <Button variant="ghost" size="sm" className="w-full text-xs text-primary font-bold">Xem tất cả lịch sử</Button>
+         {scanHistory.length > 0 && (
+           <Button 
+             variant="ghost" 
+             size="sm" 
+             className="w-full text-xs text-primary font-bold hover:bg-primary/5"
+             onClick={() => setAuditOpen(true)}
+           >
+             Xem tất cả lịch sử
+           </Button>
          )}
       </div>
+
+      <AuditLogDrawer open={auditOpen} onClose={() => setAuditOpen(false)} />
     </div>
   );
 };

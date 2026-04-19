@@ -38,10 +38,10 @@ const ImagePie = ({ height = 350 }) => {
       opacity: 0.85,
       image: {
         src: [
-          "/images/chart/chart-5.avif",
-          "/images/chart/chart-2.jpg",
-          "/images/chart/chart-3.jpg",
-          "/images/chart/chart-1.png",
+          "",
+          "",
+          "",
+          "",
         ],
         width: 25,
         imagedHeight: 25,

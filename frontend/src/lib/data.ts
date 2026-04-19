@@ -4,7 +4,7 @@ const users = [
     name: "dashcode",
     email: "dashcode@codeshaper.net",
     password: "password",
-    image: '/images/users/user-1.jpg',
+    image: '',
   },
   
 ]

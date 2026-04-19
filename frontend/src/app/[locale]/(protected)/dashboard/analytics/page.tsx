@@ -27,7 +27,7 @@ const DashboardPage = () => {
               </div>
               <BlockBadge className="end-3">{t("widget_badge")}</BlockBadge>
               <Image
-                src="/images/all-img/widget-bg-1.png"
+                src=""
                 width={400}
                 height={150}
                 priority

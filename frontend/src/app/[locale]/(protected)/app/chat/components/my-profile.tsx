@@ -19,7 +19,7 @@ const MyProfile = () => {
                 <div className="flex gap-3">
                     <div className="flex-none">
                         <Avatar>
-                            <AvatarImage src="/images/users/user-1.jpg" />
+                            <AvatarImage src="" />
                             <AvatarFallback>SC</AvatarFallback>
                         </Avatar>
                     </div>
@@ -57,7 +57,7 @@ const MyProfile = () => {
                         <div className="flex flex-col items-center gap-3">
                             <div className="relative">
                                 <Avatar className="h-16 w-16 border border-default-200 p-1 bg-transparent hover:bg-transparent ">
-                                    <AvatarImage src="/images/users/user-1.jpg" className="rounded-full" />
+                                    <AvatarImage src="" className="rounded-full" />
                                     <AvatarFallback>SC</AvatarFallback>
                                 </Avatar>
                                 <span

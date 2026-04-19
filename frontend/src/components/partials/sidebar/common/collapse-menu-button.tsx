@@ -123,7 +123,7 @@ export function CollapseMenuButton({
 
                         <p
                             className={cn(
-                                "max-w-[200px]  text-[11px] truncate ",
+                                "text-[11px]",
                             )}
                         >
                             {label}
@@ -191,7 +191,7 @@ export function CollapseMenuButton({
                                 </span>
                                 <p
                                     className={cn(
-                                        "max-w-[150px] truncate",
+                                        "",
                                         !collapsed || hovered
                                             ? "translate-x-0 opacity-100"
                                             : "-translate-x-96 opacity-0"
@@ -247,7 +247,7 @@ export function CollapseMenuButton({
                                 ></span>
                                 <p
                                     className={cn(
-                                        "max-w-[170px] truncate",
+                                        "",
                                         !collapsed || hovered
                                             ? "translate-x-0 opacity-100"
                                             : "-translate-x-96 opacity-0"
@@ -297,7 +297,7 @@ export function CollapseMenuButton({
                 </Tooltip>
             </TooltipProvider>
             <DropdownMenuContent side="right" sideOffset={20} align="start" className={` border-sidebar space-y-1.5`} >
-                <DropdownMenuLabel className="max-w-[190px] truncate">
+                <DropdownMenuLabel className="">
                     {label}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className='bg-default-300' />
@@ -313,7 +313,7 @@ export function CollapseMenuButton({
                                     {icon && (
                                         <Icon icon={icon} className=' h-4 w-4' />
                                     )}
-                                    <p className="max-w-[180px] truncate">{label} </p>
+                                    <p className="">{label} </p>
                                 </Link>
                             </DropdownMenuItem>
                         ) : (

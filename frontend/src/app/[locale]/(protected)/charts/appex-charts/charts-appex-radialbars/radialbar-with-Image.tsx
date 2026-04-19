@@ -25,7 +25,7 @@ const RadialBarWithImage = ({ height = 350 }) => {
         hollow: {
           margin: 15,
           size: "70%",
-          image: "/images/chart/rocket.png",
+          image: "",
           imageWidth: 64,
           imageHeight: 64,
           imageClipped: false,
@@ -47,7 +47,7 @@ const RadialBarWithImage = ({ height = 350 }) => {
     fill: {
       type: "image",
       image: {
-        src: ["/images/chart/paint.png"],
+        src: [""],
       },
     },
     stroke: {

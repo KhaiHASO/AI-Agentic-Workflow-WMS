@@ -19,7 +19,7 @@ const BankingPage = () => {
             <div className="flex space-x-4 h-full items-center rtl:space-x-reverse">
               <div className="flex-none">
                 <Avatar className="h-20 w-20 bg-transparent hover:bg-transparent">
-                  <AvatarImage src="/images/all-img/main-user.png" />
+                  <AvatarImage src="" />
                   <AvatarFallback>SA</AvatarFallback>
                 </Avatar>
               </div>

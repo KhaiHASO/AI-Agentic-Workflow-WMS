@@ -25,7 +25,7 @@ const ForgotPassPage = () => {
             <Image
               width={300}
               height={300}
-              src="/images/auth/ils1.svg"
+              src=""
               priority
               alt=""
               className="h-full w-full object-contain"

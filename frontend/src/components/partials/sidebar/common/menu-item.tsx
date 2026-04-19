@@ -94,7 +94,7 @@ const MenuItem = ({
             })}
           />
           {!collapsed && (
-            <p className={cn("max-w-[200px] truncate")}>{label}</p>
+            <p className={cn("")}>{label}</p>
           )}
         </Link>
       </Button>
@@ -119,7 +119,7 @@ const MenuItem = ({
         <Link href={href}>
           <Icon icon={icon} className={cn("h-6 w-6 mb-1 ")} />
 
-          <p className={cn("max-w-[200px]  text-[11px] truncate ")}>{label}</p>
+          <p className={cn("text-[11px]")}>{label}</p>
         </Link>
       </Button>
     );
@@ -149,7 +149,7 @@ const MenuItem = ({
           })}
         />
         {(!collapsed || hovered) && (
-          <p className={cn("max-w-[200px] truncate")}>{label}</p>
+          <p className={cn("")}>{label}</p>
         )}
       </Link>
     </Button>

@@ -25,7 +25,7 @@ const Register = () => {
             </div>
             <div className="absolute left-0 bottom-[-130px] h-full w-full z-[-1]">
               <Image
-                src="/images/auth/ils1.svg"
+                src=""
                 alt=""
                 priority
                 width={300}

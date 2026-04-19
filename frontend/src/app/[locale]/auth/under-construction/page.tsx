@@ -23,7 +23,7 @@ const UnderConstructionPage = () => {
       </div>
       <div className="container">
         <div className="flex justify-center flex-wrap items-center min-h-screen flex-col text-center">
-          <Image height={500} width={500} src="/images/svg/img-2.svg" alt="" />
+          <Image height={500} width={500} src="" alt="" />
           <h4 className="text-3xl font-medium text-default-900  mb-2">
             We are under maintenance.
           </h4>

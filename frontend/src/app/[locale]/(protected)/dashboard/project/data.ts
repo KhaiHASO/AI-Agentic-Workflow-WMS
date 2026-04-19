@@ -2,25 +2,25 @@
 
 export const meets = [
   {
-    img: "/images/svg/sk.svg",
+    img: "",
     title: "Meeting with client",
     date: "01 Nov 2021",
     meet: "Zoom meeting",
   },
   {
-    img: "/images/svg/path.svg",
+    img: "",
     title: "Design meeting (team)",
     date: "01 Nov 2021",
     meet: "Skyp meeting",
   },
   {
-    img: "/images/svg/dc.svg",
+    img: "",
     title: "Background research",
     date: "01 Nov 2021",
     meet: "Google meeting",
   },
   {
-    img: "/images/svg/sk.svg",
+    img: "",
     title: "Meeting with client",
     date: "01 Nov 2021",
     meet: "Zoom meeting",
@@ -32,32 +32,32 @@ export const meets = [
 export const tasks = [
   {
     id: 1,
-    image: "/images/users/user-1.jpg",
+    image: "",
     title: "Amet minim mollit non deserunt ullam.",
   },
   {
     id: 2,
-    image: "/images/users/user-2.jpg",
+    image: "",
     title: "Amet minim mollit non deserunt ullam.",
   },
   {
     id: 3,
-    image: "/images/users/user-3.jpg",
+    image: "",
     title: "Amet minim mollit non deserunt ullam.",
   },
   {
     id: 4,
-    image: "/images/users/user-4.jpg",
+    image: "",
     title: "Amet minim mollit non deserunt ullam.",
   },
   {
     id: 5,
-    image: "/images/users/user-5.jpg",
+    image: "",
     title: "Amet minim mollit non deserunt ullam.",
   },
   {
     id: 6,
-    image: "/images/users/user-6.jpg",
+    image: "",
     title: "Amet minim mollit non deserunt ullam.",
   }]
 
@@ -68,14 +68,14 @@ export const tasks = [
       active: true,
       hasnotifaction: true,
       notification_count: 1,
-      image: "/images/users/user-1.jpg"
+      image: ""
     },
     {
       title: "Savannah Nguyen",
       desc: "Hi! How are you doing?.....",
       active: false,
       hasnotifaction: false,
-      image:"/images/users/user-2.jpg"
+      image:""
     },
     {
       title: "Ralph Edwards",
@@ -83,21 +83,21 @@ export const tasks = [
       active: false,
       hasnotifaction: true,
       notification_count: 8,
-      image: "/images/users/user-3.jpg"
+      image: ""
     },
     {
       title: "Cody Fisher",
       desc: "Hi! How are you doing?.....",
       active: true,
       hasnotifaction: false,
-      image: "/images/users/user-4.jpg"
+      image: ""
     },
     {
       title: "Savannah Nguyen",
       desc: "Hi! How are you doing?.....",
       active: false,
       hasnotifaction: false,
-      image: "/images/users/user-4.jpg"
+      image: ""
     }
   ];
 
@@ -145,7 +145,7 @@ export const teamData = [
   {
     customer: {
       name: "Arlene McCoy",
-      image: "/images/users/user-1.jpg",
+      image: "",
       deg: "Ux designer",
     },
     status: "progress",
@@ -156,7 +156,7 @@ export const teamData = [
   {
     customer: {
       name: "Arlene McCoy",
-      image: "/images/users/user-2.jpg",
+      image: "",
       deg: "Ux designer",
     },
     status: "complete",
@@ -167,7 +167,7 @@ export const teamData = [
   {
     customer: {
       name: "Arlene McCoy",
-      image: "/images/users/user-3.jpg",
+      image: "",
       deg: "Ux designer",
     },
     status: "progress",
@@ -178,7 +178,7 @@ export const teamData = [
   {
     customer: {
       name: "Arlene McCoy",
-      image: "/images/users/user-4.jpg",
+      image: "",
       deg: "Ux designer",
     },
     status: "complete",
@@ -191,27 +191,27 @@ export const teamData = [
 
 export const files = [
   {
-    img: "/images/icon/file-1.svg",
+    img: "",
     title: "Dashboard.fig",
     date: "06 June 2021 / 155MB",
   },
   {
-    img: "/images/icon/pdf-1.svg",
+    img: "",
     title: "Ecommerce.pdf",
     date: "06 June 2021 / 155MB",
   },
   {
-    img: "/images/icon/zip-1.svg",
+    img: "",
     title: "Job portal_app.zip",
     date: "06 June 2021 / 155MB",
   },
   {
-    img: "/images/icon/pdf-2.svg",
+    img: "",
     title: "Ecommerce.pdf",
     date: "06 June 2021 / 155MB",
   },
   {
-    img: "/images/icon/scr-1.svg",
+    img: "",
     title: "Screenshot.jpg",
     date: "06 June 2021 / 155MB",
   }

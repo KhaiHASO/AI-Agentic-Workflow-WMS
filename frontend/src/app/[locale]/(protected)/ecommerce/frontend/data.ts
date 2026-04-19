@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 export const products = [
   {
     id: "c06d48bf-7f35-4789-b71e-d80fee5b430t",
-    img: "/images/e-commerce/product-card/classical-black-tshirt.png",
+    img: "",
     category: "men",
     name: "Classical Black T-Shirt Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -15,7 +15,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/black-t-shirt.png",
+    img: "",
     category: "men",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -28,7 +28,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/check-shirt.png",
+    img: "",
     category: "women",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -41,7 +41,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/gray-jumper.png",
+    img: "",
     category: "women",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -54,7 +54,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/gray-t-shirt.png",
+    img: "",
     category: "baby",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -67,7 +67,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/red-t-shirt.png",
+    img: "",
     category: "women",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -80,7 +80,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/red-t-shirt.png",
+    img: "",
     category: "women",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -93,7 +93,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/yellow-frok.png",
+    img: "",
     category: "women",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -106,7 +106,7 @@ export const products = [
   },
   {
     id: faker.string.uuid(),
-    img: "/images/e-commerce/product-card/yellow-jumper.png",
+    img: "",
     category: "furniture",
     name: "Classical Black T-Shirt",
     subtitle: "The best cotton black branded shirt.",
@@ -238,64 +238,64 @@ export type selectCategory = (typeof selectCategories)[number];
 //
 export const payments = [
   {
-    img: "/images/e-commerce/cart-icon/bkash.png",
+    img: "",
     value: "bkash",
   },
   {
-    img: "/images/e-commerce/cart-icon/fatoorah.png",
+    img: "",
     value: "fatoorah",
   },
   {
-    img: "/images/e-commerce/cart-icon/iyzco.png",
+    img: "",
     value: "instamojo",
   },
   {
-    img: "/images/e-commerce/cart-icon/iyzco.png",
+    img: "",
     value: "iyzco",
   },
   {
-    img: "/images/e-commerce/cart-icon/nagad.png",
+    img: "",
     value: "nagad",
   },
   {
-    img: "/images/e-commerce/cart-icon/ngenious.png",
+    img: "",
     value: "ngenious",
   },
 
   {
-    img: "/images/e-commerce/cart-icon/payfast.png",
+    img: "",
     value: "payfast",
   },
   {
-    img: "/images/e-commerce/cart-icon/payku.png",
+    img: "",
     value: "payku",
   },
   {
-    img: "/images/e-commerce/cart-icon/paypal.png",
+    img: "",
     value: "paypal",
   },
   {
-    img: "/images/e-commerce/cart-icon/paytm.png",
+    img: "",
     value: "paytm",
   },
   {
-    img: "/images/e-commerce/cart-icon/razorpay.png",
+    img: "",
     value: "razorpay",
   },
   {
-    img: "/images/e-commerce/cart-icon/ssl.png",
+    img: "",
     value: "ssl",
   },
   {
-    img: "/images/e-commerce/cart-icon/stripe.png",
+    img: "",
     value: "stripe",
   },
   {
-    img: "/images/e-commerce/cart-icon/truck.png",
+    img: "",
     value: "truck",
   },
   {
-    img: "/images/e-commerce/cart-icon/vougepay.png",
+    img: "",
     value: "vougepay",
   },
 ];

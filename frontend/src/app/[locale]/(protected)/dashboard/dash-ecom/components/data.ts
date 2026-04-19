@@ -4,7 +4,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Esther Howard",
-      image: "/images/users/user-1.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#324567",
@@ -14,7 +14,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Guy Hawkins",
-      image: "/images/users/user-2.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -24,7 +24,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Bessie Cooper",
-      image: "/images/users/user-3.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -34,7 +34,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Kathryn Murphy",
-      image: "/images/users/user-4.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -44,7 +44,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-5.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -54,7 +54,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-6.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -64,7 +64,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Esther Howard",
-      image: "/images/users/user-1.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#324567",
@@ -74,7 +74,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Guy Hawkins",
-      image: "/images/users/user-2.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -84,7 +84,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Bessie Cooper",
-      image: "/images/users/user-3.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -94,7 +94,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Kathryn Murphy",
-      image: "/images/users/user-4.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -104,7 +104,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-5.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -114,7 +114,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-6.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -124,7 +124,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Esther Howard",
-      image: "/images/users/user-1.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#324567",
@@ -134,7 +134,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Guy Hawkins",
-      image: "/images/users/user-2.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -144,7 +144,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Bessie Cooper",
-      image: "/images/users/user-3.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -154,7 +154,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Kathryn Murphy",
-      image: "/images/users/user-4.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -164,7 +164,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-5.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -174,7 +174,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-6.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -184,7 +184,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Esther Howard",
-      image: "/images/users/user-1.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#324567",
@@ -194,7 +194,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Guy Hawkins",
-      image: "/images/users/user-2.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -204,7 +204,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Bessie Cooper",
-      image: "/images/users/user-3.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -214,7 +214,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Kathryn Murphy",
-      image: "/images/users/user-4.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -224,7 +224,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-5.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -234,7 +234,7 @@ export const data:OrdersDataProps[] = [
   {
     user: {
       name: "Darrell Steward",
-      image: "/images/users/user-6.jpg",
+      image: "",
     },
     product: "Headphone",
     invoice: "#4224",
@@ -246,37 +246,37 @@ export const data:OrdersDataProps[] = [
 
 export const products = [
   {
-    img: "/images/all-img/p-1.png",
+    img: "",
     price: "$150.00",
     title: "Car engine oil",
     href:"#"
   },
   {
-    img: "/images/all-img/p-2.png",
+    img: "",
     price: "$150.00",
     title: "Car engine oil",
         href:"#"
   },
   {
-    img: "/images/all-img/p-3.png",
+    img: "",
     price: "$150.00",
     title: "Car engine oil",
         href:"#"
   },
   {
-    img: "/images/all-img/p-4.png",
+    img: "",
     price: "$150.00",
     title: "Car engine oil",
         href:"#"
   },
   {
-    img: "/images/all-img/p-5.png",
+    img: "",
     price: "$150.00",
     title: "Car engine oil",
         href:"#"
   },
   {
-    img: "/images/all-img/p-6.png",
+    img: "",
     price: "$150.00",
     title: "Car engine oil",
         href:"#"

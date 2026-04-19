@@ -5,7 +5,7 @@ import Image from "next/image";
 const customers = [
   {
     title: "Nicole Kidman",
-    img: "/images/all-img/cus-1.png",
+    img: "",
     value: 70,
     bg: "before:bg-info/30",
     barColor: "info",
@@ -13,7 +13,7 @@ const customers = [
   },
   {
     title: "Monica Bellucci",
-    img: "/images/all-img/cus-2.png",
+    img: "",
     value: 80,
     bg: "before:bg-warning/30",
     barColor: "warning",
@@ -22,7 +22,7 @@ const customers = [
   },
   {
     title: "Pamela Anderson",
-    img: "/images/all-img/cus-3.png",
+    img: "",
     value: 65,
     bg: "before:bg-success/30",
     barColor: "success",
@@ -30,7 +30,7 @@ const customers = [
   },
   {
     title: "Dianne Russell",
-    img: "/images/users/user-1.jpg",
+    img: "",
     value: 60,
     bg: "before:bg-info/30",
     barColor: "info",
@@ -38,7 +38,7 @@ const customers = [
   },
   {
     title: "Robert De Niro",
-    img: "/images/users/user-2.jpg",
+    img: "",
     value: 50,
     bg: "before:bg-warning/30",
     barColor: "warning",
@@ -46,7 +46,7 @@ const customers = [
   },
   {
     title: "De Niro",
-    img: "/images/users/user-3.jpg",
+    img: "",
     value: 60,
     bg: "before:bg-warning/30",
     barColor: "warning",
@@ -70,7 +70,7 @@ const CustomerList = ({ item }: any) => {
               width={40}
               height={40}
               className="w-7 h-7"
-              src="/images/icon/crown.svg"
+              src=""
               alt=""
             />
           </span>
@@ -112,7 +112,7 @@ const CustomerCard = ({ item }: any) => {
     >
       {item.active && (
         <span className="crown absolute -top-[24px] left-1/2 -translate-x-1/2">
-          <Image width={40} height={40} className="w-7 h-7" src="/images/icon/crown.svg" alt="" />
+          <Image width={40} height={40} className="w-7 h-7" src="" alt="" />
         </span>
       )}
       <Image

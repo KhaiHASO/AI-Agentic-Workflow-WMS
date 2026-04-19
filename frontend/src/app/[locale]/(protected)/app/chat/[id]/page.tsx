@@ -99,7 +99,7 @@ const ChatPageSingle = async ({ params: { id } }: { params: { id: string }; }) =
                                         <div className="flex-none self-end -translate-y-5">
                                             <div className="h-8 w-8 rounded-full">
                                                 <Image
-                                                    src={contact?.avatar || `/images/users/user-5.jpg`}
+                                                    src={contact?.avatar || ""}
                                                     alt=""
                                                     className="block w-full h-full object-cover rounded-full"
                                                 />
@@ -160,7 +160,7 @@ const ChatPageSingle = async ({ params: { id } }: { params: { id: string }; }) =
 
                 <div className='flex flex-col items-center px-6'>
                     <Avatar className="h-24 w-24 border-none shadow-none bg-transparent hover:bg-transparent">
-                        <AvatarImage src={contact?.avatar?.src || `/images/users/user-5.jpg`} alt="" />
+                        <AvatarImage src={contact?.avatar?.src || ""} alt="" />
                         <AvatarFallback>{contact?.fullName?.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <div className="text-center mt-4 ">
@@ -219,7 +219,7 @@ const ChatPageSingle = async ({ params: { id } }: { params: { id: string }; }) =
                 </h4>
                 <div className="grid grid-cols-3 gap-2 px-6">
                     {
-                        ["/images/chat/sd1.png", "/images/chat/sd2.png", "/images/chat/sd3.png", "/images/chat/sd4.png", "/images/chat/sd5.png", "/images/chat/sd6.png"].map((image, index) => (
+                        ["", "", "", "", "", ""].map((image, index) => (
                             <Image
                                 key={`image-${index}`}
                                 src={image}

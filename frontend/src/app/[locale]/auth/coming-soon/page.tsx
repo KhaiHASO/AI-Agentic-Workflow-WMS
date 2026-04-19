@@ -53,7 +53,7 @@ const ComingSoonPage = () => {
             <Image
               width={300}
               height={300}
-              src="/images/svg/img-1.svg"
+              src=""
               alt=""
               className="w-full h-full"
             />

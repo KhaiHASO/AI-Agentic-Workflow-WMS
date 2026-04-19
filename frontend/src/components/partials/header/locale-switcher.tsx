@@ -36,7 +36,7 @@ export default function LocalSwitcher() {
                 >
                     <div className='flex items-center gap-1'>
                         <Image
-                            src="/images/all-img/flag-1.png"
+                            src=""
                             alt='flag'
                             width={24}
                             height={24}
@@ -48,7 +48,7 @@ export default function LocalSwitcher() {
                 <SelectItem className='cursor-pointer' value="ar">
                     <div className='flex items-center gap-1'>
                         <Image
-                            src="/images/all-img/flag-2.png"
+                            src=""
                             alt='flag'
                             width={24}
                             height={24}

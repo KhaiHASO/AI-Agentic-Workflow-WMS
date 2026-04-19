@@ -5,17 +5,17 @@ export const todos = [
     id: faker.string.uuid(),
     image: [
       {
-        image: "/images/avatar/avatar-4.png",
+        image: "",
         label: "Mahedi Amin",
         value: "mahedi",
       },
       {
-        image: "/images/avatar/avatar-2.png",
+        image: "",
         label: "Sovo Haldar",
         value: "sovo",
       },
       {
-        image: "/images/avatar/avatar-3.png",
+        image: "",
         label: "Rakibul Islam",
         value: "rakibul",
       },
@@ -35,7 +35,7 @@ export const todos = [
     id: faker.string.uuid(),
     image: [
       {
-        image:  "/images/avatar/avatar-2.png",
+        image:  "",
         label: "Rakibul Islam",
         value: "rakibul",
       }
@@ -56,12 +56,12 @@ export const todos = [
     id: faker.string.uuid(),
     image: [
       {
-        image: "/images/avatar/avatar-4.png",
+        image: "",
         label: "Sovo Haldar",
         value: "sovo",
       },
       {
-        image: "/images/avatar/avatar-1.png",
+        image: "",
         label: "Rakibul Islam",
         value: "rakibul",
       },
@@ -86,17 +86,17 @@ export const todos = [
     id:faker.string.uuid(),
     image: [
       {
-        image:  "/images/avatar/avatar-3.png",
+        image:  "",
         label: "Mahedi Amin",
         value: "mahedi",
       },
       {
-        image: "/images/avatar/avatar-4.png",
+        image: "",
         label: "Sovo Haldar",
         value: "sovo",
       },
       {
-        image: "/images/avatar/avatar-4.png",
+        image: "",
         label: "Rakibul Islam",
         value: "rakibul",
       }
@@ -120,7 +120,7 @@ export const todos = [
     id:faker.string.uuid(),
     image: [
       {
-        image:  "/images/avatar/avatar-5.png",
+        image:  "",
         label: "Rakibul Islam",
         value: "rakibul",
       },

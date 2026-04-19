@@ -39,7 +39,7 @@ export const tableData: TableDataProps[] = [{
   gender: "Female",
   phone: "232(152)707-0110",
   occuption: "Financial Advisor",
-  img: "/images/users/user-1.jpg"
+  img: ""
 },
 {
   id: 2,
@@ -50,7 +50,7 @@ export const tableData: TableDataProps[] = [{
   gender: "Male",
   phone: "420(169)218-1769",
   occuption: "Marketing Assistant",
-  img: "/images/users/user-2.jpg"
+  img: ""
 },
 {
   id: 3,
@@ -61,7 +61,7 @@ export const tableData: TableDataProps[] = [{
   gender: "Polygender",
   phone: "86(958)204-4491",
   occuption: "Mechanical Systems Engineer",
-  img: "/images/users/user-3.jpg"
+  img: ""
 },
 {
   id: 4,
@@ -72,7 +72,7 @@ export const tableData: TableDataProps[] = [{
   gender: "Male",
   phone: "86(974)709-5254",
   occuption: "Research Assistant IV",
-  img: "/images/users/user-4.jpg"
+  img: ""
 },
 {
   id: 5,
@@ -83,7 +83,7 @@ export const tableData: TableDataProps[] = [{
   gender: "Female",
   phone: "55(644)175-6748",
   occuption: "Business Systems Development Analyst",
-  img: "/images/users/user-5.jpg"
+  img: ""
 },
 {
   id: 6,
@@ -94,7 +94,7 @@ export const tableData: TableDataProps[] = [{
   gender: "Female",
   phone: "51(186)560-8480",
   occuption: "Cost Accountant",
-  img: "/images/users/user-6.jpg"
+  img: ""
 },
 {
   id: 7,
@@ -105,5 +105,5 @@ export const tableData: TableDataProps[] = [{
   gender: "Female",
   phone: "1(941)734-6255",
   occuption: "Budget/Accounting Analyst II",
-  img: "/images/users/user-1.jpg"
+  img: ""
 }]

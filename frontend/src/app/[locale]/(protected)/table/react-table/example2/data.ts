@@ -6,7 +6,7 @@ export const data: DataProps[] = [
     order: 951,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-1.png",
+      image: "",
     },
     date: "3/26/2022",
     quantity: 13,
@@ -19,7 +19,7 @@ export const data: DataProps[] = [
     order: 238,
     customer: {
       name: "Emily Davis",
-      image: "/images/all-img/cus-1.png",
+      image: "",
     },
     date: "2/6/2022",
     quantity: 13,
@@ -32,7 +32,7 @@ export const data: DataProps[] = [
     order: 339,
     customer: {
       name: "Laura Smith",
-      image: "/images/avatar/avatar-1.png",
+      image: "",
     },
     date: "9/6/2021",
     quantity: 1,
@@ -45,7 +45,7 @@ export const data: DataProps[] = [
     order: 365,
     customer: {
       name: "Sarah Johnson",
-      image: "/images/avatar/avatar-2.png",
+      image: "",
     },
     date: "11/7/2021",
     quantity: 13,
@@ -58,7 +58,7 @@ export const data: DataProps[] = [
     order: 513,
     customer: {
       name: "Rachel Brown",
-      image: "/images/avatar/avatar-3.png",
+      image: "",
     },
     date: "5/6/2022",
     quantity: 12,
@@ -71,7 +71,7 @@ export const data: DataProps[] = [
     order: 534,
     customer: {
       name: "Megan Taylor",
-      image: "/images/avatar/avatar-4.png",
+      image: "",
     },
     date: "2/14/2022",
     quantity: 12,
@@ -84,7 +84,7 @@ export const data: DataProps[] = [
     order: 77,
     customer: {
       name: "Sophie Clark",
-      image: "/images/avatar/avatar-5.png",
+      image: "",
     },
     date: "7/30/2022",
     quantity: 6,
@@ -97,7 +97,7 @@ export const data: DataProps[] = [
     order: 238,
     customer: {
       name: "Natalie Martin",
-      image: "/images/avatar/avatar-6.png",
+      image: "",
     },
     date: "6/30/2022",
     quantity: 9,
@@ -110,7 +110,7 @@ export const data: DataProps[] = [
     order: 886,
     customer: {
       name: "Hannah Lewis",
-      image: "/images/avatar/avatar-7.png",
+      image: "",
     },
     date: "8/9/2022",
     quantity: 8,
@@ -123,7 +123,7 @@ export const data: DataProps[] = [
     order: 3,
     customer: {
       name: "Lisa White",
-      image: "/images/avatar/avatar-8.png",
+      image: "",
     },
     date: "8/4/2022",
     quantity: 12,
@@ -136,7 +136,7 @@ export const data: DataProps[] = [
     order: 198,
     customer: {
       name: "Emma Walker",
-      image: "/images/avatar/avatar-9.png",
+      image: "",
     },
     date: "4/5/2022",
     quantity: 8,
@@ -149,7 +149,7 @@ export const data: DataProps[] = [
     order: 829,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-10.png",
+      image: "",
     },
     date: "8/9/2022",
     quantity: 2,
@@ -162,7 +162,7 @@ export const data: DataProps[] = [
     order: 595,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-11.png",
+      image: "",
     },
     date: "2/10/2022",
     quantity: 11,
@@ -175,7 +175,7 @@ export const data: DataProps[] = [
     order: 374,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-12.png",
+      image: "",
     },
     date: "2/10/2022",
     quantity: 2,
@@ -188,7 +188,7 @@ export const data: DataProps[] = [
     order: 32,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-1.png",
+      image: "",
     },
     date: "5/20/2022",
     quantity: 4,
@@ -201,7 +201,7 @@ export const data: DataProps[] = [
     order: 89,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-2.png",
+      image: "",
     },
     date: "5/3/2022",
     quantity: 15,
@@ -214,7 +214,7 @@ export const data: DataProps[] = [
     order: 912,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-3.png",
+      image: "",
     },
     date: "10/31/2021",
     quantity: 11,
@@ -227,7 +227,7 @@ export const data: DataProps[] = [
     order: 621,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-4.png",
+      image: "",
     },
     date: "1/13/2022",
     quantity: 5,
@@ -240,7 +240,7 @@ export const data: DataProps[] = [
     order: 459,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-5.png",
+      image: "",
     },
     date: "6/14/2022",
     quantity: 5,
@@ -253,7 +253,7 @@ export const data: DataProps[] = [
     order: 108,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-6.png",
+      image: "",
     },
     date: "10/8/2021",
     quantity: 4,
@@ -266,7 +266,7 @@ export const data: DataProps[] = [
     order: 492,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-7.png",
+      image: "",
     },
     date: "11/17/2021",
     quantity: 9,
@@ -279,7 +279,7 @@ export const data: DataProps[] = [
     order: 42,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-8.png",
+      image: "",
     },
     date: "4/4/2022",
     quantity: 9,
@@ -292,7 +292,7 @@ export const data: DataProps[] = [
     order: 841,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-9.png",
+      image: "",
     },
     date: "3/21/2022",
     quantity: 5,
@@ -305,7 +305,7 @@ export const data: DataProps[] = [
     order: 561,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-10.png",
+      image: "",
     },
     date: "6/18/2022",
     quantity: 12,
@@ -318,7 +318,7 @@ export const data: DataProps[] = [
     order: 720,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-1.png",
+      image: "",
     },
     date: "8/15/2022",
     quantity: 8,
@@ -331,7 +331,7 @@ export const data: DataProps[] = [
     order: 309,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-2.png",
+      image: "",
     },
     date: "4/28/2022",
     quantity: 8,
@@ -344,7 +344,7 @@ export const data: DataProps[] = [
     order: 24,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-3.png",
+      image: "",
     },
     date: "9/6/2021",
     quantity: 7,
@@ -357,7 +357,7 @@ export const data: DataProps[] = [
     order: 518,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-4.png",
+      image: "",
     },
     date: "9/11/2021",
     quantity: 4,
@@ -370,7 +370,7 @@ export const data: DataProps[] = [
     order: 98,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-5.png",
+      image: "",
     },
     date: "1/27/2022",
     quantity: 5,
@@ -383,7 +383,7 @@ export const data: DataProps[] = [
     order: 940,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/avatar/avatar-6.png",
+      image: "",
     },
     date: "9/16/2021",
     quantity: 6,
@@ -396,7 +396,7 @@ export const data: DataProps[] = [
     order: 925,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "1/8/2022",
     quantity: 1,
@@ -409,7 +409,7 @@ export const data: DataProps[] = [
     order: 122,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "11/18/2021",
     quantity: 1,
@@ -422,7 +422,7 @@ export const data: DataProps[] = [
     order: 371,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "3/30/2022",
     quantity: 13,
@@ -435,7 +435,7 @@ export const data: DataProps[] = [
     order: 296,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "11/13/2021",
     quantity: 5,
@@ -448,7 +448,7 @@ export const data: DataProps[] = [
     order: 887,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "12/7/2021",
     quantity: 11,
@@ -461,7 +461,7 @@ export const data: DataProps[] = [
     order: 30,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "9/9/2021",
     quantity: 15,
@@ -474,7 +474,7 @@ export const data: DataProps[] = [
     order: 365,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "2/12/2022",
     quantity: 5,
@@ -487,7 +487,7 @@ export const data: DataProps[] = [
     order: 649,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "3/6/2022",
     quantity: 5,
@@ -500,7 +500,7 @@ export const data: DataProps[] = [
     order: 923,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "7/25/2022",
     quantity: 14,
@@ -513,7 +513,7 @@ export const data: DataProps[] = [
     order: 423,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "3/2/2022",
     quantity: 8,
@@ -526,7 +526,7 @@ export const data: DataProps[] = [
     order: 703,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "12/8/2021",
     quantity: 8,
@@ -539,7 +539,7 @@ export const data: DataProps[] = [
     order: 792,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "11/22/2021",
     quantity: 11,
@@ -552,7 +552,7 @@ export const data: DataProps[] = [
     order: 400,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "4/6/2022",
     quantity: 1,
@@ -565,7 +565,7 @@ export const data: DataProps[] = [
     order: 718,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "2/4/2022",
     quantity: 4,
@@ -578,7 +578,7 @@ export const data: DataProps[] = [
     order: 970,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "3/30/2022",
     quantity: 15,
@@ -591,7 +591,7 @@ export const data: DataProps[] = [
     order: 786,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "11/20/2021",
     quantity: 2,
@@ -604,7 +604,7 @@ export const data: DataProps[] = [
     order: 925,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "10/24/2021",
     quantity: 11,
@@ -617,7 +617,7 @@ export const data: DataProps[] = [
     order: 929,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "6/30/2022",
     quantity: 10,
@@ -630,7 +630,7 @@ export const data: DataProps[] = [
     order: 377,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "11/16/2021",
     quantity: 4,
@@ -643,7 +643,7 @@ export const data: DataProps[] = [
     order: 661,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "8/15/2022",
     quantity: 6,

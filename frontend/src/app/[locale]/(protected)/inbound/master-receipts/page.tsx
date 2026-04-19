@@ -24,12 +24,17 @@ const getStatusColor = (status: string): color => {
   }
 };
 
+import CreateMasterReceiptDialog from "@/components/features/receiving/create-mr-dialog";
+import { PrintMRLabelModal } from "@/components/features/receiving/modals/print-mr-label-modal";
+
 const MasterReceiptsPage = () => {
   const router = useRouter();
   const params = useParams();
   const locale = params?.locale || 'en';
   const [activeTab, setActiveTab] = useState("all");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [printData, setPrintData] = useState<any>(null);
 
   const filteredReceipts = activeTab === "all" 
     ? mockMasterReceipts 
@@ -59,11 +64,26 @@ const MasterReceiptsPage = () => {
           <h1 className="text-2xl font-semibold">Master Receipts</h1>
           <p className="text-sm text-default-500 mt-1">Quản lý các chứng từ nhập kho tổng hợp</p>
         </div>
-        <Button color="primary" className="flex items-center gap-2">
+        <Button 
+          color="primary" 
+          className="flex items-center gap-2"
+          onClick={() => setCreateDialogOpen(true)}
+        >
           <Icon icon="heroicons:plus" />
           Tạo mới MR
         </Button>
       </div>
+
+      <CreateMasterReceiptDialog 
+        open={createDialogOpen} 
+        onClose={() => setCreateDialogOpen(false)} 
+      />
+
+      <PrintMRLabelModal 
+        open={!!printData} 
+        onClose={() => setPrintData(null)} 
+        data={printData} 
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-primary/5 border-none shadow-none">
@@ -167,6 +187,15 @@ const MasterReceiptsPage = () => {
                           onClick={() => router.push(`/inbound/master-receipts/${mr.id}`)}
                         >
                           Mở
+                        </Button>
+                        
+                        <Button 
+                          variant="soft" 
+                          size="sm" 
+                          className="text-default-600"
+                          onClick={() => setPrintData(mr)}
+                        >
+                          <Icon icon="heroicons:printer" className="w-4 h-4" />
                         </Button>
                         
                         {mr.status === 'Draft' && (

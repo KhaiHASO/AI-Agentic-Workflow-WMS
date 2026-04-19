@@ -149,7 +149,7 @@ const MailDetails = async ({ params: { id } }: { params: { id: string }; }) => {
                             className="w-[150px] h-[95px]"
                             width={500}
                             height={300}
-                            src="/images/all-img/inbox-1.png"
+                            src=""
                             alt="mail"
                         />
                         <Link className="text-primary mt-1" href="/">Download</Link>
@@ -159,7 +159,7 @@ const MailDetails = async ({ params: { id } }: { params: { id: string }; }) => {
                             className="w-[150px] h-[95px]"
                             width={500}
                             height={300}
-                            src="/images/all-img/inbox-2.png"
+                            src=""
                             alt="mail"
                         />
                         <Link className="text-primary mt-1" href="/">Download</Link>
@@ -169,7 +169,7 @@ const MailDetails = async ({ params: { id } }: { params: { id: string }; }) => {
                             className="w-[150px] h-[95px]"
                             width={500}
                             height={300}
-                            src="/images/all-img/inbox-3.png"
+                            src=""
                             alt="mail"
                         />
                         <Link className="text-primary mt-1" href="/">Download</Link>

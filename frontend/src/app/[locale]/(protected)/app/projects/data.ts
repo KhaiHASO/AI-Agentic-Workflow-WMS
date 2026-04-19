@@ -5,22 +5,22 @@ export const defaultProjects = [
   {
     id: "c06d48bf-7f35-4789-b71e-d80fee5b430f",
     title: "CRM Dashboard ",
-    projectLogo: "/images/project/p-2.png",
+    projectLogo: "",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
     startDate: "2022-10-03",
     endDate: "2022-10-06",
     progress: 90,
     assignee: [
       {
-        image: "/images/avatar/av-1.svg",
+        image: "",
         name: "Mahedi Amin",
       },
       {
-        image: "/images/avatar/av-2.svg",
+        image: "",
         name: "Sovo Haldar",
       },
       {
-        image: "/images/avatar/av-3.svg",
+        image: "",
         name: "Rakibul Islam",
       }
     ],
@@ -29,22 +29,22 @@ export const defaultProjects = [
   {
     id: faker.string.uuid(),
     title: "Business Dashboard ",
-    projectLogo: "/images/project/p-2.png",
+    projectLogo: "",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
     startDate: "2022-10-03",
     endDate: "2022-10-06",
     progress: 90,
     assignee: [
       {
-        image: "/images/avatar/av-1.svg",
+        image: "",
         name: "Mahedi Amin",
       },
       {
-        image: "/images/avatar/av-2.svg",
+        image: "",
         name: "Sovo Haldar",
       },
       {
-        image: "/images/avatar/av-3.svg",
+        image: "",
         name: "Rakibul Islam",
       }
     ],
@@ -53,22 +53,22 @@ export const defaultProjects = [
   {
     id: faker.string.uuid(),
     title: "Management Dashboard ",
-    projectLogo: "/images/project/p-2.png",
+    projectLogo: "",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
     startDate: "2022-10-03",
     endDate: "2022-10-06",
     progress: 90,
     assignee: [
       {
-        image: "/images/avatar/av-1.svg",
+        image: "",
         name: "Mahedi Amin",
       },
       {
-        image: "/images/avatar/av-2.svg",
+        image: "",
         name: "Sovo Haldar",
       },
       {
-        image: "/images/avatar/av-3.svg",
+        image: "",
         name: "Rakibul Islam",
       }
     ],
@@ -77,22 +77,22 @@ export const defaultProjects = [
   {
     id: faker.string.uuid(),
     title: "Analytics Dashboard ",
-    projectLogo: "/images/project/p-2.png",
+    projectLogo: "",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
     startDate: "2022-10-03",
     endDate: "2022-10-06",
     progress: 90,
     assignee: [
       {
-        image: "/images/avatar/av-1.svg",
+        image: "",
         name: "Mahedi Amin",
       },
       {
-        image: "/images/avatar/av-2.svg",
+        image: "",
         name: "Sovo Haldar",
       },
       {
-        image: "/images/avatar/av-3.svg",
+        image: "",
         name: "Rakibul Islam",
       }
     ],
@@ -102,22 +102,22 @@ export const defaultProjects = [
   {
     id: faker.string.uuid(),
     title: "Marketing Dashboard ",
-    projectLogo: "/images/project/p-2.png",
+    projectLogo: "",
     desc: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.",
     startDate: "2022-10-03",
     endDate: "2022-10-06",
     progress: 90,
     assignee: [
       {
-        image: "/images/avatar/av-1.svg",
+        image: "",
         name: "Mahedi Amin",
       },
       {
-        image: "/images/avatar/av-2.svg",
+        image: "",
         name: "Sovo Haldar",
       },
       {
-        image: "/images/avatar/av-3.svg",
+        image: "",
         name: "Rakibul Islam",
       }
     ],

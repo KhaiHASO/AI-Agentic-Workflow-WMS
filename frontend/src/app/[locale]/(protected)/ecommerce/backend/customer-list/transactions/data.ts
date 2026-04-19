@@ -4,7 +4,7 @@ export const data: DataProps[] = [
     id: 1,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -17,7 +17,7 @@ export const data: DataProps[] = [
     id: 2,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -30,7 +30,7 @@ export const data: DataProps[] = [
     id: 3,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -43,7 +43,7 @@ export const data: DataProps[] = [
     id: 4,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -56,7 +56,7 @@ export const data: DataProps[] = [
     id: 5,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -69,7 +69,7 @@ export const data: DataProps[] = [
     id: 6,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -82,7 +82,7 @@ export const data: DataProps[] = [
     id: 7,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -95,7 +95,7 @@ export const data: DataProps[] = [
     id: 8,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -108,7 +108,7 @@ export const data: DataProps[] = [
     id: 9,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -121,7 +121,7 @@ export const data: DataProps[] = [
     id: 10,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -134,7 +134,7 @@ export const data: DataProps[] = [
     id: 11,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -147,7 +147,7 @@ export const data: DataProps[] = [
     id: 12,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -160,7 +160,7 @@ export const data: DataProps[] = [
     id: 13,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -173,7 +173,7 @@ export const data: DataProps[] = [
     id: 14,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -186,7 +186,7 @@ export const data: DataProps[] = [
     id: 15,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -199,7 +199,7 @@ export const data: DataProps[] = [
     id: 16,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -212,7 +212,7 @@ export const data: DataProps[] = [
     id: 17,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -225,7 +225,7 @@ export const data: DataProps[] = [
     id: 18,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -238,7 +238,7 @@ export const data: DataProps[] = [
     id: 19,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -251,7 +251,7 @@ export const data: DataProps[] = [
     id: 20,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -264,7 +264,7 @@ export const data: DataProps[] = [
     id: 21,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -277,7 +277,7 @@ export const data: DataProps[] = [
     id: 22,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -290,7 +290,7 @@ export const data: DataProps[] = [
     id: 23,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -303,7 +303,7 @@ export const data: DataProps[] = [
     id: 24,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -316,7 +316,7 @@ export const data: DataProps[] = [
     id: 25,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -329,7 +329,7 @@ export const data: DataProps[] = [
     id: 26,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -342,7 +342,7 @@ export const data: DataProps[] = [
     id: 27,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -355,7 +355,7 @@ export const data: DataProps[] = [
     id: 28,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -368,7 +368,7 @@ export const data: DataProps[] = [
     id: 29,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -381,7 +381,7 @@ export const data: DataProps[] = [
     id: 30,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -394,7 +394,7 @@ export const data: DataProps[] = [
     id: 31,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -407,7 +407,7 @@ export const data: DataProps[] = [
     id: 32,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -420,7 +420,7 @@ export const data: DataProps[] = [
     id: 33,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -433,7 +433,7 @@ export const data: DataProps[] = [
     id: 34,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -446,7 +446,7 @@ export const data: DataProps[] = [
     id: 35,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -459,7 +459,7 @@ export const data: DataProps[] = [
     id: 36,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -472,7 +472,7 @@ export const data: DataProps[] = [
     id: 37,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -485,7 +485,7 @@ export const data: DataProps[] = [
     id: 38,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -498,7 +498,7 @@ export const data: DataProps[] = [
     id: 39,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -511,7 +511,7 @@ export const data: DataProps[] = [
     id: 40,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -524,7 +524,7 @@ export const data: DataProps[] = [
     id: 41,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -537,7 +537,7 @@ export const data: DataProps[] = [
     id: 42,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -550,7 +550,7 @@ export const data: DataProps[] = [
     id: 43,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -563,7 +563,7 @@ export const data: DataProps[] = [
     id: 44,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -576,7 +576,7 @@ export const data: DataProps[] = [
     id: 45,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -589,7 +589,7 @@ export const data: DataProps[] = [
     id: 46,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -602,7 +602,7 @@ export const data: DataProps[] = [
     id: 47,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -615,7 +615,7 @@ export const data: DataProps[] = [
     id: 48,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -628,7 +628,7 @@ export const data: DataProps[] = [
     id: 49,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',
@@ -641,7 +641,7 @@ export const data: DataProps[] = [
     id: 50,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     phone: '+12345876',
     amount: '$1590',

@@ -57,7 +57,7 @@ const Login2 = () => {
               <div className="flex-1 flex flex-col justify-center items-center">
                 <Link href="/">
                   <Image
-                    src="/images/logo/logo-white.svg"
+                    src=""
                     alt=""
                     width={300}
                     height={300}

@@ -95,7 +95,7 @@ const Sidebar = () => {
                   <Image
                     width={300}
                     height={300}
-                    src="/images/post/t-1.png"
+                    src=""
                     alt=""
                     className="block w-full h-full rounded-md"
                   />
@@ -121,7 +121,7 @@ const Sidebar = () => {
                   <Image
                     width={300}
                     height={300}
-                    src="/images/post/t-2.png"
+                    src=""
                     alt=""
                     className="block w-full h-full rounded-md"
                   />
@@ -147,7 +147,7 @@ const Sidebar = () => {
                   <Image
                     width={300}
                     height={300}
-                    src="/images/post/t-3.png"
+                    src=""
                     alt=""
                     className="block w-full h-full rounded-md"
                   />

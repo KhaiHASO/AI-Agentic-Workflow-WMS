@@ -245,7 +245,7 @@ const ProductDetails = async ({
                     height={500}
                     width={500}
                     className="w-full h-full"
-                    src="/images/e-commerce/productDetails/gmail.svg"
+                    src=""
                     alt=""
                   />
                 </button>
@@ -257,7 +257,7 @@ const ProductDetails = async ({
                     height={500}
                     width={500}
                     className="w-full h-full"
-                    src="/images/e-commerce/productDetails/facebook.svg"
+                    src=""
                     alt=""
                   />
                 </button>
@@ -269,7 +269,7 @@ const ProductDetails = async ({
                     height={500}
                     width={500}
                     className="w-full h-full"
-                    src="/images/e-commerce/productDetails/twitter.svg"
+                    src=""
                     alt=""
                   />
                 </button>
@@ -281,7 +281,7 @@ const ProductDetails = async ({
                     height={500}
                     width={500}
                     className="w-full h-full"
-                    src="/images/e-commerce/productDetails/insta.svg"
+                    src=""
                     alt=""
                   />
                 </button>
@@ -293,7 +293,7 @@ const ProductDetails = async ({
                     height={500}
                     width={500}
                     className="w-full h-full"
-                    src="/images/e-commerce/productDetails/linkedin.svg"
+                    src=""
                     alt=""
                   />
                 </button>
@@ -432,7 +432,7 @@ const ProductDetails = async ({
             </div>
             <div className="flex gap-3 ">
               <Avatar>
-                <AvatarImage src="/images/e-commerce/productDetails/1.png" />
+                <AvatarImage src="" />
               </Avatar>
               <div>
                 {" "}
@@ -485,7 +485,7 @@ const ProductDetails = async ({
             </div>
             <div className="flex gap-3 ">
               <Avatar>
-                <AvatarImage src="/images/e-commerce/productDetails/1.png" />
+                <AvatarImage src="" />
               </Avatar>
               <div>
                 {" "}
@@ -527,7 +527,7 @@ const ProductDetails = async ({
                           height={300}
                           width={300}
                           className="h-full w-full object-contain"
-                          src="/images/e-commerce/productDetails/1.png"
+                          src=""
                         />
                       </div>
                       <div className=" h-[90px] w-[90px] rounded bg-default-100 overflow-hidden p-1">
@@ -536,7 +536,7 @@ const ProductDetails = async ({
                           height={300}
                           width={300}
                           className="h-full w-full object-contain"
-                          src="/images/e-commerce/productDetails/2.png"
+                          src=""
                         />
                       </div>
                       <div className=" h-[90px] w-[90px] rounded bg-default-100 overflow-hidden p-1">
@@ -545,7 +545,7 @@ const ProductDetails = async ({
                           height={300}
                           width={300}
                           className="h-full w-full object-contain"
-                          src="/images/e-commerce/productDetails/3.png"
+                          src=""
                         />
                       </div>
                     </div>
@@ -555,7 +555,7 @@ const ProductDetails = async ({
                         height={300}
                         width={300}
                         className="h-full w-full object-contain"
-                        src="/images/e-commerce/productDetails/3.png"
+                        src=""
                       />
                     </div>
                   </div>

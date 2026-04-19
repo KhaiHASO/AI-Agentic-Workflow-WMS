@@ -15,7 +15,7 @@ const MarketingImageCard = () => {
       <Card>
         <Image
           alt=""
-          src="/images/all-img/card-4.png"
+          src=""
           width={700}
           height={400}
           className="w-full h-[250px] object-cover rounded-t-md"
@@ -43,7 +43,7 @@ const MarketingImageCard = () => {
         <CardContent className="pb-0">
           <Image
             alt=""
-            src="/images/all-img/card-5.png"
+            src=""
             width={700}
             height={400}
             className="w-full h-[250px] object-cover rounded-b-md"
@@ -53,7 +53,7 @@ const MarketingImageCard = () => {
       <Card>
         <Image
           alt=""
-          src="/images/all-img/card-6.png"
+          src=""
           width={700}
           height={400}
           className="w-full h-[250px] object-cover rounded-t-md"
@@ -80,7 +80,7 @@ const MarketingImageCard = () => {
         </CardContent>
         <Image
           alt=""
-          src="/images/all-img/card-7.png"
+          src=""
           width={700}
           height={400}
           className="w-full h-[250px] object-cover rounded-b-md"

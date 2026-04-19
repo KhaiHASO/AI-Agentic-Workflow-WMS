@@ -5,7 +5,7 @@ export const tables = [
     price_Monthly: "$26",
     button: "Buy now",
     bg: "bg-warning/20",
-    img: "/images/all-img/big-shap1.png",
+    img: "",
   },
   {
     title: "Business",
@@ -14,7 +14,7 @@ export const tables = [
     button: "Buy now",
     bg: "bg-info/20",
     ribon: "Most popular",
-    img: "/images/all-img/big-shap2.png",
+    img: "",
   },
   {
     title: "Basic",
@@ -22,7 +22,7 @@ export const tables = [
     price_Monthly: "$16",
     button: "Try it free",
     bg: "bg-success/20",
-    img: "/images/all-img/big-shap3.png",
+    img: "",
   },
   {
     title: "Got a large team?",
@@ -30,7 +30,7 @@ export const tables = [
     price_Monthly: "$16",
     button: "Request a quote",
     bg: "bg-primary/20",
-    img: "/images/all-img/big-shap4.png",
+    img: "",
   },
 ];
 

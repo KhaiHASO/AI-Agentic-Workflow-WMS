@@ -58,10 +58,10 @@ const options: Option[] = [
   }
 ];
 const assigneeOptions: Option[] = [
-  { value: "mahedi", label: "Mahedi Amin", image: "/images/avatar/av-1.svg" },
-  { value: "sovo", label: "Sovo Haldar", image: "/images/avatar/av-2.svg" },
-  { value: "rakibul", label: "Rakibul Islam", image: "/images/avatar/av-3.svg" },
-  { value: "pritom", label: "Pritom Miha", image: "/images/avatar/av-4.svg" },
+  { value: "mahedi", label: "Mahedi Amin", image: "" },
+  { value: "sovo", label: "Sovo Haldar", image: "" },
+  { value: "rakibul", label: "Rakibul Islam", image: "" },
+  { value: "pritom", label: "Pritom Miha", image: "" },
 ];
 
 
@@ -168,7 +168,7 @@ const EditTask = ({ open, setOpen }: EditTaskProps) => {
             <Controller
               name="assignee"
               control={control}
-              defaultValue={[{ value: "mahedi", label: "Mahedi Amin", image: "/images/avatar/av-1.svg" }]}
+              defaultValue={[{ value: "mahedi", label: "Mahedi Amin", image: "" }]}
               render={({ field }) => (
                 <Select
                   {...field}

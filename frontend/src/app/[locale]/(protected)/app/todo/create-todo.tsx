@@ -34,10 +34,10 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 const assigneeOptions = [
-  { value: "mahedi", label: "Mahedi Amin", image: "/images/avatar/av-1.svg" },
-  { value: "sovo", label: "Sovo Haldar", image: "/images/avatar/av-2.svg" },
-  { value: "rakibul", label: "Rakibul Islam", image: "/images/avatar/av-3.svg" },
-  { value: "pritom", label: "Pritom Miha", image: "/images/avatar/av-4.svg" },
+  { value: "mahedi", label: "Mahedi Amin", image: "" },
+  { value: "sovo", label: "Sovo Haldar", image: "" },
+  { value: "rakibul", label: "Rakibul Islam", image: "" },
+  { value: "pritom", label: "Pritom Miha", image: "" },
 ];
 
 

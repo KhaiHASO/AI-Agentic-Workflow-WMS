@@ -24,7 +24,7 @@ const LockScreen = () => {
             <Image
               width={300}
               height={300}
-              src="/images/auth/ils1.svg"
+              src=""
               priority
               alt=""
               className="h-full w-full object-contain"
@@ -50,7 +50,7 @@ const LockScreen = () => {
                   <Image
                     width={300}
                     height={300}
-                    src="/images/all-img/user-big.png"
+                    src=""
                     alt=""
                     className="w-full h-full object-cover block"
                   />

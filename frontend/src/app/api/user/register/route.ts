@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { user } from "../data";
-import avatar3 from "@/public/images/avatar/avatar-3.png";
+const avatar3 = "";
 export async function POST(request: NextRequest, response: any) {
   try {
     let reqBody = await request.json();

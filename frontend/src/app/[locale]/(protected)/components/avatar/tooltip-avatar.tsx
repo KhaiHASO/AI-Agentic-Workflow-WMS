@@ -14,7 +14,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar>
               <AvatarImage
-                src="/images/avatar/avatar-1.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> PR </AvatarFallback>
             </Avatar>
@@ -30,7 +30,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="primary">
               <AvatarImage
-                src="/images/avatar/avatar-2.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> LI </AvatarFallback>
             </Avatar>
@@ -46,7 +46,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="secondary">
               <AvatarImage
-                src="/images/avatar/avatar-3.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> SH </AvatarFallback>
             </Avatar>
@@ -61,7 +61,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="success">
               <AvatarImage
-                src="/images/avatar/avatar-4.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> SU </AvatarFallback>
             </Avatar>
@@ -76,7 +76,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="info">
               <AvatarImage
-                src="/images/avatar/avatar-5.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> PR </AvatarFallback>
             </Avatar>
@@ -91,7 +91,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="warning">
               <AvatarImage
-                src="/images/avatar/avatar-6.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> SR </AvatarFallback>
             </Avatar>
@@ -106,7 +106,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="destructive">
               <AvatarImage
-                src="/images/avatar/avatar-7.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> AR </AvatarFallback>
             </Avatar>

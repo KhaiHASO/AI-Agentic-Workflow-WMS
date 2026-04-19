@@ -20,7 +20,7 @@ const CrmPage = () => {
                 <Card className="bg-warning/20 relative shadow-none border-none">
                   <CardContent className="p-4">
                     <Image
-                      src="/images/all-img/shade-1.png"
+                      src=""
                       alt="images"
                       draggable="false"
                       className="absolute top-0 start-0 w-full h-full object-contain"
@@ -50,7 +50,7 @@ const CrmPage = () => {
                 <Card className="bg-info/20 relative shadow-none border-none">
                   <CardContent className="p-4">
                     <Image
-                      src="/images/all-img/shade-2.png"
+                      src=""
                       alt="images"
                       draggable="false"
                       className="absolute top-0 start-0 w-full h-full object-contain"
@@ -80,7 +80,7 @@ const CrmPage = () => {
                 <Card className="bg-primary/20 relative shadow-none border-none">
                   <CardContent className="p-4">
                     <Image
-                      src="/images/all-img/shade-3.png"
+                      src=""
                       alt="images"
                       draggable="false"
                       className="absolute top-0 start-0 w-full h-full object-contain"
@@ -112,7 +112,7 @@ const CrmPage = () => {
                 <Card className="bg-success/20 relative shadow-none border-none">
                   <CardContent className=" p-4">
                     <Image
-                      src="/images/all-img/shade-4.png"
+                      src=""
                       alt="images"
                       draggable="false"
                       className="absolute top-0 start-0 w-full h-full object-contain"

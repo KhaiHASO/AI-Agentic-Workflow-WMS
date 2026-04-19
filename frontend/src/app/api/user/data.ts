@@ -1,4 +1,4 @@
-import avatar3 from "@/public/images/avatar/avatar-3.png";
+const avatar3 = "";
 export const user = [
   {
     id: 1,

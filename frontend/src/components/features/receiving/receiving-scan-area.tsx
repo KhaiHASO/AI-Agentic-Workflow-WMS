@@ -15,7 +15,7 @@ export const ReceivingScanArea = () => {
   const [unknownBarcode, setUnknownBarcode] = useState<string | null>(null);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState("");
-  const { processScan, scanResult, undoLastScan, lines } = useReceivingStore();
+  const { processScan, scanResult, undoLastScan, redoLastScan, lines, redoStack, scanHistory } = useReceivingStore();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -72,9 +72,30 @@ export const ReceivingScanArea = () => {
           />
         </div>
         <Button type="submit" size="lg" className="h-14 px-8 font-bold text-lg">SCAN</Button>
-        <Button type="button" variant="outline" size="lg" className="h-14 px-4" onClick={undoLastScan}>
-          <Icon icon="heroicons:arrow-path" className="w-6 h-6" />
-        </Button>
+        <div className="flex gap-1">
+          <Button 
+            type="button" 
+            variant="outline" 
+            size="lg" 
+            className="h-14 px-4" 
+            onClick={undoLastScan}
+            disabled={scanHistory.length === 0}
+            title="Hoàn tác (Undo)"
+          >
+            <Icon icon="heroicons:arrow-uturn-left" className="w-6 h-6" />
+          </Button>
+          <Button 
+            type="button" 
+            variant="outline" 
+            size="lg" 
+            className="h-14 px-4" 
+            onClick={redoLastScan}
+            disabled={redoStack.length === 0}
+            title="Làm lại (Redo)"
+          >
+            <Icon icon="heroicons:arrow-uturn-right" className="w-6 h-6" />
+          </Button>
+        </div>
       </form>
 
       {scanResult && (

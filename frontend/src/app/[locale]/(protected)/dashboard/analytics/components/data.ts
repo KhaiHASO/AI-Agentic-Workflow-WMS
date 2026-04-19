@@ -2,7 +2,7 @@
 
 export const data = [
   {
-    company: "/images/users/user-1.jpg",
+    company: "",
     category: "Ornamental Railings",
     views: 343,
     revenue: "$231.26",
@@ -10,7 +10,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-2.jpg",
+    company: "",
     category: "Asphalt Paving",
     views: 315,
     revenue: "$432.81",
@@ -18,7 +18,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-3.jpg",
+    company: "",
     category: "Framing (Steel)",
     views: 329,
     revenue: "$437.65",
@@ -26,7 +26,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-4.jpg",
+    company: "",
     category: "Structural and Misc Steel (Fabrication)",
     views: 336,
     revenue: "$387.55",
@@ -34,7 +34,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-5.jpg",
+    company: "",
     category: "Wall Protection",
     views: 375,
     revenue: "$489.80",
@@ -42,7 +42,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-6.jpg",
+    company: "",
     category: "Marlite Panels (FED)",
     views: 490,
     revenue: "$421.45",
@@ -50,7 +50,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-1.jpg",
+    company: "",
     category: "Epoxy Flooring",
     views: 433,
     revenue: "$207.61",
@@ -58,7 +58,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-2.jpg",
+    company: "",
     category: "Epoxy Flooring",
     views: 499,
     revenue: "$392.86",
@@ -66,7 +66,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-3.jpg",
+    company: "",
     category: "Marlite Panels (FED)",
     views: 441,
     revenue: "$162.87",
@@ -74,7 +74,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-4.jpg",
+    company: "",
     category: "RF Shielding",
     views: 415,
     revenue: "$268.58",
@@ -82,7 +82,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-5.jpg",
+    company: "",
     category: "Roofing (Metal)",
     views: 303,
     revenue: "$369.19",
@@ -90,7 +90,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-6.jpg",
+    company: "",
     category: "RF Shielding",
     views: 415,
     revenue: "$420.87",
@@ -98,7 +98,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-1.jpg",
+    company: "",
     category: "Curb & Gutter",
     views: 493,
     revenue: "$420.26",
@@ -106,7 +106,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-2.jpg",
+    company: "",
     category: "Structural & Misc Steel Erection",
     views: 498,
     revenue: "$228.41",
@@ -114,7 +114,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-3.jpg",
+    company: "",
     category: "Retaining Wall and Brick Pavers",
     views: 465,
     revenue: "$140.83",
@@ -122,7 +122,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-4.jpg",
+    company: "",
     category: "Sitework & Site Utilities",
     views: 468,
     revenue: "$475.63",
@@ -130,7 +130,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-5.jpg",
+    company: "",
     category: "Framing (Steel)",
     views: 357,
     revenue: "$415.37",
@@ -138,7 +138,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-6.jpg",
+    company: "",
     category: "Waterproofing & Caulking",
     views: 487,
     revenue: "$436.53",
@@ -146,7 +146,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-1.jpg",
+    company: "",
     category: "Site Furnishings",
     views: 357,
     revenue: "$147.36",
@@ -154,7 +154,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-2.jpg",
+    company: "",
     category: "Casework",
     views: 465,
     revenue: "$121.67",
@@ -162,7 +162,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-3.jpg",
+    company: "",
     category: "Ornamental Railings",
     views: 438,
     revenue: "$213.25",
@@ -170,7 +170,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-4.jpg",
+    company: "",
     category: "Waterproofing & Caulking",
     views: 461,
     revenue: "$186.48",
@@ -178,7 +178,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-5.jpg",
+    company: "",
     category: "Masonry",
     views: 423,
     revenue: "$130.97",
@@ -186,7 +186,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-6.jpg",
+    company: "",
     category: "Curb & Gutter",
     views: 339,
     revenue: "$255.69",
@@ -194,7 +194,7 @@ export const data = [
     up: false,
   },
   {
-    company: "/images/users/user-1.jpg",
+    company: "",
     category: "HVAC",
     views: 361,
     revenue: "$484.64",
@@ -202,7 +202,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-2.jpg",
+    company: "",
     category: "Exterior Signage",
     views: 353,
     revenue: "$485.51",
@@ -210,7 +210,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-3.jpg",
+    company: "",
     category: "Fire Protection",
     views: 364,
     revenue: "$449.45",
@@ -218,7 +218,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-4.jpg",
+    company: "",
     category: "Rebar & Wire Mesh Install",
     views: 493,
     revenue: "$309.61",
@@ -226,7 +226,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-5.jpg",
+    company: "",
     category: "Temp Fencing, Decorative Fencing and Gates",
     views: 393,
     revenue: "$372.45",
@@ -234,7 +234,7 @@ export const data = [
     up: true,
   },
   {
-    company: "/images/users/user-6.jpg",
+    company: "",
     category: "Fire Protection",
     views: 441,
     revenue: "$470.34",
@@ -247,61 +247,61 @@ export const data = [
 export const activity = [
   {
     id: 1,
-    img: "/images/users/user-1.jpg",
+    img: "",
     description: "Finance KPI Mobile app launch preparation meeting.",
     time: "1 hour",
   },
   {
     id: 2,
-    img: "/images/users/user-2.jpg",
+    img: "",
     description: "Design review meeting.",
     time: "2 hours",
   },
   {
     id: 3,
-    img: "/images/users/user-3.jpg",
+    img: "",
     description: "Project kick-off meeting.",
     time: "3 hours",
   },
   {
     id: 4,
-    img: "/images/users/user-4.jpg",
+    img: "",
     description: "Weekly sync-up meeting.",
     time: "4 hours",
   },
   {
     id: 5,
-    img: "/images/users/user-5.jpg",
+    img: "",
     description: "Client presentation meeting.",
     time: "5 hours",
   },
   {
     id: 6,
-    img: "/images/users/user-6.jpg",
+    img: "",
     description: "Product roadmap discussion.",
     time: "6 hours",
   },
   {
     id: 7,
-    img: "/images/users/user-1.jpg",
+    img: "",
     description: "Team retrospective meeting.",
     time: "7 hours",
   },
   {
     id: 8,
-    img: "/images/users/user-2.jpg",
+    img: "",
     description: "Sprint planning meeting.",
     time: "8 hours",
   },
   {
     id: 9,
-    img: "/images/users/user-3.jpg",
+    img: "",
     description: "Code review session.",
     time: "9 hours",
   },
   {
     id: 10,
-    img: "/images/users/user-4.jpg",
+    img: "",
     description: "Stakeholder alignment meeting.",
     time: "10 hours",
   },

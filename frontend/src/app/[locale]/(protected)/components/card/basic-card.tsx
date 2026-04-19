@@ -21,7 +21,7 @@ const BasicCard = () => {
         <CardContent>
           <Image
             alt=""
-            src="/images/all-img/card-1.png"
+            src=""
             width={700}
             height={700}
             className="w-full h-[140px] object-cover mb-6 rounded-md"
@@ -43,7 +43,7 @@ const BasicCard = () => {
       <Card>
         <Image
           alt=""
-          src="/images/all-img/card-2.png"
+          src=""
           width={700}
           height={700}
           className="w-full h-[140px] object-cover mb-6 rounded-t-md"
@@ -70,7 +70,7 @@ const BasicCard = () => {
       <Card className="relative z-1 rounded-lg overflow-hidden">
         <Image
           alt=""
-          src="/images/all-img/card-3.png"
+          src=""
           width={700}
           height={700}
           className="w-full h-full object-cover absolute top-0 left-0 z-[-1]"

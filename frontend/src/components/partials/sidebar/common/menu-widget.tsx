@@ -11,7 +11,7 @@ const MenuWidget = () => {
         <div className="dark">
             <div className="bg-default-50 mb-16 mt-24 p-4 relative text-center rounded-2xl  text-white">
 
-                <Image className="mx-auto relative -mt-[73px]" alt="" src="/images/svg/rabit.svg" priority width={99} height={114} />
+                <Image className="mx-auto relative -mt-[73px]" alt="" src="" priority width={99} height={114} />
                 <div className="max-w-[160px] mx-auto mt-6">
                     <div className="">Unlimited Access</div>
                     <div className="text-xs font-light">

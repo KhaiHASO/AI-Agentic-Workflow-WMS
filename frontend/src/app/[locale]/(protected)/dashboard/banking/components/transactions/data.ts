@@ -5,7 +5,7 @@ export const data: DataProps[] = [
     id: 1,
     customer: {
       name: "Jenny Wilson",
-      image: "/images/all-img/customer_1.png",
+      image: "",
     },
     date: "3/26/2022",
     history: {
@@ -19,7 +19,7 @@ export const data: DataProps[] = [
     id: 2,
     customer: {
       name: "Emily Davis",
-      image: "/images/all-img/cus-1.png",
+      image: "",
     },
     date: "2/6/2022",
     history: {
@@ -33,7 +33,7 @@ export const data: DataProps[] = [
     id: 3,
     customer: {
       name: "Laura Smith",
-      image: "/images/avatar/avatar-1.png",
+      image: "",
     },
     date: "9/6/2021",
     history: {
@@ -47,7 +47,7 @@ export const data: DataProps[] = [
     id: 4,
     customer: {
       name: "Sarah Johnson",
-      image: "/images/avatar/avatar-2.png",
+      image: "",
     },
     date: "11/7/2021",
     history: {

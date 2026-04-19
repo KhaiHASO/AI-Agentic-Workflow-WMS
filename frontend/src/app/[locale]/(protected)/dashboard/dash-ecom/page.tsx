@@ -32,7 +32,7 @@ const EcommercePage = () => {
             </p>
           </div>
           <Image
-            src="/images/all-img/widget-bg-2.png"
+            src=""
             width={400}
             height={150}
             priority

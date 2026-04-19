@@ -35,31 +35,31 @@ const ImageAvatar = () => {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <Avatar>
-        <AvatarImage src="/images/avatar/avatar-1.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar color="primary">
-        <AvatarImage src="/images/avatar/avatar-2.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> LI </AvatarFallback>
       </Avatar>
       <Avatar color="secondary">
-        <AvatarImage src="/images/avatar/avatar-3.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> SH </AvatarFallback>
       </Avatar>
       <Avatar color="success">
-        <AvatarImage src="/images/avatar/avatar-4.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> SU </AvatarFallback>
       </Avatar>
       <Avatar color="info">
-        <AvatarImage src="/images/avatar/avatar-5.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar color="warning">
-        <AvatarImage src="/images/avatar/avatar-6.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> SR </AvatarFallback>
       </Avatar>
       <Avatar color="destructive">
-        <AvatarImage src="/images/avatar/avatar-7.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> AR </AvatarFallback>
       </Avatar>
     </div>
@@ -211,23 +211,23 @@ const SizeAvatar = () => {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <Avatar size="sm">
-        <AvatarImage  src="/images/avatar/avatar-1.png" alt="dashcode" />
+        <AvatarImage  src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar size="base" color="primary">
-        <AvatarImage  src="/images/avatar/avatar-2.png" alt="dashcode" />
+        <AvatarImage  src="" alt="dashcode" />
         <AvatarFallback> LI </AvatarFallback>
       </Avatar>
       <Avatar size="md" color="success">
-        <AvatarImage  src="/images/avatar/avatar-3.png" alt="dashcode" />
+        <AvatarImage  src="" alt="dashcode" />
         <AvatarFallback> SU </AvatarFallback>
       </Avatar>
       <Avatar size="lg" color="info">
-        <AvatarImage  src="/images/avatar/avatar-4.png" alt="dashcode" />
+        <AvatarImage  src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar size="xl" color="warning">
-        <AvatarImage  src="/images/avatar/avatar-5.png" alt="dashcode" />
+        <AvatarImage  src="" alt="dashcode" />
         <AvatarFallback> SR </AvatarFallback>
       </Avatar>
     </div>
@@ -241,19 +241,19 @@ const RoundedAvatar = () => {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <Avatar rounded="sm"  color="primary">
-        <AvatarImage src="/images/avatar/av-1.jpg" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> LI </AvatarFallback>
       </Avatar>
       <Avatar rounded="md"  >
-        <AvatarImage src="/images/avatar/av-2.jpg" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar rounded="lg"  color="secondary">
-        <AvatarImage src="/images/avatar/av-3.jpg" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> SH </AvatarFallback>
       </Avatar>
       <Avatar rounded="full"  color="success">
-        <AvatarImage src="/images/avatar/av-4.jpg" alt="avatar image" />
+        <AvatarImage src="" alt="avatar image" />
         <AvatarFallback> SU </AvatarFallback>
       </Avatar>
     </div>
@@ -267,11 +267,11 @@ const AvatarShape = () => {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <Avatar shape="circle"  color="primary">
-        <AvatarImage src="/images/avatar/av-4.jpg" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> LI </AvatarFallback>
       </Avatar>
       <Avatar shape="square" >
-        <AvatarImage src="/images/avatar/av-1.jpg" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
     </div>
@@ -296,7 +296,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar>
               <AvatarImage
-                src="/images/avatar/avatar-1.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> PR </AvatarFallback>
             </Avatar>
@@ -312,7 +312,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="primary">
               <AvatarImage
-                src="/images/avatar/avatar-2.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> LI </AvatarFallback>
             </Avatar>
@@ -328,7 +328,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="secondary">
               <AvatarImage
-                src="/images/avatar/avatar-3.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> SH </AvatarFallback>
             </Avatar>
@@ -343,7 +343,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="success">
               <AvatarImage
-                src="/images/avatar/avatar-4.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> SU </AvatarFallback>
             </Avatar>
@@ -358,7 +358,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="info">
               <AvatarImage
-                src="/images/avatar/avatar-5.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> PR </AvatarFallback>
             </Avatar>
@@ -373,7 +373,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="warning">
               <AvatarImage
-                src="/images/avatar/avatar-6.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> SR </AvatarFallback>
             </Avatar>
@@ -388,7 +388,7 @@ const TooltipAvatar = () => {
           <TooltipTrigger>
             <Avatar color="destructive">
               <AvatarImage
-                src="/images/avatar/avatar-7.png" alt="dashcode"
+                src="" alt="dashcode"
               />
               <AvatarFallback> AR </AvatarFallback>
             </Avatar>
@@ -410,19 +410,19 @@ const AvatarGroup = () => {
   return (
     <div className="-gap-2">
       <Avatar className="ring-1 ring-default-300 ring-offset-[2px]  ring-offset-background transition-all duration-300 hover:-translate-y-0.5">
-        <AvatarImage src="/images/avatar/avatar-1.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar className="ring-1 ring-default-300 ring-offset-[2px]  ring-offset-background transition-all duration-300 hover:-translate-y-0.5">
-        <AvatarImage src="/images/avatar/avatar-2.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar className="ring-1 ring-default-300 ring-offset-[2px]  ring-offset-background transition-all duration-300 hover:-translate-y-0.5">
-        <AvatarImage src="/images/avatar/avatar-3.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
       <Avatar className="ring-1 ring-default-300 ring-offset-[2px]  ring-offset-background transition-all duration-300 hover:-translate-y-0.5">
-        <AvatarImage src="/images/avatar/avatar-4.png" alt="dashcode" />
+        <AvatarImage src="" alt="dashcode" />
         <AvatarFallback> PR </AvatarFallback>
       </Avatar>
     </div>

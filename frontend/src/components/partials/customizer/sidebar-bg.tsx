@@ -7,8 +7,8 @@ const SidebarBg = () => {
   const [config, setConfig] = useConfig();
   const { sidebarBgImage } = config;
   const [selectedFiles, setSelectedFiles] = useState([
-    "/images/all-img/img-2.jpeg",
-    "/images/all-img/img-1.jpeg",
+    "",
+    "",
   ]);
   const handleFileChange = (e: any) => {
     const file = e.target.files[0];

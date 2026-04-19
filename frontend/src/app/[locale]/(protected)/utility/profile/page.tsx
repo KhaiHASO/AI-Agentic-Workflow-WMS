@@ -18,7 +18,7 @@ const profile = () => {
                   <Image
                     width={300}
                     height={300}
-                    src="/images/users/user-1.jpg"
+                    src=""
                     alt=""
                     className="w-full h-full object-cover rounded-full"
                   />

@@ -36,7 +36,7 @@ const CardSlider = () => {
             )}
           >
             <Image
-              src="/images/all-img/visa-card-bg.png"
+              src=""
               alt=""
               fill
               sizes="(100vw, 100vh)"
@@ -44,7 +44,7 @@ const CardSlider = () => {
             />
             <div className="relative ">
               <Image
-                src="/images/logo/visa.svg"
+                src=""
                 height={48}
                 width={90}
                 className="w-20 h-10"

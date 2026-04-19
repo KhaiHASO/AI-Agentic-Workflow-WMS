@@ -66,7 +66,7 @@ const StatisticPage = () => {
                 <div className="flex space-x-4 h-full items-center rtl:space-x-reverse">
                   <div className="flex-none">
                     <Avatar className="h-20 w-20 bg-transparent hover:bg-transparent">
-                      <AvatarImage src="/images/all-img/main-user.png" />
+                      <AvatarImage src="" />
                       <AvatarFallback>SA</AvatarFallback>
                     </Avatar>
                   </div>
@@ -112,7 +112,7 @@ const StatisticPage = () => {
           <Card className="bg-warning/20 relative">
             <CardContent className="p-4 ">
               <Image
-                src="/images/all-img/shade-1.png"
+                src=""
                 alt="images"
                 draggable="false"
                 className="absolute top-0 start-0 w-full h-full object-contain"
@@ -138,7 +138,7 @@ const StatisticPage = () => {
           <Card className="bg-info/20 relative">
             <CardContent className="p-4">
               <Image
-                src="/images/all-img/shade-2.png"
+                src=""
                 alt="images"
                 draggable="false"
                 className="absolute top-0 start-0 w-full h-full object-contain"
@@ -164,7 +164,7 @@ const StatisticPage = () => {
           <Card className="bg-primary/20 relative">
             <CardContent className=" p-4">
               <Image
-                src="/images/all-img/shade-3.png"
+                src=""
                 alt="images"
                 draggable="false"
                 className="absolute top-0 start-0 w-full h-full object-contain"
@@ -190,7 +190,7 @@ const StatisticPage = () => {
           <Card className="bg-success/20 relative">
             <CardContent className=" p-4">
               <Image
-                src="/images/all-img/shade-4.png"
+                src=""
                 alt="images"
                 draggable="false"
                 className="absolute top-0 start-0 w-full h-full object-contain"

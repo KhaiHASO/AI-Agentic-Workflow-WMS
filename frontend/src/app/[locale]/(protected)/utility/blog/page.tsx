@@ -22,7 +22,7 @@ const BlogPage = () => {
               <Card className="overflow-hidden">
                 <div className=" h-[248px] w-full mb-6 ">
                   <Image
-                    src="/images/all-img/post-1.png"
+                    src=""
                     alt=""
                     width={300}
                     height={300}
@@ -82,7 +82,7 @@ const BlogPage = () => {
             <Card className="overflow-hidden">
               <div className=" h-[248px] w-full mb-6 ">
                 <Image
-                  src="/images/all-img/post-1.png"
+                  src=""
                   alt=""
                   className=" w-full h-full  object-cover"
                   width={300}
@@ -120,7 +120,7 @@ const BlogPage = () => {
             <Card className="overflow-hidden">
               <div className=" h-[248px] w-full mb-6 ">
                 <Image
-                  src="/images/all-img/post-1.png"
+                  src=""
                   alt=""
                   className=" w-full h-full  object-cover"
                   width={300}
@@ -158,7 +158,7 @@ const BlogPage = () => {
             <Card className="overflow-hidden">
               <div className=" h-[248px] w-full mb-6 ">
                 <Image
-                  src="/images/all-img/post-1.png"
+                  src=""
                   alt=""
                   className=" w-full h-full  object-cover"
                   width={300}
@@ -196,7 +196,7 @@ const BlogPage = () => {
             <Card className="overflow-hidden">
               <div className=" h-[248px] w-full mb-6 ">
                 <Image
-                  src="/images/all-img/post-1.png"
+                  src=""
                   alt=""
                   className=" w-full h-full  object-cover"
                   width={300}

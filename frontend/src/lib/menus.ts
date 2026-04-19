@@ -31,7 +31,7 @@ export type Group = {
 export function getMenuList(pathname: string, t: any): Group[] {
   return [
     {
-      groupLabel: "LUỒNG 0 & 5: GIÁM SÁT & TÍCH HỢP",
+      groupLabel: "GIÁM SÁT & TÍCH HỢP",
       id: "control-tower-group",
       menus: [
         {
@@ -59,7 +59,7 @@ export function getMenuList(pathname: string, t: any): Group[] {
       ],
     },
     {
-      groupLabel: "LUỒNG 1 & 2: NHẬP KHO (INBOUND)",
+      groupLabel: "NHẬP KHO (INBOUND)",
       id: "inbound-group",
       menus: [
         {
@@ -78,7 +78,7 @@ export function getMenuList(pathname: string, t: any): Group[] {
       ],
     },
     {
-      groupLabel: "LUỒNG 3: XUẤT KHO (OUTBOUND)",
+      groupLabel: "XUẤT KHO (OUTBOUND)",
       id: "outbound-group",
       menus: [
         {
@@ -97,7 +97,7 @@ export function getMenuList(pathname: string, t: any): Group[] {
       ],
     },
     {
-      groupLabel: "LUỒNG 4: TỒN KHO & CHẤT LƯỢNG",
+      groupLabel: "TỒN KHO & CHẤT LƯỢNG",
       id: "inventory-group",
       menus: [
         {
@@ -116,7 +116,7 @@ export function getMenuList(pathname: string, t: any): Group[] {
       ],
     },
     {
-      groupLabel: "LUỒNG 6: QUẢN TRỊ HỆ THỐNG",
+      groupLabel: "QUẢN TRỊ HỆ THỐNG",
       id: "system-group",
       menus: [
         {
@@ -135,7 +135,7 @@ export function getMenuList(pathname: string, t: any): Group[] {
       ],
     },
     {
-      groupLabel: "LUỒNG 7: CÔNG CỤ GIẢ LẬP",
+      groupLabel: "CÔNG CỤ GIẢ LẬP",
       id: "dev-tools-group",
       menus: [
         {

@@ -14,7 +14,7 @@ import { Link } from '@/i18n/routing';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { notifications, type Notification } from "./data";
-import shortImage from "@/public/images/all-img/short-image-2.png";
+const shortImage = "";
 import { Icon } from "@/components/ui/icon";
 
 const Notifications = () => {

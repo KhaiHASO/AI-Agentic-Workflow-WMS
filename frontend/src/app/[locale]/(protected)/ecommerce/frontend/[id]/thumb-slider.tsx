@@ -16,15 +16,15 @@ import { Swiper as SwiperType } from "swiper/types";
 const ThumbSliderCom = ({ product }: { product: product }) => {
 
   const images = [
-    "/images/e-commerce/product-card/classical-black-tshirt.png",
-    "/images/e-commerce/product-card/black-t-shirt.png",
-    "/images/e-commerce/product-card/check-shirt.png",
-    "/images/e-commerce/product-card/gray-jumper.png",
-    "/images/e-commerce/product-card/gray-t-shirt.png",
-    "/images/e-commerce/product-card/pink-blazer.png",
-    "/images/e-commerce/product-card/red-t-shirt.png",
-    "/images/e-commerce/product-card/yellow-frok.png",
-    "/images/e-commerce/product-card/yellow-jumper.png",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
   ]
 
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);

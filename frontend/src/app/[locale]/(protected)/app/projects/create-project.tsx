@@ -62,14 +62,14 @@ const options: Option[] = [
   },
 ];
 const assigneeOptions: Option[] = [
-  { value: "mahedi", label: "Mahedi Amin", image: "/images/avatar/av-1.svg" },
-  { value: "sovo", label: "Sovo Haldar", image: "/images/avatar/av-2.svg" },
+  { value: "mahedi", label: "Mahedi Amin", image: "" },
+  { value: "sovo", label: "Sovo Haldar", image: "" },
   {
     value: "rakibul",
     label: "Rakibul Islam",
-    image: "/images/avatar/av-3.svg",
+    image: "",
   },
-  { value: "pritom", label: "Pritom Miha", image: "/images/avatar/av-4.svg" },
+  { value: "pritom", label: "Pritom Miha", image: "" },
 ];
 
 const CreateProject = ({ open, setOpen }: CreateTaskProps) => {

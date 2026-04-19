@@ -10,7 +10,7 @@ import { Link } from '@/i18n/routing';
 import GithubStyleCharts1 from "./github-styles-charts1";
 import NegativeAreaChart from "./negative-areachart";
 import Image from "next/image";
-import avatar7 from "@/public/images/avatar/avatar-7.png";
+const avatar7 = "";
 
 
 const AreaChartPage = () => {

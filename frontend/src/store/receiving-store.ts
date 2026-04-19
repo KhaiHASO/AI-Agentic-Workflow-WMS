@@ -11,6 +11,7 @@ interface ReceivingState {
   header: ReceiptHeader;
   lines: ReceiptLine[];
   scanHistory: ScanEvent[];
+  redoStack: ScanEvent[];
   activeLineId: string | null;
   scanResult: { type: 'success' | 'warning' | 'error' | 'info'; message: string } | null;
   validation: ValidationResult | null;
@@ -20,6 +21,7 @@ interface ReceivingState {
   updateLineQty: (lineId: string, field: keyof ReceiptLine, value: any) => void;
   setActiveLine: (lineId: string | null) => void;
   undoLastScan: () => void;
+  redoLastScan: () => void;
   saveDraft: () => void;
   validateAll: () => void;
   submitReceipt: () => void;
@@ -36,6 +38,7 @@ export const useReceivingStore = create<ReceivingState>((set, get) => ({
   header: { ...mockReceivingDraft.header },
   lines: [...mockReceivingDraft.lines],
   scanHistory: [],
+  redoStack: [],
   activeLineId: null,
   scanResult: null,
   validation: null,
@@ -105,6 +108,7 @@ export const useReceivingStore = create<ReceivingState>((set, get) => ({
       set({ 
         lines: updatedLines, 
         scanHistory: [newEvent, ...scanHistory].slice(0, 50),
+        redoStack: [],
         activeLineId: matchedLine.id,
         scanResult: { 
           type: newEvent.resultType, 
@@ -146,7 +150,7 @@ export const useReceivingStore = create<ReceivingState>((set, get) => ({
   setActiveLine: (lineId) => set({ activeLineId: lineId }),
 
   undoLastScan: () => {
-    const { scanHistory, lines } = get();
+    const { scanHistory, redoStack, lines } = get();
     if (scanHistory.length === 0) return;
 
     const lastEvent = scanHistory[0];
@@ -163,7 +167,38 @@ export const useReceivingStore = create<ReceivingState>((set, get) => ({
          }
          return l;
        });
-       set({ lines: updatedLines, scanHistory: scanHistory.slice(1), scanResult: null });
+       set({ 
+         lines: updatedLines, 
+         scanHistory: scanHistory.slice(1), 
+         redoStack: [lastEvent, ...redoStack],
+         scanResult: { type: 'info', message: `Đã hoàn tác: ${lastEvent.itemCode}` }
+       });
+    }
+  },
+
+  redoLastScan: () => {
+    const { scanHistory, redoStack, lines } = get();
+    if (redoStack.length === 0) return;
+
+    const eventToRedo = redoStack[0];
+    if (eventToRedo.matchedLineNo) {
+       const updatedLines = lines.map(l => {
+         if (l.lineNo === eventToRedo.matchedLineNo) {
+           const newQty = l.receivedQty + eventToRedo.qty;
+           // Simple status calculation
+           let status: any = 'Partial';
+           if (newQty >= l.expectedQty) status = 'Completed';
+           
+           return { ...l, receivedQty: newQty, status };
+         }
+         return l;
+       });
+       set({ 
+         lines: updatedLines, 
+         scanHistory: [eventToRedo, ...scanHistory], 
+         redoStack: redoStack.slice(1),
+         scanResult: { type: 'success', message: `Đã làm lại: ${eventToRedo.itemCode}` }
+       });
     }
   },
 

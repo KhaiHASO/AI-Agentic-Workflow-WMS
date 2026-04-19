@@ -48,7 +48,7 @@ const DashCodeFooter = async () => {
                 >
                     <div className="h-[50px] w-[50px] rounded-full relative left-[0px] top-[0px] custom-dropshadow">
                         <Image
-                            src={(session?.user?.image as string) || '/images/all-img/user.png'}
+                            src={(session?.user?.image as string) || ''}
                             alt={(session?.user?.name?.charAt(0) as string) || "user"}
                             width={50}
                             height={50}
