@@ -15,10 +15,8 @@ const LayoutContentProvider = ({ children }: { children: React.ReactNode }) => {
                 'xl:ms-0': config.menuHidden || config.layout === "horizontal",
 
             })}>
-                <div className={cn('p-6 mb-24 md:mb-0', {
+                <div className={cn('p-6 mb-24 md:mb-0 animate-in fade-in duration-200', {
                     'container ': config.contentWidth === 'boxed',
-
-
                 })}>
                     {children}
                 </div>
@@ -28,7 +26,6 @@ const LayoutContentProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <>
-
             <main className={cn('flex-1 xl:ms-[248px]', {
                 'xl:ms-[72px]': config.collapsed,
                 'bg-default-100 dark:bg-background': config.skin === 'default',
@@ -37,12 +34,11 @@ const LayoutContentProvider = ({ children }: { children: React.ReactNode }) => {
                 'xl:ms-28': config.sidebar === 'compact',
                 'pt-6': config.navbar === 'floating' && config.layout !== 'semi-box'
             })}>
-                <div className={cn('mb-24 md:mb-0', {
+                <div className={cn('mb-24 md:mb-0 animate-in fade-in duration-200', {
                     'container': config.contentWidth === 'boxed',
                     'p-6': config.layout !== 'semi-box',
                     'py-10': config.layout === 'semi-box',
                     'lg:p-0 px-0 lg:ms-6 mt-6 md:mb-6': config.layout === 'compact'
-
                 })}>
                     {children}
                 </div>

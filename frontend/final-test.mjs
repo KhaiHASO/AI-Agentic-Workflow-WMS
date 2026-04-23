@@ -9,6 +9,18 @@ import { chromium } from 'playwright';
   
   const testResults = [];
 
+  const slugify = (text) => {
+    return text
+      .toString()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '')
+      .replace(/--+/g, '-');
+  };
+
   const runTest = async (name, fn) => {
     console.log(`\n🔍 Đang kiểm tra: ${name}...`);
     try {
@@ -19,7 +31,7 @@ import { chromium } from 'playwright';
       console.error(`❌ ${name}: THẤT BẠI - ${error.message}`);
       testResults.push({ name, status: 'FAIL', error: error.message });
       // Chụp ảnh lỗi nếu cần
-      await page.screenshot({ path: `error-${name.replace(/\s+/g, '-')}.png` });
+      await page.screenshot({ path: `error-${slugify(name)}.png` });
     }
   };
 

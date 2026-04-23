@@ -16,6 +16,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react", "@iconify/react", "@radix-ui/react-icons"],
+  },
   images: {
     remotePatterns: [
       {

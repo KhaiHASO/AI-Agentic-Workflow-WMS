@@ -781,3 +781,39 @@
     width: 100%;
   }
 
+
+/* --- iPhone Optimization --- */
+@layer base {
+  html, body {
+    /* Ngăn chặn scroll nảy (elastic bounce) gây cảm giác lag trên iPhone */
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  body {
+    /* Đảm bảo nội dung không bị che bởi thanh vuốt dưới của iPhone */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@media (max-width: 768px) {
+  /* Apple UI Guideline: Tap targets tối thiểu 44x44px */
+  button, [role="button"], a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* Tối ưu scroll mượt cho bảng */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Khử răng cưa font trên iOS */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
