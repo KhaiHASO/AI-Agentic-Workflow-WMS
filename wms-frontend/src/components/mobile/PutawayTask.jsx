@@ -1,37 +1,63 @@
 import React, { useState } from 'react';
 import MobileLayout from './MobileLayout';
-import { Scan, MapPin, Package, CheckCircle2, ChevronRight, ArrowRight } from 'lucide-react';
+import { Scan, MapPin, Package, CheckCircle2, ChevronRight, ArrowRight, Camera } from 'lucide-react';
+import BarcodeScanner from './BarcodeScanner';
+import { db } from '../../data/centralizedDataStore';
 
 const PutawayTask = () => {
   const [step, setStatus] = useState('scan_item'); // 'scan_item', 'scan_loc', 'confirm'
-  const [task, setTask] = useState({
+  const [showCamera, setShowCamera] = useState(false);
+  const [scannedItem, setScannedItem] = useState(null);
+  const [scannedLoc, setScannedLoc] = useState(null);
+
+  const task = {
     id: 'PT-000221',
     itemId: 'RM-001',
     itemName: 'Màng PE 5kg',
     qty: 55,
     unit: 'Cuộn',
-    from: 'INB-STAGE-01',
-    to: 'WH-A-01-02-P03',
-    lot: 'LOT2026-A1'
-  });
+    from: 'STAGING-INB',
+    to: 'WH-A-01-02',
+    lot: 'NEW-LOT'
+  };
 
-  const nextStep = () => {
-    if (step === 'scan_item') setStatus('scan_loc');
-    else if (step === 'scan_loc') setStatus('confirm');
-    else alert('Đã hoàn thành cất hàng!');
+  const handleScanSuccess = (text) => {
+    setShowCamera(false);
+    if (step === 'scan_item') {
+      if (text === task.itemId || text === 'RM-001') {
+        setScannedItem(text);
+        setStatus('scan_loc');
+      } else {
+        alert('Sai mã hàng! Yêu cầu: ' + task.itemId);
+      }
+    } else if (step === 'scan_loc') {
+      setScannedLoc(text);
+      setStatus('confirm');
+    }
+  };
+
+  const finalizePutaway = () => {
+    db.moveInventory(task.itemId, task.from, scannedLoc || task.to, task.qty, task.lot);
+    alert('Cất hàng hoàn tất! Tồn kho đã được cập nhật.');
+    window.location.href = '/mobile';
   };
 
   return (
     <MobileLayout 
       title="Nhiệm vụ Cất hàng"
       footer={
-        <button className="btn-mobile-primary d-flex align-items-center justify-content-center gap-2" onClick={nextStep}>
-          {step === 'scan_item' && <><Scan size={20} /> QUÉT MÃ HÀNG (RM-001)</>}
-          {step === 'scan_loc' && <><MapPin size={20} /> QUÉT VỊ TRÍ ĐÍCH (P03)</>}
+        <button 
+          className="btn-mobile-primary d-flex align-items-center justify-content-center gap-2" 
+          onClick={step === 'confirm' ? finalizePutaway : () => setShowCamera(true)}
+        >
+          {step === 'scan_item' && <><Camera size={20} /> QUÉT MÃ HÀNG ({task.itemId})</>}
+          {step === 'scan_loc' && <><MapPin size={20} /> QUÉT VỊ TRÍ ĐÍCH</>}
           {step === 'confirm' && <><CheckCircle2 size={20} /> XÁC NHẬN HOÀN TẤT</>}
         </button>
       }
     >
+      {showCamera && <BarcodeScanner onScanSuccess={handleScanSuccess} onClose={() => setShowCamera(false)} />}
+
       {/* Task Header */}
       <div className="bg-white rounded-3 p-3 shadow-sm mb-3 border-start border-4 border-primary">
         <div className="d-flex justify-content-between align-items-center mb-2">
@@ -77,7 +103,7 @@ const PutawayTask = () => {
           <Scan size={18} className="text-primary mt-1" />
           <div>
             <div className="fw-bold fs-7 text-primary">HƯỚNG DẪN</div>
-            <p className="mb-0 fs-8 text-dark">
+            <p className="mb-0 fs-8 text-dark allow-wrap">
               {step === 'scan_item' && 'Vui lòng quét mã vạch trên kiện hàng để xác nhận đúng vật tư.'}
               {step === 'scan_loc' && 'Di chuyển đến vị trí kệ và quét mã vị trí để hoàn tất cất hàng.'}
               {step === 'confirm' && 'Kiểm tra lại thông tin và bấm Xác nhận để cập nhật tồn kho.'}

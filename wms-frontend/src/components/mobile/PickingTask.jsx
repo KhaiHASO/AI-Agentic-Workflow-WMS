@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import MobileLayout from './MobileLayout';
-import { Scan, MapPin, Package, CheckCircle2, AlertTriangle, ListFilter } from 'lucide-react';
+import { Scan, MapPin, Package, CheckCircle2, AlertTriangle, ListFilter, Camera } from 'lucide-react';
+import BarcodeScanner from './BarcodeScanner';
+import { db } from '../../data/centralizedDataStore';
 
 const PickingTask = () => {
   const [step, setStep] = useState('list'); // 'list', 'scan_loc', 'scan_item'
+  const [showCamera, setShowCamera] = useState(false);
   const [tasks, setTasks] = useState([
     { id: 'PK-01', itemId: 'RM-001', itemName: 'Màng PE 5kg', qty: 20, loc: 'WH-A-01-01', status: 'Pending' },
     { id: 'PK-02', itemId: 'FG-001', itemName: 'Sản phẩm A', qty: 5, loc: 'WH-B-02-04', status: 'Pending' },
@@ -16,12 +19,28 @@ const PickingTask = () => {
     setStep('scan_loc');
   };
 
+  const handleScanSuccess = (text) => {
+    setShowCamera(false);
+    if (step === 'scan_loc') {
+       if (text === activeTask.loc) setStep('scan_item');
+       else alert('Sai vị trí! Cần lấy tại: ' + activeTask.loc);
+    } else if (step === 'scan_item') {
+       if (text === activeTask.itemId) {
+          handleConfirm();
+       } else alert('Sai mã hàng! Cần lấy: ' + activeTask.itemId);
+    }
+  };
+
   const handleConfirm = () => {
+    // Deduct from live inventory
+    db.addInventory(activeTask.itemId, activeTask.loc, -activeTask.qty, 'LOT2026-01');
+    db.logAction('Xuất kho (Picking)', `Lấy ${activeTask.qty} mã ${activeTask.itemId} tại ${activeTask.loc}`);
+    
     const updated = tasks.map(t => t.id === activeTask.id ? { ...t, status: 'Done' } : t);
     setTasks(updated);
     setActiveTask(null);
     setStep('list');
-    alert('Đã lấy hàng thành công!');
+    alert('Lấy hàng thành công! Tồn kho đã trừ.');
   };
 
   return (
@@ -29,13 +48,13 @@ const PickingTask = () => {
       title={step === 'list' ? 'Danh sách Picking' : 'Đang lấy hàng'}
       footer={
         step !== 'list' && (
-          <button className="btn-mobile-primary" onClick={step === 'scan_loc' ? () => setStep('scan_item') : handleConfirm}>
-            {step === 'scan_loc' && 'XÁC NHẬN VỊ TRÍ'}
-            {step === 'scan_item' && 'HOÀN TẤT LẤY HÀNG'}
+          <button className="btn-mobile-primary d-flex align-items-center justify-content-center gap-2" onClick={() => setShowCamera(true)}>
+            <Camera size={20} /> QUÉT XÁC NHẬN
           </button>
         )
       }
     >
+      {showCamera && <BarcodeScanner onScanSuccess={handleScanSuccess} onClose={() => setShowCamera(false)} />}
       {step === 'list' && (
         <div className="d-flex flex-column gap-2">
           <div className="d-flex justify-content-between align-items-center mb-3 px-1">
@@ -82,7 +101,7 @@ const PickingTask = () => {
                  </div>
                  <div className="text-center">
                    <h6 className="fw-bold">Quét mã vị trí</h6>
-                   <p className="text-muted-custom fs-7">Vui lòng quét nhãn dán tại kệ <br/><span className="text-main fw-bold fs-5">{activeTask.loc}</span></p>
+                   <p className="text-muted-custom fs-7 allow-wrap">Vui lòng quét nhãn dán tại kệ <br/><span className="text-main fw-bold fs-5">{activeTask.loc}</span></p>
                  </div>
                </>
              )}
@@ -93,7 +112,7 @@ const PickingTask = () => {
                  </div>
                  <div className="text-center">
                    <h6 className="fw-bold">Quét mã hàng</h6>
-                   <p className="text-muted-custom fs-7">Vui lòng quét mã vạch trên sản phẩm <br/><span className="text-main fw-bold fs-5">{activeTask.itemId}</span></p>
+                   <p className="text-muted-custom fs-7 allow-wrap">Vui lòng quét mã vạch trên sản phẩm <br/><span className="text-main fw-bold fs-5">{activeTask.itemId}</span></p>
                  </div>
                </>
              )}

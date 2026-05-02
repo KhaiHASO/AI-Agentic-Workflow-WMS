@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { TransformWrapper, TransformComponent, useTransformContext } from "react-zoom-pan-pinch";
 import { 
   Plus, Minus, RotateCcw, 
-  AlertCircle, Info
+  AlertCircle, Info, Box
 } from 'lucide-react';
+import { db } from '../data/centralizedDataStore';
 
 const MapControls = () => {
   const { zoomIn, zoomOut, resetTransform } = useTransformContext();
@@ -41,8 +42,14 @@ const MapControls = () => {
 
 const WarehouseMap = () => {
   const [selectedRack, setSelectedRack] = useState(null);
+  const [inventory, setInventory] = useState(db.state.inventory);
   const isDragging = useRef(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const unsub = db.subscribe(state => setInventory([...state.inventory]));
+    return unsub;
+  }, []);
 
   const onStart = (e) => {
     const x = e.clientX || e.touches?.[0].clientX;
@@ -65,7 +72,8 @@ const WarehouseMap = () => {
 
   const handleRackClick = (id, type) => {
     if (isDragging.current) return;
-    setSelectedRack({ id, type });
+    const rackItems = inventory.filter(i => i.locId === id || i.loc === id);
+    setSelectedRack({ id, type, items: rackItems });
   };
 
   return (
@@ -92,7 +100,7 @@ const WarehouseMap = () => {
           minScale={0.3}
           maxScale={5}
           centerOnInit={true}
-          limitToBounds={false} // ALLOW PANNING OUTSIDE INITIAL BOUNDS TO PREVENT SNAPPING
+          limitToBounds={false}
           wheel={{ step: 0.01, smoothWheel: true }}
           zoomAnimation={{ animationType: "easeOut", animationTime: 300 }}
           doubleClick={{ disabled: true }}
@@ -178,19 +186,50 @@ const WarehouseMap = () => {
         {selectedRack && (
           <>
             <div className="position-absolute top-0 start-0 w-100 h-100 z-3 bg-black bg-opacity-20 d-md-none" onClick={() => setSelectedRack(null)}></div>
-            <div className="rack-popover glass-card shadow-2xl bg-white border-0 fade-in z-3">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="fw-bold mb-0">Vị trí {selectedRack.id}</h5>
-                <button className="btn-close" onClick={() => setSelectedRack(null)}></button>
+            <div className="rack-popover glass-card shadow-2xl bg-white border-0 fade-in z-3 overflow-hidden d-flex flex-column">
+              <div className="p-3 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-50">
+                <h6 className="fw-bold mb-0">Vị trí {selectedRack.id}</h6>
+                <button className="btn-close" style={{ fontSize: '0.7rem' }} onClick={() => setSelectedRack(null)}></button>
               </div>
-              <div className="badge bg-primary-subtle text-primary mb-3 rounded-pill px-3 py-1 fs-9 uppercase-bold">{selectedRack.type}</div>
-              <div className="d-flex flex-column gap-2 fs-8 mb-4 text-start">
-                 <div className="d-flex justify-content-between border-bottom pb-2"><span>Tỉ lệ lấp đầy:</span><span className="fw-bold text-success">85%</span></div>
-                 <div className="d-flex justify-content-between"><span>Trạng thái:</span><span className="fw-bold text-success">Sẵn dụng</span></div>
+              
+              <div className="p-3 flex-grow-1 overflow-auto" style={{ maxHeight: '350px' }}>
+                <div className="badge bg-primary-subtle text-primary mb-3 rounded-pill px-3 py-1 fs-9 uppercase-bold">{selectedRack.type}</div>
+                
+                <div className="mb-3 text-start">
+                   <div className="text-muted fs-9 fw-bold uppercase mb-2">VẬT TƯ ĐANG LƯU TRỮ ({selectedRack.items.length})</div>
+                   {selectedRack.items.length > 0 ? (
+                     <div className="d-flex flex-column gap-2">
+                        {selectedRack.items.map((item, idx) => (
+                          <div key={idx} className="p-2 bg-light rounded-3 border-0 d-flex justify-content-between align-items-center">
+                             <div>
+                                <div className="fw-bold fs-8">{item.itemId}</div>
+                                <div className="text-muted fs-9">Lô: {item.lot}</div>
+                             </div>
+                             <div className="text-end">
+                                <div className="fw-bold text-primary fs-7">{item.qty}</div>
+                                <div className="fs-9 text-muted">{item.unit}</div>
+                             </div>
+                          </div>
+                        ))}
+                     </div>
+                   ) : (
+                     <div className="text-center py-4 bg-light rounded-3 border-dashed border-2 border-muted border-opacity-10 text-muted fs-8">
+                        <Box size={24} className="mb-1 opacity-20" /><br/>Trống
+                     </div>
+                   )}
+                </div>
+
+                <div className="d-flex flex-column gap-2 fs-8 text-start border-top pt-3">
+                   <div className="d-flex justify-content-between"><span>Tỉ lệ lấp đầy:</span><span className="fw-bold text-success">{selectedRack.items.length > 0 ? '85%' : '0%'}</span></div>
+                   <div className="d-flex justify-content-between"><span>Trạng thái:</span><span className="fw-bold text-success">Sẵn dụng</span></div>
+                </div>
               </div>
-              <button className="btn btn-dark w-100 rounded-3 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
-                <Info size={18} /> Xem chi tiết
-              </button>
+
+              <div className="p-3 bg-light border-top">
+                <button className="btn btn-dark w-100 rounded-3 py-2 fw-bold d-flex align-items-center justify-content-center gap-2 fs-8">
+                  <Info size={16} /> CHI TIẾT VỊ TRÍ
+                </button>
+              </div>
             </div>
           </>
         )}
@@ -201,10 +240,10 @@ const WarehouseMap = () => {
         .map-rack-group:hover .rack-rect { fill: var(--text-main) !important; }
         .clickable-zone:hover { fill-opacity: 0.15; }
         .uppercase-bold { text-transform: uppercase; letter-spacing: 0.05em; }
-        .rack-popover { position: absolute; width: 320px; padding: 1.5rem; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .rack-popover { position: absolute; width: 320px; padding: 0; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 16px; }
         
         @media (max-width: 991px) {
-          .rack-popover { width: 100%; top: auto; bottom: 0; left: 0; transform: none; border-radius: 24px 24px 0 0; padding-bottom: 2.5rem; animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+          .rack-popover { width: 100%; top: auto; bottom: 0; left: 0; transform: none; border-radius: 24px 24px 0 0; padding-bottom: 1rem; animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
           .map-controls-overlay { margin: 10px !important; }
         }
         

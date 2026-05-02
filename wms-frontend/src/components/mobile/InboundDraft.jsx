@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Scan, AlertCircle, CheckCircle2, MoreVertical, Split, ChevronRight, Camera } from 'lucide-react';
 import { mockApi } from '../../data/mockApi';
 import BarcodeScanner from './BarcodeScanner';
+import { db } from '../../data/centralizedDataStore';
 
 const InboundDraft = () => {
   const navigate = useNavigate();
@@ -53,6 +54,18 @@ const InboundDraft = () => {
     await processScanResult(barcode);
   };
 
+  const handleSubmit = () => {
+    if (!lines.some(l => l.scannedQty > 0)) {
+      alert('Chưa có hàng nào được quét!');
+      return;
+    }
+    if (window.confirm('Xác nhận hoàn tất và nhập kho Staging?')) {
+      db.submitReceipt('MR-001', lines);
+      alert('Đã nhập kho thành công! Tồn kho đã được cập nhật.');
+      navigate('/mobile');
+    }
+  };
+
   const getStatusClass = (status) => {
     switch (status.toLowerCase()) {
       case 'done': return 'status-done';
@@ -66,7 +79,7 @@ const InboundDraft = () => {
     <MobileLayout 
       title="Quét hàng - Draft MR-001" 
       footer={
-        <button className="btn-mobile-primary">
+        <button className="btn-mobile-primary" onClick={handleSubmit}>
           HOÀN TẤT DRAFT (SUBMIT)
         </button>
       }
@@ -119,8 +132,8 @@ const InboundDraft = () => {
       {/* Line List */}
       <div className="d-flex flex-column gap-2">
         <div className="d-flex justify-content-between align-items-center mb-2 px-1">
-          <span className="fw-bold fs-7">DANH SÁCH LINE ({lines.length})</span>
-          <span className="text-muted-custom fs-8">MR-001 / Nhà cung cấp Nhựa Việt</span>
+          <span className="fw-bold fs-7 uppercase">Danh sách Line ({lines.length})</span>
+          <span className="text-muted-custom fs-8">MR-001 / Nhựa Việt</span>
         </div>
 
         {lines.map((line) => (
@@ -139,12 +152,12 @@ const InboundDraft = () => {
                 <ChevronRight size={16} className="text-muted" />
               </div>
             </div>
-            <div className="text-muted-custom fs-7 mb-3">Tên hàng: Màng PE 5kg</div>
+            <div className="text-muted-custom fs-7 mb-3">Tên hàng: {line.itemName || 'Màng PE 5kg'}</div>
             
             <div className="flex-grow-1">
               <div className="d-flex justify-content-between fs-8 mb-1">
                 <span>Tiến độ</span>
-                <span>{line.scannedQty} / {line.expectedQty} Cuộn</span>
+                <span>{line.scannedQty} / {line.expectedQty} {line.unit || 'Cuộn'}</span>
               </div>
               <div className="progress" style={{ height: '6px' }}>
                 <div 

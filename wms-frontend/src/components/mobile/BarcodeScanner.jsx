@@ -13,25 +13,66 @@ const BarcodeScanner = ({ onScanSuccess, onClose }) => {
     // Initialize the scanner instance
     html5QrCodeRef.current = new Html5Qrcode(scannerContainerId);
 
-    // Get available cameras
-    Html5Qrcode.getCameras().then(devices => {
-      if (devices && devices.length > 0) {
-        setCameras(devices);
-        
-        // Prefer back camera (environment)
-        const backCamera = devices.find(device => 
-          device.label.toLowerCase().includes('back') || 
-          device.label.toLowerCase().includes('rear') ||
-          device.label.toLowerCase().includes('environment')
-        );
-        
-        const initialCameraId = backCamera ? backCamera.id : devices[0].id;
-        setCurrentCameraId(initialCameraId);
-        startScanner(initialCameraId);
-      }
+    const config = {
+      fps: 20, // Higher FPS for smoother tracking
+      qrbox: (viewfinderWidth, viewfinderHeight) => {
+        // Dynamic qrbox: 80% of width, 50% of height
+        return { 
+          width: viewfinderWidth * 0.8, 
+          height: viewfinderHeight * 0.5 
+        };
+      },
+      aspectRatio: window.innerHeight / window.innerWidth, // Match screen aspect ratio
+      videoConstraints: {
+        facingMode: "environment",
+        width: { min: 640, ideal: 1920, max: 1920 },
+        height: { min: 480, ideal: 1080, max: 1080 },
+        focusMode: "continuous" // Attempt to force continuous focus
+      },
+      formatsToSupport: [ 
+        Html5QrcodeSupportedFormats.QR_CODE,
+        Html5QrcodeSupportedFormats.EAN_13,
+        Html5QrcodeSupportedFormats.EAN_8,
+        Html5QrcodeSupportedFormats.CODE_128,
+        Html5QrcodeSupportedFormats.CODE_39,
+        Html5QrcodeSupportedFormats.UPC_A,
+        Html5QrcodeSupportedFormats.UPC_E,
+        Html5QrcodeSupportedFormats.ITF
+      ]
+    };
+
+    // Try to start with back camera directly
+    setIsScanning(true);
+    html5QrCodeRef.current.start(
+      { facingMode: "environment" },
+      config,
+      (decodedText) => {
+        onScanSuccess(decodedText);
+      },
+      (errorMessage) => { /* quiet */ }
+    ).then(() => {
+      // Successfully started, now get cameras for the "Switch" feature
+      Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length > 0) {
+          setCameras(devices);
+          // Find which one is currently active if possible, or just use the first one as a baseline
+          setCurrentCameraId(devices[0].id);
+        }
+      });
     }).catch(err => {
-      console.error("Error getting cameras", err);
-      alert("Không tìm thấy camera hoặc chưa cấp quyền.");
+      console.error("Camera start error:", err);
+      setIsScanning(false);
+      
+      // Detailed error for user
+      let userMsg = "LỖI CAMERA: ";
+      if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+        userMsg += "Trình duyệt yêu cầu HTTPS để bật Camera. Vui lòng dùng link https://";
+      } else if (err.includes("NotAllowedError") || err.includes("Permission denied")) {
+        userMsg += "Bạn đã chặn quyền truy cập Camera. Vui lòng vào cài đặt trình duyệt để cho phép.";
+      } else {
+        userMsg += "Không thể khởi tạo camera. Lỗi: " + err;
+      }
+      alert(userMsg);
     });
 
     return () => {
@@ -112,10 +153,15 @@ const BarcodeScanner = ({ onScanSuccess, onClose }) => {
       <div className="flex-grow-1 position-relative d-flex align-items-center justify-content-center bg-black overflow-hidden">
         <div id={scannerContainerId} style={{ width: '100%', height: '100%' }}></div>
         
-        {/* Overlay scanning frame */}
-        <div className="position-absolute border border-primary border-4 rounded-3" 
-             style={{ width: '250px', height: '150px', pointerEvents: 'none', boxShadow: '0 0 0 1000px rgba(0,0,0,0.5)' }}>
-          <div className="position-absolute top-0 start-0 w-100 h-2 bg-primary animate-scan"></div>
+        {/* Subtle Frame Corners - Shifted Upwards slightly */}
+        <div className="position-absolute z-2" style={{ width: '80%', height: '50%', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}>
+           <div className="position-absolute top-0 start-0 w-4 h-4 border-top border-start border-primary border-4"></div>
+           <div className="position-absolute top-0 end-0 w-4 h-4 border-top border-end border-primary border-4"></div>
+           <div className="position-absolute bottom-0 start-0 w-4 h-4 border-bottom border-start border-primary border-4"></div>
+           <div className="position-absolute bottom-0 end-0 w-4 h-4 border-bottom border-end border-primary border-4"></div>
+           
+           {/* Transparent Scanning Line Overlay inside the frame */}
+           <div className="position-absolute w-100 h-1 bg-primary shadow-lg animate-scan" style={{ opacity: 0.6 }}></div>
         </div>
       </div>
 

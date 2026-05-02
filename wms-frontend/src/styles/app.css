@@ -160,6 +160,12 @@ label,
   text-overflow: ellipsis;
 }
 
+.allow-wrap {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
 /* Utility Animations */
 .fade-in {
   animation: fadeIn 0.5s ease-in;

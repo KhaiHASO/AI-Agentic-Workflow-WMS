@@ -61,7 +61,7 @@ const CycleCount = () => {
         <div className="d-flex flex-column gap-3">
           <div className="bg-white rounded-3 p-3 shadow-sm border-start border-4 border-info">
             <h6 className="fw-bold mb-1">Quy tắc: KIỂM KÊ MÙ (BLIND)</h6>
-            <p className="text-muted-custom fs-8 mb-0">Bạn sẽ không thấy số lượng tồn hệ thống. Vui lòng quét thực tế tại kệ.</p>
+            <p className="text-muted-custom fs-8 mb-0 allow-wrap">Bạn sẽ không thấy số lượng tồn hệ thống. Vui lòng quét thực tế tại kệ.</p>
           </div>
           
           <div className="scan-input-area shadow-sm">

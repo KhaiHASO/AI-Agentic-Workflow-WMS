@@ -2,22 +2,26 @@ import React from 'react';
 import { SlidersHorizontal, ArrowUpRight } from 'lucide-react';
 import { analytics } from '../data/mockData';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
+import { Link } from 'react-router-dom';
 
 const AnalyticsCards = ({ isMinimized }) => {
   const chartData = analytics.dailyPickedOrders.data.map((val, i) => ({ name: `D${i}`, value: val }));
+  
+  // Ensure we don't accidentally hide it if isMinimized is undefined
+  const minimized = isMinimized === true;
 
   return (
-    <div className={`analytics-flex-footer bg-white border-top transition-all ${isMinimized ? 'minimized' : ''}`}>
-      <div className="container-fluid h-100 p-4 pt-3 overflow-hidden">
-        <div className={`row g-4 h-100 transition-opacity ${isMinimized ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+    <div className={`analytics-flex-footer bg-white border-top transition-all ${minimized ? 'minimized' : ''}`}>
+      <div className="container-fluid h-100 p-3 overflow-hidden">
+        <div className={`mobile-swipe-wrapper h-100 transition-opacity ${minimized ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
           {/* Warehouse Workload Card */}
-          <div className="col-md-6 h-100">
+          <div className="swipe-card-item h-100">
             <div className="glass-card h-100 p-3 d-flex flex-column justify-content-between border-0 shadow-sm bg-light bg-opacity-50">
               <div className="d-flex justify-content-between align-items-center mb-1">
-                <span className="text-main fw-bold fs-8">Khối lượng công việc kho</span>
+                <span className="text-main fw-bold fs-8">Khối lượng công việc</span>
                 <div className="d-flex gap-2">
                   <button className="btn btn-sm text-muted p-0"><SlidersHorizontal size={12} /></button>
-                  <button className="btn btn-sm text-muted p-0"><ArrowUpRight size={12} /></button>
+                  <Link to="/mobile/dashboard" className="btn btn-sm text-muted p-0"><ArrowUpRight size={12} /></Link>
                 </div>
               </div>
 
@@ -49,13 +53,13 @@ const AnalyticsCards = ({ isMinimized }) => {
           </div>
 
           {/* Daily Picked Orders Card */}
-          <div className="col-md-6 h-100">
+          <div className="swipe-card-item h-100">
             <div className="glass-card h-100 p-3 d-flex flex-column justify-content-between border-0 shadow-sm bg-light bg-opacity-50">
               <div className="d-flex justify-content-between align-items-center mb-1">
                 <span className="text-main fw-bold fs-8">Đơn hàng đã lấy hàng</span>
                 <div className="d-flex gap-2">
                   <button className="btn btn-sm text-muted p-0"><SlidersHorizontal size={12} /></button>
-                  <button className="btn btn-sm text-muted p-0"><ArrowUpRight size={12} /></button>
+                  <Link to="/mobile/dashboard" className="btn btn-sm text-muted p-0"><ArrowUpRight size={12} /></Link>
                 </div>
               </div>
 
@@ -91,15 +95,47 @@ const AnalyticsCards = ({ isMinimized }) => {
 
       <style dangerouslySetInnerHTML={{ __html: `
         .analytics-flex-footer {
-          height: 180px;
+          height: 200px;
           width: 100%;
           position: relative;
           z-index: 40;
+          flex-shrink: 0;
         }
         .analytics-flex-footer.minimized {
           height: 0;
           border-top: none;
         }
+        
+        /* Swipe Layout for Mobile */
+        .mobile-swipe-wrapper {
+          display: flex;
+          gap: 1rem;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        .mobile-swipe-wrapper::-webkit-scrollbar { display: none; }
+        
+        .swipe-card-item {
+          min-width: 85%;
+          scroll-snap-align: center;
+        }
+
+        @media (min-width: 992px) {
+          .mobile-swipe-wrapper {
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+          .swipe-card-item {
+            min-width: auto;
+          }
+          .analytics-flex-footer {
+            height: 180px;
+          }
+        }
+
         .pointer-events-none { pointer-events: none; }
         .transition-opacity { transition: opacity 0.3s; }
         .uppercase { text-transform: uppercase; }

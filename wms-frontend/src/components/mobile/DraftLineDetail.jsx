@@ -90,6 +90,20 @@ const DraftLineDetail = () => {
       <div className="d-flex flex-column gap-2 mb-4">
         <button 
           className="btn bg-white shadow-sm border-0 text-start p-3 rounded-3 d-flex align-items-center gap-3"
+          onClick={() => handleAction('discrepancy')}
+        >
+          <div className="p-2 bg-info bg-opacity-10 rounded-circle text-info">
+            <AlertCircle size={20} />
+          </div>
+          <div className="flex-grow-1">
+            <div className="fw-bold fs-7">Xử lý chênh lệch (Adjustment)</div>
+            <div className="text-muted-custom fs-8">Điều chỉnh nhận thừa hoặc điều chỉnh tay</div>
+          </div>
+          <ChevronRight size={18} className="text-muted" />
+        </button>
+
+        <button 
+          className="btn bg-white shadow-sm border-0 text-start p-3 rounded-3 d-flex align-items-center gap-3"
           onClick={() => handleAction('split')}
         >
           <div className="p-2 bg-warning bg-opacity-10 rounded-circle text-warning">
@@ -149,9 +163,34 @@ const DraftLineDetail = () => {
                 {showAction === 'split' && 'Tách dòng nghiệp vụ'}
                 {showAction === 'substitute' && 'Nhận mã thay thế'}
                 {showAction === 'hold' && 'Cách ly hàng (QA Hold)'}
+                {showAction === 'discrepancy' && 'Điều chỉnh chênh lệch'}
               </h5>
               <button className="btn-close" onClick={() => setShowAction(null)}></button>
             </div>
+
+            {showAction === 'discrepancy' && (
+              <div className="mb-4">
+                <div className="alert alert-info fs-8 p-2 d-flex align-items-start gap-2 mb-3">
+                  <AlertCircle size={16} className="mt-1" />
+                  <span>Dùng khi số lượng quét thực tế cao hơn PO hoặc cần sửa lỗi nhập liệu.</span>
+                </div>
+                <div className="mb-3">
+                  <label className="fs-8 fw-bold text-muted-custom mb-2">SỐ LƯỢNG THỰC NHẬN MỚI</label>
+                  <div className="input-group">
+                    <input type="number" className="form-control border-light bg-light fs-5 fw-bold" defaultValue={line.scannedQty} />
+                    <span className="input-group-text bg-light border-light text-muted">{line.unit}</span>
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label className="fs-8 fw-bold text-muted-custom mb-2">LÝ DO ĐIỀU CHỈNH</label>
+                  <select className="form-select border-light bg-light">
+                    <option>Nhà cung cấp giao dư (Over-receipt)</option>
+                    <option>Quét nhầm mã / Số lượng</option>
+                    <option>Cập nhật thủ công theo biên bản</option>
+                  </select>
+                </div>
+              </div>
+            )}
 
             {showAction === 'substitute' && (
               <div className="mb-4">

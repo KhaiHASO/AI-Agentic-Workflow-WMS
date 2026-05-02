@@ -1,17 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MobileLayout from './MobileLayout';
-import { PackageSearch, PackagePlus, ArrowUpCircle, ClipboardCheck, LayoutDashboard } from 'lucide-react';
+import { PackageSearch, PackagePlus, ArrowUpCircle, ClipboardCheck, LayoutDashboard, ArrowLeft } from 'lucide-react';
 
 const ScannerHome = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { icon: <PackagePlus className="text-primary" />, label: 'Nhập hàng (Inbound)', path: '/mobile/inbound', desc: 'Nhận hàng từ PO/Chuyến xe' },
+    { icon: <PackagePlus className="text-primary" />, label: 'Nhập hàng (Inbound)', path: '/mobile/receipts', desc: 'Gom chuyến PO & Nhận hàng' },
     { icon: <ArrowUpCircle className="text-success" />, label: 'Cất hàng (Putaway)', path: '/mobile/putaway', desc: 'Di chuyển hàng vào vị trí lưu trữ' },
     { icon: <PackageSearch className="text-warning" />, label: 'Lấy hàng (Picking)', path: '/mobile/picking', desc: 'Lấy hàng theo lệnh xuất' },
     { icon: <ClipboardCheck className="text-info" />, label: 'Kiểm kê (Cycle Count)', path: '/mobile/cycle-count', desc: 'Kiểm tra tồn kho định kỳ' },
-    { icon: <LayoutDashboard className="text-secondary" />, label: 'Dashboard nhanh', path: '/mobile/dashboard', desc: 'Xem nhanh chỉ số vận hành' },
+    { icon: <LayoutDashboard className="text-primary" />, label: 'KPIs & Báo cáo', path: '/mobile/dashboard', desc: 'Xem nhanh chỉ số vận hành di động' },
+    { icon: <ArrowLeft className="text-dark" />, label: 'Về Admin Dashboard', path: '/', desc: 'Quay lại màn hình giám sát tổng thể' },
   ];
 
   return (

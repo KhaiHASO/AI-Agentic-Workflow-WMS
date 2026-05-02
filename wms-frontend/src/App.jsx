@@ -10,6 +10,7 @@ import InventoryLedger from './components/InventoryLedger';
 import InventoryStock from './components/InventoryStock';
 import MasterData from './components/MasterData';
 import DocumentDashboard from './components/DocumentDashboard';
+import ReportCenter from './components/ReportCenter';
 import MobileAdminLayout from './components/mobile/MobileAdminLayout';
 import { Maximize2, Minimize2 } from 'lucide-react';
 
@@ -20,6 +21,8 @@ import DraftLineDetail from './components/mobile/DraftLineDetail';
 import PutawayTask from './components/mobile/PutawayTask';
 import PickingTask from './components/mobile/PickingTask';
 import CycleCount from './components/mobile/CycleCount';
+import MobileDashboard from './components/mobile/MobileDashboard';
+import MasterReceiptList from './components/mobile/MasterReceiptList';
 
 // Import CSS
 import './styles/app.css';
@@ -110,14 +113,17 @@ function App() {
         <Route path="/ledger" element={<WebAdminLayout showStats={false} showSidebar={false}><InventoryLedger /></WebAdminLayout>} />
         <Route path="/master" element={<WebAdminLayout showStats={false} showSidebar={false}><MasterData /></WebAdminLayout>} />
         <Route path="/audit" element={<WebAdminLayout showStats={false} showSidebar={false}><IntegrationAudit /></WebAdminLayout>} />
+        <Route path="/reports" element={<WebAdminLayout showStats={false} showSidebar={false}><ReportCenter /></WebAdminLayout>} />
         
         {/* Scanner Mode */}
         <Route path="/mobile" element={<ScannerHome />} />
+        <Route path="/mobile/receipts" element={<MasterReceiptList />} />
         <Route path="/mobile/inbound" element={<InboundDraft />} />
         <Route path="/mobile/draft/:lineId" element={<DraftLineDetail />} />
         <Route path="/mobile/putaway" element={<PutawayTask />} />
         <Route path="/mobile/picking" element={<PickingTask />} />
         <Route path="/mobile/cycle-count" element={<CycleCount />} />
+        <Route path="/mobile/dashboard" element={<MobileDashboard />} />
         
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

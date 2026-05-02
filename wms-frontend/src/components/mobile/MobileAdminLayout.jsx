@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, FileText, Layers, 
-  Database, Activity, Bell, User, Menu, X, Scan 
+  Database, Activity, Bell, User, Menu, X, Scan, PieChart
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import Sidebar from '../Sidebar';
@@ -13,7 +13,7 @@ const MobileAdminLayout = ({ children }) => {
 
   const menuItems = [
     { icon: <LayoutDashboard size={20} />, label: 'Giám sát', path: '/' },
-    { icon: <FileText size={20} />, label: 'Chứng từ', path: '/docs' },
+    { icon: <PieChart size={20} />, label: 'Báo cáo', path: '/reports' },
     { icon: <Scan size={20} />, label: 'Scanner', path: '/mobile' },
     { icon: <Layers size={20} />, label: 'Tồn kho', path: '/inventory' },
     { icon: <Database size={20} />, label: 'Danh mục', path: '/master' },

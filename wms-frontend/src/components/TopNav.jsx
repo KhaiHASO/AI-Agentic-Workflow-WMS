@@ -3,7 +3,7 @@ import {
   Search, Bell, User, LayoutDashboard, 
   FileText, ClipboardList, Database, 
   Settings, ChevronDown, Monitor, Package,
-  Truck, Layers, History, Activity
+  Truck, Layers, History, Activity, PieChart
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -78,6 +78,11 @@ const TopNav = () => {
                <Link className="dropdown-item d-flex align-items-center gap-3 rounded-2" to="/ledger">
                   <div className="bg-primary bg-opacity-10 p-2 rounded text-primary"><History size={16} /></div>
                   <div><div className="fw-bold fs-8">Sổ kho (Ledger)</div><div className="fs-9 text-muted">Lịch sử biến động</div></div>
+               </Link>
+               <div className="dropdown-divider mx-2 opacity-50"></div>
+               <Link className="dropdown-item d-flex align-items-center gap-3 rounded-2" to="/reports">
+                  <div className="bg-warning bg-opacity-10 p-2 rounded text-warning"><PieChart size={16} /></div>
+                  <div><div className="fw-bold fs-8">Trung tâm Báo cáo</div><div className="fs-9 text-muted">Phân tích chuyên sâu</div></div>
                </Link>
             </div>
           </li>

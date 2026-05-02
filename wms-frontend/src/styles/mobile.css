@@ -1,11 +1,12 @@
 /* Mobile Base Styles */
 .mobile-container {
   width: 100% !important;
-  min-height: 100dvh;
+  height: 100dvh; /* Force height to match dynamic viewport */
   background: #f8f9fa;
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden; /* Prevent body scroll */
 }
 
 /* mobile-admin-wrapper should ALWAYS be full width */
@@ -13,6 +14,9 @@
   width: 100% !important;
   max-width: 100% !important;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
 }
 
 /* For Desktop simulation of mobile - only apply max-width on very large screens (Desktops) */
@@ -25,20 +29,9 @@
     overflow: hidden;
     box-shadow: 0 20px 50px rgba(0,0,0,0.2);
     border: 8px solid #1a1d21;
-    height: 850px;
-    min-height: auto;
+    height: 850px; /* Fixed height for simulator */
     display: flex;
     flex-direction: column;
-  }
-
-  .mobile-container.scanner-sim .mobile-footer {
-    position: sticky;
-    bottom: 0;
-    border-radius: 0;
-  }
-
-  .mobile-container.scanner-sim .mobile-content {
-    overflow-y: auto;
   }
 }
 
@@ -46,27 +39,24 @@
   background: #fff;
   padding: 1.25rem 1rem;
   border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
+  flex-shrink: 0; /* Header won't shrink */
   z-index: 1000;
-}
-
-.mobile-footer {
-  position: sticky;
-  bottom: 0;
-  width: 100%;
-  background: #fff;
-  padding: 1rem;
-  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
-  border-top: 1px solid #eee;
-  z-index: 1000;
-  margin-top: auto;
 }
 
 .mobile-content {
   flex: 1;
   padding: 1rem;
-  /* Remove fixed padding-bottom since we're using sticky footer */
+  overflow-y: auto; /* Independent scroll for content */
+  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+}
+
+.mobile-footer {
+  background: #fff;
+  padding: 1rem;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  border-top: 1px solid #eee;
+  flex-shrink: 0; /* Footer won't shrink */
+  z-index: 1000;
 }
 
 .scan-input-area {
