@@ -11,6 +11,7 @@ import InventoryStock from './components/InventoryStock';
 import MasterData from './components/MasterData';
 import DocumentDashboard from './components/DocumentDashboard';
 import ReportCenter from './components/ReportCenter';
+import LocationDetail from './components/LocationDetail';
 import MobileAdminLayout from './components/mobile/MobileAdminLayout';
 import { Maximize2, Minimize2 } from 'lucide-react';
 
@@ -114,6 +115,7 @@ function App() {
         <Route path="/master" element={<WebAdminLayout showStats={false} showSidebar={false}><MasterData /></WebAdminLayout>} />
         <Route path="/audit" element={<WebAdminLayout showStats={false} showSidebar={false}><IntegrationAudit /></WebAdminLayout>} />
         <Route path="/reports" element={<WebAdminLayout showStats={false} showSidebar={false}><ReportCenter /></WebAdminLayout>} />
+        <Route path="/location/:locId" element={<WebAdminLayout showStats={false} showSidebar={false}><LocationDetail /></WebAdminLayout>} />
         
         {/* Scanner Mode */}
         <Route path="/mobile" element={<ScannerHome />} />

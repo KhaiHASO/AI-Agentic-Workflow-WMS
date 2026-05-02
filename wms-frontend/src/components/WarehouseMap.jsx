@@ -5,6 +5,7 @@ import {
   AlertCircle, Info, Box
 } from 'lucide-react';
 import { db } from '../data/centralizedDataStore';
+import { useNavigate } from 'react-router-dom';
 
 const MapControls = () => {
   const { zoomIn, zoomOut, resetTransform } = useTransformContext();
@@ -41,6 +42,7 @@ const MapControls = () => {
 };
 
 const WarehouseMap = () => {
+  const navigate = useNavigate();
   const [selectedRack, setSelectedRack] = useState(null);
   const [inventory, setInventory] = useState(db.state.inventory);
   const isDragging = useRef(false);
@@ -226,7 +228,10 @@ const WarehouseMap = () => {
               </div>
 
               <div className="p-3 bg-light border-top">
-                <button className="btn btn-dark w-100 rounded-3 py-2 fw-bold d-flex align-items-center justify-content-center gap-2 fs-8">
+                <button 
+                  className="btn btn-dark w-100 rounded-3 py-2 fw-bold d-flex align-items-center justify-content-center gap-2 fs-8"
+                  onClick={() => navigate(`/location/${selectedRack.id}`)}
+                >
                   <Info size={16} /> CHI TIẾT VỊ TRÍ
                 </button>
               </div>
