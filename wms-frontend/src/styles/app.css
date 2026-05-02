@@ -1,0 +1,156 @@
+:root {
+  --bg-page: #eef3f4;
+  --bg-dashboard: #f8fafb;
+  --text-main: #1a1d21;
+  --text-muted: #64748b;
+  --accent-blue: #2563eb;
+  --accent-green: #10b981;
+  --accent-red: #ef4444;
+  --accent-orange: #f59e0b;
+  --rack-blue: #3b82f6;
+  --line-gray: #e2e8f0;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --glass-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-page);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+  height: 100vh;
+  overflow: hidden;
+  font-size: 16px; /* Increased from default */
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+/* Main Dashboard Shell */
+.dashboard-container {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
+  background-color: var(--bg-dashboard);
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: none;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 18px;
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.glass-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+/* Typography Refinements */
+.text-muted-custom {
+  color: var(--text-muted);
+}
+
+.uppercase-bold {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.fs-9 { font-size: 0.75rem; } /* Increased from 0.65rem */
+.fs-8 { font-size: 0.85rem; } /* Increased from 0.75rem */
+.fs-7 { font-size: 1rem; }    /* Increased from 0.875rem */
+
+
+/* Components Custom Styling */
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid var(--line-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  transition: all 0.2s;
+}
+
+.icon-btn:hover {
+  background: var(--bg-page);
+  border-color: var(--text-muted);
+}
+
+/* Navigation Overrides */
+.nav-pills-custom .nav-link {
+  color: var(--text-muted);
+  border-radius: 12px;
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.nav-pills-custom .nav-link.active {
+  background: var(--text-main);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Custom Scrollbar */
+.sidebar-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* Map Container Layout */
+.warehouse-map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.map-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Utility Animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
