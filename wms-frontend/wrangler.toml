@@ -1,0 +1,11 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "wms-frontend"
+pages_build_output_dir = "dist"
+
+# Configuration for Cloudflare Pages
+# To deploy: npx wrangler pages deploy dist
+
+[vars]
+# Note: VITE_ environment variables are typically baked in at build time.
+# For Cloudflare Pages, set these in the Dashboard under Settings > Variables and Secrets.
+VITE_API_URL = "http://localhost:3000"

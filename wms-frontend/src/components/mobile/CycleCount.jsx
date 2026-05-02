@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 import MobileLayout from './MobileLayout';
-import { Scan, MapPin, ClipboardCheck, AlertTriangle, CheckCircle2, Search } from 'lucide-react';
+import { Scan, MapPin, ClipboardCheck, AlertTriangle, CheckCircle2, Search, Camera } from 'lucide-react';
+import BarcodeScanner from './BarcodeScanner';
 
 const CycleCount = () => {
   const [step, setStep] = useState('select_loc'); // 'select_loc', 'counting', 'summary'
   const [loc, setLoc] = useState('');
   const [scannedItems, setScannedItems] = useState([]);
   const [barcode, setBarcode] = useState('');
+  const [showCamera, setShowCamera] = useState(false);
 
   const startCounting = () => {
     if (!loc) return alert('Vui lòng quét hoặc chọn vị trí');
     setStep('counting');
   };
 
+  const processScanResult = (decodedText) => {
+    // Simulate finding item
+    const newItem = { id: decodedText, qty: 1, time: new Date().toLocaleTimeString() };
+    setScannedItems([newItem, ...scannedItems]);
+    setBarcode('');
+    setShowCamera(false);
+  };
+
   const handleScan = (e) => {
     e.preventDefault();
     if (!barcode) return;
-    
-    // Simulate finding item
-    const newItem = { id: barcode, qty: 1, time: new Date().toLocaleTimeString() };
-    setScannedItems([newItem, ...scannedItems]);
-    setBarcode('');
+    processScanResult(barcode);
   };
 
   const finishSession = () => {
@@ -44,6 +50,13 @@ const CycleCount = () => {
         </div>
       }
     >
+      {showCamera && (
+        <BarcodeScanner 
+          onScanSuccess={processScanResult} 
+          onClose={() => setShowCamera(false)} 
+        />
+      )}
+
       {step === 'select_loc' && (
         <div className="d-flex flex-column gap-3">
           <div className="bg-white rounded-3 p-3 shadow-sm border-start border-4 border-info">
@@ -90,6 +103,13 @@ const CycleCount = () => {
                 onChange={(e) => setBarcode(e.target.value)}
                 autoFocus
               />
+              <button 
+                type="button" 
+                className="btn btn-dark rounded-pill p-2"
+                onClick={() => setShowCamera(true)}
+              >
+                <Camera size={20} />
+              </button>
               <button type="submit" className="btn btn-success rounded-pill p-2"><Scan size={20} /></button>
             </form>
           </div>

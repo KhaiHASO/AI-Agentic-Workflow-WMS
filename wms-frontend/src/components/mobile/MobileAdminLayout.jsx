@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   LayoutDashboard, FileText, Layers, 
-  Database, Activity, Bell, User, Menu, X 
+  Database, Activity, Bell, User, Menu, X, Scan 
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import Sidebar from '../Sidebar';
@@ -14,13 +14,13 @@ const MobileAdminLayout = ({ children }) => {
   const menuItems = [
     { icon: <LayoutDashboard size={20} />, label: 'Giám sát', path: '/' },
     { icon: <FileText size={20} />, label: 'Chứng từ', path: '/docs' },
+    { icon: <Scan size={20} />, label: 'Scanner', path: '/mobile' },
     { icon: <Layers size={20} />, label: 'Tồn kho', path: '/inventory' },
     { icon: <Database size={20} />, label: 'Danh mục', path: '/master' },
-    { icon: <Activity size={20} />, label: 'Hệ thống', path: '/audit' },
   ];
 
   return (
-    <div className="mobile-admin-wrapper d-flex flex-column bg-light h-100 vh-100 overflow-hidden w-100">
+    <div className="mobile-admin-wrapper d-flex flex-column bg-light h-100 vh-100 overflow-hidden w-100" style={{ height: '100dvh' }}>
       
       {/* COMPACT Mobile Header */}
       <header className="bg-white border-bottom px-3 py-2 d-flex justify-content-between align-items-center shadow-sm z-3" style={{ height: '56px' }}>
@@ -31,6 +31,9 @@ const MobileAdminLayout = ({ children }) => {
           <div className="fw-bold fs-6 text-main">Navexa WMS</div>
         </div>
         <div className="d-flex gap-2 align-items-center">
+          <Link to="/mobile" className="btn btn-dark btn-sm rounded-pill px-2 py-1 shadow-sm fs-9 fw-bold d-flex align-items-center gap-1 border-0">
+             <Scan size={14} /> SCAN
+          </Link>
           <div className="position-relative p-2">
             <Bell size={20} className="text-muted" />
             <span className="position-absolute top-0 end-0 mt-2 me-2 p-1 bg-danger border border-white rounded-circle"></span>
@@ -79,7 +82,7 @@ const MobileAdminLayout = ({ children }) => {
 
       <style dangerouslySetInnerHTML={{ __html: `
         .pb-safe { padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)); }
-        .mobile-admin-wrapper { font-family: 'Inter', sans-serif; width: 100% !important; height: 100vh !important; }
+        .mobile-admin-wrapper { font-family: 'Inter', sans-serif; width: 100% !important; height: 100dvh !important; }
         .uppercase { text-transform: uppercase; }
         .transition-all { transition: all 0.2s ease-in-out; }
         

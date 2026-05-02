@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import MobileLayout from './MobileLayout';
 import { useNavigate } from 'react-router-dom';
-import { Scan, AlertCircle, CheckCircle2, MoreVertical, Split, ChevronRight } from 'lucide-react';
+import { Scan, AlertCircle, CheckCircle2, MoreVertical, Split, ChevronRight, Camera } from 'lucide-react';
 import { mockApi } from '../../data/mockApi';
+import BarcodeScanner from './BarcodeScanner';
 
 const InboundDraft = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const InboundDraft = () => {
   const [lines, setLines] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastScanned, setLastScanned] = useState(null);
+  const [showCamera, setShowCamera] = useState(false);
 
   useEffect(() => {
     loadDraft();
@@ -20,13 +22,10 @@ const InboundDraft = () => {
     setLines(data);
   };
 
-  const handleScan = async (e) => {
-    e.preventDefault();
-    if (!barcode) return;
-
+  const processScanResult = async (decodedText) => {
     setLoading(true);
     try {
-      const result = await mockApi.submitScan('MR-001', barcode);
+      const result = await mockApi.submitScan('MR-001', decodedText);
       // Simulate updating the line in UI
       const newLines = lines.map(line => {
         if (line.itemId === result.item.id) {
@@ -40,11 +39,18 @@ const InboundDraft = () => {
       setLines(newLines);
       setLastScanned(result.item);
       setBarcode('');
+      setShowCamera(false);
     } catch (err) {
       alert(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleScan = async (e) => {
+    e.preventDefault();
+    if (!barcode) return;
+    await processScanResult(barcode);
   };
 
   const getStatusClass = (status) => {
@@ -65,6 +71,13 @@ const InboundDraft = () => {
         </button>
       }
     >
+      {showCamera && (
+        <BarcodeScanner 
+          onScanSuccess={processScanResult} 
+          onClose={() => setShowCamera(false)} 
+        />
+      )}
+
       {/* Scan Area */}
       <div className="scan-input-area shadow-sm mb-4">
         <label className="text-muted-custom fs-8 fw-bold mb-2 d-block">QUÉT MÃ VẠCH (BARCODE)</label>
@@ -79,6 +92,13 @@ const InboundDraft = () => {
               autoFocus
             />
           </div>
+          <button 
+            type="button" 
+            className="btn btn-dark rounded-pill p-2" 
+            onClick={() => setShowCamera(true)}
+          >
+            <Camera size={20} />
+          </button>
           <button type="submit" className="btn btn-primary rounded-pill p-2" disabled={loading}>
             <Scan size={20} />
           </button>

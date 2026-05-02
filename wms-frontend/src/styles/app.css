@@ -145,6 +145,21 @@ body {
   object-fit: contain;
 }
 
+/* Global No-Wrap Policy for Labels and UI text */
+label, 
+.fs-9, .fs-8, .fs-7, 
+.fw-bold, 
+.uppercase, 
+.uppercase-bold,
+.nav-link,
+.status-badge-mobile,
+.task-card .fw-bold,
+.mobile-header h6 {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Utility Animations */
 .fade-in {
   animation: fadeIn 0.5s ease-in;

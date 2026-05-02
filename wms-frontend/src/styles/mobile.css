@@ -1,7 +1,7 @@
 /* Mobile Base Styles */
 .mobile-container {
   width: 100% !important;
-  min-height: 100vh;
+  min-height: 100dvh;
   background: #f8f9fa;
   display: flex;
   flex-direction: column;
@@ -15,8 +15,8 @@
   flex: 1;
 }
 
-/* For Desktop simulation of mobile - only apply max-width on large screens FOR SCANNER MODE ONLY */
-@media (min-width: 768px) {
+/* For Desktop simulation of mobile - only apply max-width on very large screens (Desktops) */
+@media (min-width: 1200px) {
   /* Only constrain the container if it's explicitly a scanner-style view */
   .mobile-container.scanner-sim {
     max-width: 430px;
@@ -27,6 +27,18 @@
     border: 8px solid #1a1d21;
     height: 850px;
     min-height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-container.scanner-sim .mobile-footer {
+    position: sticky;
+    bottom: 0;
+    border-radius: 0;
+  }
+
+  .mobile-container.scanner-sim .mobile-content {
+    overflow-y: auto;
   }
 }
 
@@ -39,22 +51,22 @@
   z-index: 1000;
 }
 
-.mobile-content {
-  flex: 1;
-  padding: 1rem;
-  padding-bottom: calc(80px + env(safe-area-inset-bottom));
-}
-
 .mobile-footer {
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  left: 0;
   width: 100%;
   background: #fff;
   padding: 1rem;
   padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   border-top: 1px solid #eee;
   z-index: 1000;
+  margin-top: auto;
+}
+
+.mobile-content {
+  flex: 1;
+  padding: 1rem;
+  /* Remove fixed padding-bottom since we're using sticky footer */
 }
 
 .scan-input-area {
@@ -96,6 +108,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
+  white-space: nowrap !important;
 }
 
 .status-done { background: #ecfdf5; color: #10b981; }
