@@ -1,0 +1,104 @@
+# =========================
+# .NET / C# build output
+# =========================
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+.vscode/.vs/
+TestResults/
+*.VisualState.xml
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# VS Code local settings
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# =========================
+# ASP.NET Core local config
+# =========================
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# Nếu appsettings.json có connection string/password thật thì cũng ignore dòng dưới
+# appsettings.json
+
+# Launch profiles thường chứa cấu hình máy local
+Properties/launchSettings.json
+
+# =========================
+# Secrets / connection info
+# =========================
+Navicat_Connection_Info.txt
+*Connection_Info*.txt
+*.secret.json
+secrets.json
+.env
+.env.*
+!.env.example
+
+# =========================
+# Database local files
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+*.bak
+
+# Không ignore file SQL schema/setup nếu muốn dùng để dựng DB
+# WmsDb_Full_Setup.sql
+# WmsDb_Schema_Full.sql
+
+# =========================
+# Logs
+# =========================
+logs/
+Logs/
+*.log
+
+# =========================
+# NuGet
+# =========================
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+
+# =========================
+# Publish / deployment output
+# =========================
+publish/
+Publish/
+artifacts/
+release/
+Release/
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Gemini / AI local cache
+# =========================
+.gemini/
+.gemini-cache/
